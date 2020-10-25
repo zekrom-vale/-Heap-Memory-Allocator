@@ -1,3 +1,4 @@
+#pragma once
 struct node;
 struct nodeEnd;
 static const size_t END;
@@ -14,4 +15,4 @@ struct node* add(void* start,size_t size);
 void remove(struct node* n);
 void shift(struct node* start,size_t size);
 void coalesce(struct node* start);
-void* find(size_t* s)
+void* find(size_t* s);
