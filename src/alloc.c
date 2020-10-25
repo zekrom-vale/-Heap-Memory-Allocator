@@ -11,7 +11,10 @@ struct header{
 const static size_t HEADER_SIZE=sizeof(struct header);
 
 //|h|h|h|h|x|x|x|x|x|x|x|
-
+/**
+*Returns the starting location of the space
+*@param start the location of the heaer
+*/
 void* getVoid(void* start){
 	return start+HEADER_SIZE;
 }

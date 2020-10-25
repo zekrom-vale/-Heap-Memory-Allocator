@@ -2,11 +2,7 @@
 #include <assert.h>
 #include <stdbool.h>
 
-struct node* offset(struct node* start, size_t size){
-	struct node* next=(struct node*)(((void*)start)+size+1);
-	if(!validate(next, next->end))return NULL;
-	return next;
-}
+
 
 struct node{
 	struct node* next;
@@ -19,9 +15,31 @@ struct nodeEnd{
 	struct node* start;
 }
 
+/**
+*The size of the end node
+*/
 static const size_t END = sizeof(struct nodeEnd);
+/**
+*The absolute minumum of the free space
+*It is posible to allocate if the size is the same as struct node, but that requres more logic
+*/
 static const size_t ATOMIC = sizeof(struct node)+END;
 
+/**
+*gets the next location of the node
+*@param start the original node
+*@param size the offset
+*/
+struct node* offset(struct node* start, size_t size){
+	assert(size>ATOMIC);
+	struct node* next=(struct node*)(((void*)start)+size+1);
+	return next;
+}
+
+/**
+*returns the location of the end of the node
+*@param start the node to get the end of
+*/
 struct nodeEnd* getNodeEnd(struct node* start){
 	return (struct nodeEnd*)((void*)start+start->size-END);
 	//|x|x|x|x|x|x|x|x|x| | | | | | | | | | | | |e|e|e|e| |
@@ -29,6 +47,12 @@ struct nodeEnd* getNodeEnd(struct node* start){
 	// 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5
 }
 
+/**
+*validates the given node
+*@code{validate(node, node->end);}
+*@param start the node to verify
+*@param end the corisponding end node to validate
+*/
 bool validate(struct node* start, struct nodeEnd* end){
 	if(start==NULL||end==NULL)return false;
 	return start->end==end;
@@ -49,10 +73,21 @@ struct linkedList{
 
 static linkedList LIST;
 
+/**
+*Creates the linkedList
+*/
 struct linkedList init(){
-	LIST={NULL, NULL, 0};
+	LIST->first=NULL;
+	LIST->last=NULL;
+	LIST->size=0;
 }
 
+/**
+*adds the given location with the given size
+*this DOES NOT coalesce
+*@param start the space to add
+*@param size the size of the node
+*/
 struct node* add(void* start, size_t size){
 	struct node* n=(struct node*)start;
 	n->end=getNodeEnd(start);
@@ -74,35 +109,19 @@ struct node* add(void* start, size_t size){
 	return n;
 }
 
-
+/**
+*removes the given node
+*@param n the node to remove
+*/
 void remove(struct node* n){
 	assert(LIST->size!=0);
 	assert(n!=NULL);
+	//Clear the end noe
 	struct nodeEnd* end=n->end;
 	assert(validate(n, end));
 	end->start=NULL;
-	/*
-	if(LIST->size==1){
-		LIST->next=NULL;
-		LIST->prev=NULL;
-	}
-	else{
-		if(LIST->first==n){
-			LIST->first=n->next;
-			LIST->first->prev=NULL;
-		}
-		else if(List->last==n){
-			LIST->last=n->prev;
-			LIST->last->next=NULL;
-		}
-		else{
-			struct node* prev=n->prev,
-				next=n->next;
-			prev->next=next;
-			next->prev=prev;
-		}
-	}*/
-
+	//Attach the next and perv to eachother if they exist
+	//If not update the LIST
 	struct node* prev=n->prev,
 		next=n->next;
 	if(next!=NULL)next->prev=prev;
@@ -112,7 +131,11 @@ void remove(struct node* n){
 	LIST->size--;
 	//dealocate node
 }
-
+/**
+*shifts the given node the given size
+*@param start the node to shift
+*@param size the size to offest
+*/
 void shift(struct node* start, size_t size){
 	struct node* newstart=offset(start, size),
 		next=start->next,
@@ -138,6 +161,11 @@ void shift(struct node* start, size_t size){
 	else LIST->first=newstart;
 }
 
+/**
+*coalesces the linked list
+*@param start the node to coalesce arround
+*/
+
 void coalesce(struct node* start){
 	struct node* next=offset(start, start->size);
 	struct node* prev=getPrevNode(start);
@@ -157,21 +185,31 @@ void coalesce(struct node* start){
 /**
 *Finds the next space avalbe
 *@param s the size to find, updated if remaning space is not attomic
+*@return a pointer to the allocated space, NULL if not found (Does not expand memory)
 */
 void* find(size_t& s){
 	struct node* cur=LIST->first;
 	size_t size=*s;
 	while(cur!=NULL){
+		//If the size is larger than requested
 		if(cur->size>=size){
+			//If a perfect match
 			if(cur->size==size){
 				remove(cur);
 				return (void*)cur;
 			}
+			// If the remaning space is not attomic allocate more and update s
 			size_t min=size+ATOMIC;
-			if(cur->size<min)*s=min;
+			if(cur->size<min){
+				*s=min;
+				remove(cur);
+			}
+			//Otherwise just sift it
 			else shift(cur, size);
+			//Return the location of the space
 			return (void*)cur;
 		}
 	}
+	//Failure
 	return NULL;
 }
