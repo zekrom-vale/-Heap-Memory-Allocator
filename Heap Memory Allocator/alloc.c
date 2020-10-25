@@ -1,9 +1,3 @@
-
-#include "linkedList.h"
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <stddef.h>
 #include "alloc.h"
 
 //|h|h|h|h|x|x|x|x|x|x|x|
@@ -25,10 +19,37 @@ void* Mem_Alloc(int size){
 		return getVoid(start);
 	}
 	else{
-		//Allocate
+		return getVoid(extend(size));
 	}
 }
 
-void* extend(size_t size){
-	return Mem_Init((int)size);
+int roundUp(int num, int mult){
+	return num + mult - num % mult;
+}
+
+struct header* extend(size_t size){
+	//Calculate allocation size
+	size_t s;
+	if(size < CHUNK/0x40)s = CHUNK;
+	else if(size < CHUNK/0x4)s = roundUp(0x10 * size, CHUNK);
+	else s = roundUp(0x4 * size, CHUNK);
+	//Request
+	void* allocated = request(s);
+	//If size is smaller than ATTOMIC use that instead
+	if(size < ATOMIC)size = ATOMIC;
+	//If the allocated space is the same as the ATOMIC size
+	//This should never happen with the given settings
+	if(s!=ATOMIC){
+		//Get the location for the free space
+		add(
+			(void*)offset((struct node*)allocated, size),
+			size - s
+		);
+	}
+	//Init header
+	struct header* head = (struct header*)allocated;
+
+	head->magic = MAGIC;
+	head->size = size;
+	return head;
 }

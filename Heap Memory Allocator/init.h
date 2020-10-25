@@ -2,7 +2,6 @@
 #define __init_h__
 
 #include <stdlib.h>
-#include <stddef.h>
 #include <unistd.h>
 #include <sys/mman.h>
 #include "mem.h"

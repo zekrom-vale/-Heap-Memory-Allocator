@@ -2,11 +2,13 @@
 #define __alloc_h__
 
 #include "linkedList.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
 
-const int MAGIC = 0x144b36e8;
+#define MAGIC 0x144b36e8;
+#define CHUNK 0x4000
 
 struct header{
 	int magic;
