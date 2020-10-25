@@ -9,7 +9,7 @@ struct header* getHead(void* start){
 }
 
 int Mem_Free(void* ptr){
-	struct header head=getHead(ptr);
+	struct header* head=getHead(ptr);
 	assert(head->magic==MAGIC);
 	size_t size=head->size;
 	coalesce(add((void*)head, size));

@@ -42,6 +42,17 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\alloc.c" />
+    <ClCompile Include="..\dump.c" />
+    <ClCompile Include="..\free.c" />
+    <ClCompile Include="..\init.c" />
+    <ClCompile Include="..\linkedlist.c" />
+    <ClCompile Include="..\main.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\linkedList.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{2c2407f5-cab0-4d24-b615-57ecbe95be7b}</ProjectGuid>
     <Keyword>Linux</Keyword>
@@ -93,14 +104,6 @@
     <RemoteCCompileToolExe>gcc</RemoteCCompileToolExe>
     <RemoteCppCompileToolExe>gcc</RemoteCppCompileToolExe>
   </PropertyGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\src\alloc.c" />
-    <ClCompile Include="..\..\src\dump.c" />
-    <ClCompile Include="..\..\src\free.c" />
-    <ClCompile Include="..\..\src\init.c" />
-    <ClCompile Include="..\..\src\linkedlist.c" />
-    <ClCompile Include="..\..\src\main.c" />
-  </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

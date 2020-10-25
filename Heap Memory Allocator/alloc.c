@@ -1,17 +1,10 @@
 
-#include "linkedList.c"
-#include "init.c"
+#include "linkedList.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
-#define MAGIC 0x144b36e8
-
-struct header{
-	int magic;
-	size_t size;
-}
-
-const static size_t HEADER_SIZE=sizeof(struct header);
+#include "alloc.h"
 
 //|h|h|h|h|x|x|x|x|x|x|x|
 /**

@@ -3,27 +3,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stddef.h>
-
-struct node{
-	struct node* next;
-	struct node* prev;
-	size_t size;
-	struct nodeEnd* end;
-};
-
-struct nodeEnd{
-	struct node* start;
-};
-
-/**
-*The size of the end node
-*/
-static const size_t END = sizeof(struct nodeEnd);
-/**
-*The absolute minumum of the free space
-*It is posible to allocate if the size is the same as struct node, but that requres more logic
-*/
-static const size_t ATOMIC = sizeof(struct node)+END;
+#include "linkedList.h"
 
 /**
 *gets the next location of the node
@@ -64,14 +44,6 @@ struct node* getPrevNode(struct node* start){
 	if(!validate(end->start, end))return NULL;
 	return end->start;
 }
-
-struct linkedList{
-	struct node* first;
-	struct node* last;
-	int size;
-};
-
-static struct linkedList* LIST;
 
 /**
 *Creates the linkedList
