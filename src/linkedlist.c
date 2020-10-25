@@ -1,19 +1,19 @@
 #include <stdio.h>
 #include <assert.h>
 #include <stdbool.h>
-
-
+#include <stdlib.h>
+#include <stddef.h>
 
 struct node{
 	struct node* next;
 	struct node* prev;
 	size_t size;
 	struct nodeEnd* end;
-}
+};
 
 struct nodeEnd{
 	struct node* start;
-}
+};
 
 /**
 *The size of the end node
@@ -30,9 +30,9 @@ static const size_t ATOMIC = sizeof(struct node)+END;
 *@param start the original node
 *@param size the offset
 */
-struct node* offset(struct node* start, size_t size){
-	assert(size>ATOMIC);
-	struct node* next=(struct node*)(((void*)start)+size+1);
+struct node* offset(struct node* start,size_t size){
+	assert(size > ATOMIC);
+	struct node* next = (struct node*)(((void*)start) + size + 1);
 	return next;
 }
 
@@ -69,17 +69,18 @@ struct linkedList{
 	struct node* first;
 	struct node* last;
 	int size;
-}
+};
 
-static linkedList LIST;
+static struct linkedList* LIST;
 
 /**
 *Creates the linkedList
 */
-struct linkedList init(){
+struct linkedList* init(){
 	LIST->first=NULL;
 	LIST->last=NULL;
 	LIST->size=0;
+	return LIST;
 }
 
 /**
@@ -122,8 +123,8 @@ void remove(struct node* n){
 	end->start=NULL;
 	//Attach the next and perv to eachother if they exist
 	//If not update the LIST
-	struct node* prev=n->prev,
-		next=n->next;
+	struct node* prev = n->prev;
+	struct node* next=n->next;
 	if(next!=NULL)next->prev=prev;
 	else LIST->last=prev;
 	if(prev!=NULL)prev->next=next;
@@ -137,9 +138,9 @@ void remove(struct node* n){
 *@param size the size to offest
 */
 void shift(struct node* start, size_t size){
-	struct node* newstart=offset(start, size),
-		next=start->next,
-		prev=start->prev;
+	struct node* newstart = offset(start,size);
+	struct node* next = start->next;
+	struct node* prev=start->prev;
 	//Update end node
 
 	struct nodeEnd* end=start->end;
@@ -153,8 +154,8 @@ void shift(struct node* start, size_t size){
 
 	//re-point other nodes
 
-	struct node* prev=start->prev,
-		next=start->next;
+	struct node* prev = start->prev;
+	struct node* next=start->next;
 	if(next!=NULL)next->prev=newstart;
 	else LIST->last=newstart;
 	if(prev!=NULL)prev->next=newstart;
@@ -187,7 +188,7 @@ void coalesce(struct node* start){
 *@param s the size to find, updated if remaning space is not attomic
 *@return a pointer to the allocated space, NULL if not found (Does not expand memory)
 */
-void* find(size_t& s){
+void* find(size_t* s){
 	struct node* cur=LIST->first;
 	size_t size=*s;
 	while(cur!=NULL){

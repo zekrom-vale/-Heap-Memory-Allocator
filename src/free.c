@@ -1,8 +1,11 @@
-#include "alloc.c"
-#include "linkedList.c"
+#include "alloc.h"
+#include "linkedList.h"
+#include <assert.h>
+#include <stdlib.h>
+#include <stddef.h>
 
 struct header* getHead(void* start){
-	return (struct header*)(start-HEADER_SIZE);
+	return (struct header*)(start - HEADER_SIZE);
 }
 
 int Mem_Free(void* ptr){

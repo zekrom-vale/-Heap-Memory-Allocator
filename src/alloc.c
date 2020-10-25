@@ -1,6 +1,9 @@
 
 #include "linkedList.c"
 #include "init.c"
+#include <stdio.h>
+#include <stdlib.h>
+#include <stddef.h>
 #define MAGIC 0x144b36e8
 
 struct header{

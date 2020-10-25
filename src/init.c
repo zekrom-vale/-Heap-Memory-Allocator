@@ -1,3 +1,6 @@
+#include <sys/mman.h>
+#include <stdlib.h>
+#include <stddef.h>
 
 /**
 *requests a new chunk of memory
