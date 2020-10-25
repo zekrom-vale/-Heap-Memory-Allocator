@@ -1,5 +1,6 @@
 
 #include "linkedList.c"
+#include "init.c"
 #define MAGIC 0x144b36e8
 
 struct header{
@@ -10,9 +11,6 @@ struct header{
 const static size_t HEADER_SIZE=sizeof(struct header);
 
 //|h|h|h|h|x|x|x|x|x|x|x|
-struct header* getHead(void* start){
-	return (struct header*)(start-HEADER_SIZE);
-}
 
 void* getVoid(void* start){
 	return start+HEADER_SIZE;
@@ -30,4 +28,8 @@ void* Mem_Alloc(int size){
 	else{
 		//Allocate
 	}
+}
+
+void* extend(size_t size){
+	return Mem_Init((int)size);
 }

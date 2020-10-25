@@ -53,8 +53,8 @@ struct linkedList init(){
 	LIST={NULL, NULL, 0};
 }
 
-void add(void* start, size_t size){
-	struct node n=(struct node*)start;
+struct node* add(void* start, size_t size){
+	struct node* n=(struct node*)start;
 	n->end=getNodeEnd(start);
 	n->end->start=n;
 	if(LIST->first==NULL){
@@ -71,6 +71,7 @@ void add(void* start, size_t size){
 		last->next=n;
 	}
 	LIST->size++;
+	return n;
 }
 
 
