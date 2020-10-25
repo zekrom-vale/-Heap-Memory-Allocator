@@ -5,7 +5,7 @@
 *@param start the original node
 *@param size the offset
 */
-struct node* offset(struct node* start,size_t size){
+struct node* offset(struct node* start, size_t size){
 	assert(size > ATOMIC);
 	struct node* next = (struct node*)(((void*)start) + size + 1);
 	return next;
@@ -99,6 +99,7 @@ void remove(struct node* n){
 	LIST->size--;
 	//dealocate node
 }
+
 /**
 *shifts the given node the given size
 *@param start the node to shift
@@ -133,7 +134,6 @@ void shift(struct node* start, size_t size){
 *coalesces the linked list
 *@param start the node to coalesce arround
 */
-
 void coalesce(struct node* start){
 	struct node* next=offset(start, start->size);
 	struct node* prev=getPrevNode(start);
@@ -150,12 +150,41 @@ void coalesce(struct node* start){
 		prev->end->start=prev;
 	}
 }
+
 /**
 *Finds the next space avalbe
 *@param s the size to find, updated if remaning space is not attomic
 *@return a pointer to the allocated space, NULL if not found (Does not expand memory)
 */
 void* find(size_t* s){
+	switch(MODE){
+		case FIRSTFIT:
+			return findFirstFit(s);
+		case BESTFIT:
+			return findBestFit(s);
+		case WORSTFIT:
+			return findWorstFit(s);
+	}
+}
+
+void* process(size_t* s,struct node* start){
+	if(start->size < s){
+		//Failure space is too small
+		return NULL;
+	}
+	// If the remaning space is not attomic allocate more and update s
+	size_t min = *s + ATOMIC;
+	if(start->size < min){
+		*s = min;
+		remove(start);
+	}
+	//Otherwise just sift it
+	else shift(start,*s);
+	//Return the location of the space
+	return (void*)start;
+}
+
+void* findFirstFit(size_t* s){
 	struct node* cur=LIST->first;
 	size_t size=*s;
 	while(cur!=NULL){
@@ -166,18 +195,52 @@ void* find(size_t* s){
 				remove(cur);
 				return (void*)cur;
 			}
-			// If the remaning space is not attomic allocate more and update s
-			size_t min=size+ATOMIC;
-			if(cur->size<min){
-				*s=min;
-				remove(cur);
-			}
-			//Otherwise just sift it
-			else shift(cur, size);
-			//Return the location of the space
-			return (void*)cur;
+			return procss(s, cur);
 		}
 	}
 	//Failure
 	return NULL;
+}
+
+void* findWorstFit(size_t* s){
+	struct node* cur = LIST->first;
+	struct node* large = cur;
+	size_t size = *s;
+	while(cur != NULL){
+		//If the size is larger than requested
+		if(cur->size >= size){
+			//If a perfect match
+			if(cur->size == size){
+				remove(cur);
+				return (void*)cur;
+			}
+			//If cur is larger replace large
+			if(cur->size > large->size)large=cur;
+		}
+	}
+	return procss(s, large);
+}
+
+
+void* findBestFit(size_t* s){
+	struct node* cur = LIST->first;
+	struct node* small = cur;
+	size_t size = *s;
+	while(cur != NULL){
+		//If the size is larger than requested
+		if(cur->size >= size){
+			//If a perfect match
+			if(cur->size == size){
+				remove(cur);
+				return (void*)cur;
+			}
+			//If cur is larger replace large
+			if(
+				cur->size > size
+				&& 
+				cur->size < small->size
+			)small = cur;
+		}
+	}
+	return procss(s, small);
 }

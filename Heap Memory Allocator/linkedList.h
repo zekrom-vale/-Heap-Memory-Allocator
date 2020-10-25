@@ -32,6 +32,7 @@ struct linkedList{
 *The size of the end node
 */
 const size_t END = sizeof(struct nodeEnd);
+
 /**
 *The absolute minumum of the free space
 *It is posible to allocate if the size is the same as struct node, but that requres more logic
@@ -49,4 +50,7 @@ void remove(struct node* n);
 void shift(struct node* start,size_t size);
 void coalesce(struct node* start);
 void* find(size_t* s);
+void* findFirstFit(size_t* s);
+void* findWorstFit(size_t* s);
+void* findBestFit(size_t* s);
 #endif
