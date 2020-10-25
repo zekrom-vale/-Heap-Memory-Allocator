@@ -1,8 +1,4 @@
-#include "alloc.h"
-#include "linkedList.h"
-#include <assert.h>
-#include <stdlib.h>
-#include <stddef.h>
+#include "free.h"
 
 struct header* getHead(void* start){
 	return (struct header*)(start - HEADER_SIZE);

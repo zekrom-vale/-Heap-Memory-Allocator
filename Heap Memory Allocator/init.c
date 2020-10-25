@@ -1,7 +1,4 @@
-#include <sys/mman.h>
-#include <stdlib.h>
-#include <stddef.h>
-#include <unistd.h>
+#include "init.h"
 
 /**
 *requests a new chunk of memory
