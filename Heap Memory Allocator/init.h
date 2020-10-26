@@ -6,6 +6,7 @@
 #include <sys/mman.h>
 #include "mem.h"
 #include "linkedList.h"
+#include "alloc.h"
 
 //Fix MAP_ANONYMOUS not defined
 #ifndef MAP_ANONYMOUS
