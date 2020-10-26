@@ -14,8 +14,15 @@ mem: init.c free.c linkedList.c alloc.c dump.c main.c mem.c \
 		dump.c main.c mem.c -o mem$(objsuf) -Wall -Werror
 	gcc -shared -o libmem$(shasuf) mem$(objsuf)
 
-main: mem
+setPath:
+	export OLD_LD_LIBRARY_PATH=$$LD_LIBRARY_PATH
+	export LD_LIBRARY_PATH=.:$$LD_LIBRARY_PATH
+
+restorePath:
+	export LD_LIBRARY_PATH=$$OLD_LD_LIBRARY_PATH
+
+main: mem setPath
 	gcc -L. -o main$(objsuf) main.c -Wall -Werror -lmem
 
-clean:
+clean: restorePath
 	rm mem$(objsuf)
