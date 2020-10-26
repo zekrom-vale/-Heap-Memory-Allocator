@@ -3,6 +3,7 @@
 
 #include "alloc.h"
 #include "linkedList.h"
+#include "util.h"
 #include <assert.h>
 #include <stdlib.h>
 

@@ -7,7 +7,7 @@
 */
 struct node* offset(struct node* start, size_t size){
 	assert(size > ATOMIC);
-	struct node* next = (struct node*)(((void*)start) + size + 1);
+	struct node* next = (struct node*)ptrAdd(start, size + 1);
 	return next;
 }
 
@@ -16,7 +16,7 @@ struct node* offset(struct node* start, size_t size){
 *@param start the node to get the end of
 */
 struct nodeEnd* getNodeEnd(struct node* start){
-	return (struct nodeEnd*)((void*)start+start->size-END);
+	return (struct nodeEnd*)ptrAdd(start, start->size-END);
 	//|x|x|x|x|x|x|x|x|x| | | | | | | | | | | | |e|e|e|e| |
 	// 0                 1                   2
 	// 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5
@@ -35,7 +35,7 @@ bool validate(struct node* start, struct nodeEnd* end){
 
 struct node* getPrevNode(struct node* start){
 	//|e|e|e|e|x|x|x|x|x|
-	struct nodeEnd* end=(struct nodeEnd*)((void*)start-END);
+	struct nodeEnd* end=(struct nodeEnd*)ptrSub(start, END);
 	if(!validate(end->start, end))return NULL;
 	return end->start;
 }
@@ -182,7 +182,7 @@ void* process(size_t* s,struct node* start){
 	//Otherwise just sift it
 	else shift(start,*s);
 	//Return the location of the space
-	return (void*)start;
+	return start;
 }
 
 void* findFirstFit(size_t* s){
@@ -194,7 +194,7 @@ void* findFirstFit(size_t* s){
 			//If a perfect match
 			if(cur->size==size){
 				remove(cur);
-				return (void*)cur;
+				return cur;
 			}
 			return procss(s, cur);
 		}
@@ -213,7 +213,7 @@ void* findWorstFit(size_t* s){
 			//If a perfect match
 			if(cur->size == size){
 				remove(cur);
-				return (void*)cur;
+				return cur;
 			}
 			//If cur is larger replace large
 			if(cur->size > large->size)large=cur;
@@ -233,7 +233,7 @@ void* findBestFit(size_t* s){
 			//If a perfect match
 			if(cur->size == size){
 				remove(cur);
-				return (void*)cur;
+				return cur;
 			}
 			//If cur is larger replace large
 			if(

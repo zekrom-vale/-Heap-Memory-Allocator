@@ -6,7 +6,7 @@
 *@param start the location of the heaer
 */
 void* getVoid(void* start){
-	return start+HEADER_SIZE;
+	return ptrAdd(start, HEADER_SIZE);
 }
 
 void* Mem_Alloc(int size){
@@ -42,7 +42,7 @@ struct header* extend(size_t size){
 	if(s!=ATOMIC){
 		//Get the location for the free space
 		add(
-			(void*)offset((struct node*)allocated, size),
+			offset((struct node*)allocated, size),
 			size - s
 		);
 	}

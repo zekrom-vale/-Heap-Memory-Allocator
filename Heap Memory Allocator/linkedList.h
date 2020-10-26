@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include "init.h"
 #include "mem.h"
+#include "util.h"
 
 
 struct node{

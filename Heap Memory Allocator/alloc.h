@@ -2,6 +2,7 @@
 #define __alloc_h__
 
 #include "linkedList.h"
+#include "util.h"
 
 #include <stdlib.h>
 #include <stddef.h>
