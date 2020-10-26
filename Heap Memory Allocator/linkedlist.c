@@ -43,7 +43,8 @@ struct node* getPrevNode(struct node* start){
 /**
 *Creates the linkedList
 */
-struct linkedList* init(){
+struct linkedList* init(void* ptr){
+	LIST = (struct linkedList*)ptr;
 	LIST->first=NULL;
 	LIST->last=NULL;
 	LIST->size=0;

@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <sys/mman.h>
 #include "mem.h"
+#include "linkedList.h"
 
 //Fix MAP_ANONYMOUS not defined
 #ifndef MAP_ANONYMOUS

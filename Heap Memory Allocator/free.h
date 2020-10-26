@@ -6,4 +6,7 @@
 #include <assert.h>
 #include <stdlib.h>
 
+int Mem_Free(void* ptr);
+struct header* getHead(void* start);
+
 #endif

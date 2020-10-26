@@ -17,5 +17,10 @@ void* request(size_t size){
 }
 
 void* Mem_Init(int sizeOfRegion){
-	return request((size_t)sizeOfRegion);
+	void* start=request((size_t)sizeOfRegion + LIST_HEAD);
+	init(start);
+	void* it = start + LIST_HEAD;
+	add(it, (size_t)sizeOfRegion);
+	return it;
+	// |h|H|h|h|h| | | | | | |
 }
