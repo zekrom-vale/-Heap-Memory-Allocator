@@ -1,0 +1,19 @@
+//<header>.h
+#ifndef __<header>_h__
+#define __<header>_h__
+
+<Includes>
+
+<Global variables>
+
+<Structs>
+
+<Functions>
+
+#endif
+
+//<cfile>.c
+
+#include "<header>.h"
+
+<Code>
