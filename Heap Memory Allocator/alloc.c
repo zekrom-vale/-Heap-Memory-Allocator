@@ -1,12 +1,11 @@
 #include "alloc.h"
 
-//|h|h|h|h|x|x|x|x|x|x|x|
 /**
 *Returns the starting location of the space
 *@param start the location of the heaer
 */
-void* getVoid(void* start){
-	return ptrAdd(start, HEADER_SIZE);
+void* getVoid(struct header* start){
+	return start + 1;
 }
 
 void* Mem_Alloc(int size){
