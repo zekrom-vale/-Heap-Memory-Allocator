@@ -10,7 +10,7 @@ void* getVoid(void* start){
 }
 
 void* Mem_Alloc(int size){
-	size_t s=(size_t)size+HEADER_SIZE;
+	size_t s=size+HEADER_SIZE;
 	void* start=find(s);
 	if(start!=NULL){
 		struct header* head=(struct header*)start;

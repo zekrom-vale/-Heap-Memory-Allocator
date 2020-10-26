@@ -24,7 +24,7 @@ void* request(size_t size){
 void* Mem_Init(int sizeOfRegion){
 	//Pass 0 to default to CHUNK
 	size_t size = sizeOfRegion == 0 ?
-		CHUNK : (size_t)sizeOfRegion;
+		CHUNK : sizeOfRegion;
 	void* start=extend( size + LIST_HEAD);
 	init(start);
 	void* it = start + LIST_HEAD;
