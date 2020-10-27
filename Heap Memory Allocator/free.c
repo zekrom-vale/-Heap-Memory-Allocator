@@ -6,7 +6,7 @@ struct header* getHead(void* start){
 
 int Mem_Free(void* ptr){
 	struct header* head=getHead(ptr);
-	assert(head->magic==MAGIC);
+	assert(head->magic==MAGIC && "Magic Missmatch");
 	coalesce(add(head, head->size));
 	return 0;
 }

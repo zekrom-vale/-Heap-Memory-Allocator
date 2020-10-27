@@ -1,4 +1,5 @@
 #include "init.h"
+#include "linkedList.h"
 
 /**
 *requests a new chunk of memory
@@ -25,9 +26,9 @@ void* Mem_Init(int sizeOfRegion){
 	//Pass 0 to default to CHUNK
 	size_t size = sizeOfRegion == 0 ?
 		CHUNK : sizeOfRegion;
-	void* start=extend( size + LIST_HEAD);
+	struct header* start=extend(size + LIST_HEAD);
 	init(start);
-	void* it = start + LIST_HEAD;
+	void* it = start + 1;
 	add(it, size);
 	return it;
 	// |h|H|h|h|h| | | | | | |
