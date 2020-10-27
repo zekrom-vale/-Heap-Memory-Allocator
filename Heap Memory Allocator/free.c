@@ -6,7 +6,8 @@ struct header* free_getHead(void* start){
 
 int Mem_Free(void* ptr){
 	struct header* head=free_getHead(ptr);
-	assert(head->magic==MAGIC && "Magic Missmatch");
+
+	if(head->magic != MAGIC)exit(E_PADDING_OVERWRITTEN);
 	linked_list_coalesce(linked_list_add(head, head->size));
 	return 0;
 }

@@ -28,15 +28,20 @@ struct nodeEnd* linked_list_getNodeEnd(struct node* start){
 *@param start the node to verify
 *@param end the corisponding end node to validate
 */
-bool linked_list_validate(struct node* start, struct nodeEnd* end){
-	if(start==NULL||end==NULL)return false;
-	return start->end==end;
+void linked_list_validate(struct node* start, struct nodeEnd* end){
+	if(
+		start==NULL
+		||
+		end==NULL
+		||
+		start->end != end
+	)exit(E_CORRUPT_FREESPACE);
 }
 
 struct node* linked_list_getPrevNode(struct node* start){
 	//|e|e|e|e|x|x|x|x|x|
 	struct nodeEnd* end=(struct nodeEnd*)util_ptrSub(start, END);
-	if(!linked_list_validate(end->start, end))return NULL;
+	linked_list_validate(end->start, end);
 	return end->start;
 }
 
@@ -91,7 +96,7 @@ void linked_list_remove(struct node* n){
 	assert(n!=NULL);
 	//Clear the end noe
 	struct nodeEnd* end=n->end;
-	assert(linked_list_validate(n, end));
+	linked_list_validate(n, end);
 	end->start=NULL;
 	//Attach the next and perv to eachother if they exist
 	//If not update the LIST

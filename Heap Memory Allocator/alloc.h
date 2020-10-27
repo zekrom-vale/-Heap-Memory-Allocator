@@ -3,7 +3,7 @@
 
 #include "linkedList.h"
 #include "util.h"
-
+#include "mem.h"
 #include <stdlib.h>
 #include <stddef.h>
 

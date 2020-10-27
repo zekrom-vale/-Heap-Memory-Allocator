@@ -9,6 +9,7 @@ void* alloc_getVoid(struct header* start){
 }
 
 void* Mem_Alloc(int size){
+	if(size <= 0)exit(E_BAD_ARGS);
 	size_t s=size+HEADER_SIZE;
 	void* start=linked_list_find(s);
 	if(start!=NULL){
@@ -34,6 +35,9 @@ struct header* alloc_extend(size_t size){
 	else s = alloc_roundUp(0x4 * size, CHUNK);
 	//Request
 	void* allocated = init_request(s);
+
+	if(allocated == NULL)exit(E_NO_SPACE);
+
 	//If size is smaller than ATTOMIC use that instead
 	if(size < ATOMIC)size = ATOMIC;
 	//If the allocated space is the same as the ATOMIC size

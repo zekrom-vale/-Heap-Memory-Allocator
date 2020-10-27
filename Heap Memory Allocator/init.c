@@ -22,6 +22,10 @@ void* init_request(size_t size){
 }
 
 void* Mem_Init(int sizeOfRegion){
+	if(sizeOfRegion<=0){
+		m_error = E_BAD_ARGS;
+		return NULL;
+	}
 	//Pass 0 to default to CHUNK
 	size_t size = sizeOfRegion == 0 ?
 		CHUNK : sizeOfRegion;
