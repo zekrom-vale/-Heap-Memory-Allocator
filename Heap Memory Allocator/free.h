@@ -8,6 +8,6 @@
 #include <stdlib.h>
 
 int Mem_Free(void* ptr);
-struct header* getHead(void* start);
+struct header* free_getHead(void* start);
 
 #endif

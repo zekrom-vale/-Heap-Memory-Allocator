@@ -16,7 +16,7 @@ struct header{
 };
 
 const size_t HEADER_SIZE = sizeof(struct header);
-void* getVoid(void* start);
+void* alloc_getVoid(void* start);
 void* Mem_Alloc(int size);
-void* extend(size_t size);
+void* alloc_extend(size_t size);
 #endif
