@@ -49,9 +49,19 @@
     <ClCompile Include="..\init.c" />
     <ClCompile Include="..\linkedlist.c" />
     <ClCompile Include="..\main.c" />
+    <ClCompile Include="..\util.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\alloc.h" />
+    <ClInclude Include="..\dump.h" />
+    <ClInclude Include="..\free.h" />
+    <ClInclude Include="..\init.h" />
     <ClInclude Include="..\linkedList.h" />
+    <ClInclude Include="..\mem.h" />
+    <ClInclude Include="..\util.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Makefile" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{2c2407f5-cab0-4d24-b615-57ecbe95be7b}</ProjectGuid>

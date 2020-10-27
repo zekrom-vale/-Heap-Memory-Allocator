@@ -7,8 +7,8 @@
 #include <stdlib.h>
 #include <stddef.h>
 
-#define MAGIC 0x144b36e8;
-#define CHUNK 0x4000
+extern const int MAGIC = 0x144b36e8;
+extern const int CHUNK = 0x4000;
 
 struct header{
 	int magic;
