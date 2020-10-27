@@ -42,19 +42,19 @@ const size_t END = sizeof(struct nodeEnd);
 */
 const size_t ATOMIC = sizeof(struct node) + END;
 
-struct node* offset(struct node* start,size_t size);
-struct nodeEnd* getNodeEnd(struct node* start);
-bool validate(struct node* start,struct nodeEnd* end);
-struct node* getPrevNode(struct node* start);
-struct linkedList* init();
-struct node* add(void* start,size_t size);
-void remove(struct node* n);
-void shift(struct node* start,size_t size);
-void coalesce(struct node* start);
-void* find(size_t* s);
-void* findFirstFit(size_t* s);
-void* findWorstFit(size_t* s);
-void* findBestFit(size_t* s);
-void sort();
-void print();
+struct node* linked_list_offset(struct node* start,size_t size);
+struct nodeEnd* linked_list_getNodeEnd(struct node* start);
+bool linked_list_validate(struct node* start,struct nodeEnd* end);
+struct node* linked_list_getPrevNode(struct node* start);
+struct linkedList* linked_list_init();
+struct node* linked_list_add(void* start,size_t size);
+void linked_list_remove(struct node* n);
+void linked_list_shift(struct node* start,size_t size);
+void linked_list_coalesce(struct node* start);
+void* linked_list_find(size_t* s);
+void* linked_list_findFirstFit(size_t* s);
+void* linked_list_findWorstFit(size_t* s);
+void* linked_list_linked_list_findBestFit(size_t* s);
+void linked_list_sort();
+void linked_list_print();
 #endif

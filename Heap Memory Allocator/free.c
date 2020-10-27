@@ -1,12 +1,12 @@
 #include "free.h"
 
-struct header* getHead(void* start){
+struct header* free_getHead(void* start){
 	return (struct header*)start - 1;
 }
 
 int Mem_Free(void* ptr){
-	struct header* head=getHead(ptr);
+	struct header* head=free_getHead(ptr);
 	assert(head->magic==MAGIC && "Magic Missmatch");
-	coalesce(add(head, head->size));
+	linked_list_coalesce(linked_list_add(head, head->size));
 	return 0;
 }

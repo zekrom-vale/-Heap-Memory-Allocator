@@ -5,9 +5,9 @@
 *@param start the original node
 *@param size the offset
 */
-struct node* offset(struct node* start, size_t size){
+struct node* linked_list_offset(struct node* start, size_t size){
 	assert(size > ATOMIC);
-	struct node* next = (struct node*)ptrAdd(start, size + 1);
+	struct node* next = (struct node*)util_ptrAdd(start, size + 1);
 	return next;
 }
 
@@ -15,8 +15,8 @@ struct node* offset(struct node* start, size_t size){
 *returns the location of the end of the node
 *@param start the node to get the end of
 */
-struct nodeEnd* getNodeEnd(struct node* start){
-	return (struct nodeEnd*)ptrAdd(start, start->size-END);
+struct nodeEnd* linked_list_getNodeEnd(struct node* start){
+	return (struct nodeEnd*)util_ptrAdd(start, start->size-END);
 	//|x|x|x|x|x|x|x|x|x| | | | | | | | | | | | |e|e|e|e| |
 	// 0                 1                   2
 	// 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5
@@ -28,22 +28,22 @@ struct nodeEnd* getNodeEnd(struct node* start){
 *@param start the node to verify
 *@param end the corisponding end node to validate
 */
-bool validate(struct node* start, struct nodeEnd* end){
+bool linked_list_validate(struct node* start, struct nodeEnd* end){
 	if(start==NULL||end==NULL)return false;
 	return start->end==end;
 }
 
-struct node* getPrevNode(struct node* start){
+struct node* linked_list_getPrevNode(struct node* start){
 	//|e|e|e|e|x|x|x|x|x|
-	struct nodeEnd* end=(struct nodeEnd*)ptrSub(start, END);
-	if(!validate(end->start, end))return NULL;
+	struct nodeEnd* end=(struct nodeEnd*)util_ptrSub(start, END);
+	if(!linked_list_validate(end->start, end))return NULL;
 	return end->start;
 }
 
 /**
 *Creates the linkedList
 */
-struct linkedList* init(void* ptr){
+struct linkedList* linked_list_init(void* ptr){
 	LIST = (struct linkedList*)ptr;
 	LIST->first=NULL;
 	LIST->last=NULL;
@@ -51,7 +51,7 @@ struct linkedList* init(void* ptr){
 	return LIST;
 }
 
-void* readd(struct node* n){
+void* linked_list_readd(struct node* n){
 	if(LIST->first == NULL){
 		n->next == NULL;
 		n->prev == NULL;
@@ -74,11 +74,11 @@ void* readd(struct node* n){
 *@param start the space to add
 *@param size the size of the node
 */
-struct node* add(void* start, size_t size){
+struct node* linked_list_add(void* start, size_t size){
 	struct node* n=(struct node*)start;
-	n->end=getNodeEnd(start);
+	n->end=linked_list_getNodeEnd(start);
 	n->end->start=n;
-	readd(n);
+	linked_list_readd(n);
 	return n;
 }
 
@@ -86,12 +86,12 @@ struct node* add(void* start, size_t size){
 *removes the given node
 *@param n the node to remove
 */
-void remove(struct node* n){
+void linked_list_remove(struct node* n){
 	assert(LIST->size!=0);
 	assert(n!=NULL);
 	//Clear the end noe
 	struct nodeEnd* end=n->end;
-	assert(validate(n, end));
+	assert(linked_list_validate(n, end));
 	end->start=NULL;
 	//Attach the next and perv to eachother if they exist
 	//If not update the LIST
@@ -110,8 +110,8 @@ void remove(struct node* n){
 *@param start the node to shift
 *@param size the size to offest
 */
-void shift(struct node* start, size_t size){
-	struct node* newstart = offset(start,size);
+void linked_list_shift(struct node* start, size_t size){
+	struct node* newstart = linked_list_offset(start,size);
 	struct node* next = start->next;
 	struct node* prev=start->prev;
 	//Update end node
@@ -139,18 +139,18 @@ void shift(struct node* start, size_t size){
 *coalesces the linked list
 *@param start the node to coalesce arround
 */
-void coalesce(struct node* start){
-	struct node* next=offset(start, start->size);
-	struct node* prev=getPrevNode(start);
+void linked_list_coalesce(struct node* start){
+	struct node* next=linked_list_offset(start, start->size);
+	struct node* prev=linked_list_getPrevNode(start);
 	if(next!=NULL){
 		start->size+=next->size;
-		remove(next);
+		linked_list_remove(next);
 		start->end=next->end;
 		start->end->start=start;
 	}
 	if(prev!=NULL){
 		prev->size+=start->size;
-		remove(start);
+		linked_list_remove(start);
 		prev->end=next->end;
 		prev->end->start=prev;
 	}
@@ -161,18 +161,18 @@ void coalesce(struct node* start){
 *@param s the size to find, updated if remaning space is not attomic
 *@return a pointer to the allocated space, NULL if not found (Does not expand memory)
 */
-void* find(size_t* s){
+void* linked_list_find(size_t* s){
 	switch(MODE){
 		case FIRSTFIT:
-			return findFirstFit(s);
+			return linked_list_findFirstFit(s);
 		case BESTFIT:
-			return findBestFit(s);
+			return linked_list_linked_list_findBestFit(s);
 		case WORSTFIT:
-			return findWorstFit(s);
+			return linked_list_findWorstFit(s);
 	}
 }
 
-void* process(size_t* s,struct node* start){
+void* linked_list_process(size_t* s,struct node* start){
 	if(start->size < s){
 		//Failure space is too small
 		return NULL;
@@ -181,15 +181,15 @@ void* process(size_t* s,struct node* start){
 	size_t min = *s + ATOMIC;
 	if(start->size < min){
 		*s = min;
-		remove(start);
+		linked_list_remove(start);
 	}
 	//Otherwise just sift it
-	else shift(start,*s);
+	else linked_list_shift(start,*s);
 	//Return the location of the space
 	return start;
 }
 
-void* findFirstFit(size_t* s){
+void* linked_list_findFirstFit(size_t* s){
 	struct node* cur=LIST->first;
 	size_t size=*s;
 	while(cur!=NULL){
@@ -197,7 +197,7 @@ void* findFirstFit(size_t* s){
 		if(cur->size>=size){
 			//If a perfect match
 			if(cur->size==size){
-				remove(cur);
+				linked_list_remove(cur);
 				return cur;
 			}
 			return procss(s, cur);
@@ -207,7 +207,7 @@ void* findFirstFit(size_t* s){
 	return NULL;
 }
 
-void* findWorstFit(size_t* s){
+void* linked_list_findWorstFit(size_t* s){
 	struct node* cur = LIST->first;
 	struct node* large = cur;
 	size_t size = *s;
@@ -216,7 +216,7 @@ void* findWorstFit(size_t* s){
 		if(cur->size >= size){
 			//If a perfect match
 			if(cur->size == size){
-				remove(cur);
+				linked_list_remove(cur);
 				return cur;
 			}
 			//If cur is larger replace large
@@ -227,7 +227,7 @@ void* findWorstFit(size_t* s){
 }
 
 
-void* findBestFit(size_t* s){
+void* linked_list_linked_list_findBestFit(size_t* s){
 	struct node* cur = LIST->first;
 	struct node* small = cur;
 	size_t size = *s;
@@ -236,7 +236,7 @@ void* findBestFit(size_t* s){
 		if(cur->size >= size){
 			//If a perfect match
 			if(cur->size == size){
-				remove(cur);
+				linked_list_remove(cur);
 				return cur;
 			}
 			//If cur is larger replace large
@@ -250,7 +250,7 @@ void* findBestFit(size_t* s){
 	return procss(s, small);
 }
 
-void swap(struct node* A, struct node* B){
+void linked_list_swap(struct node* A, struct node* B){
 	if(A == B)return;
 	struct node* Aprev = A->prev;
 	struct node* Anext = A->next;
@@ -267,7 +267,7 @@ void swap(struct node* A, struct node* B){
 	else LIST->first = A;
 }
 
-void addat(struct node* before, struct node* n){
+void linked_list_addAt(struct node* before, struct node* n){
 	assert(before != NULL);
 	struct node* after = before->next;
 	before->next = n;
@@ -282,29 +282,29 @@ void addat(struct node* before, struct node* n){
 	}
 }
 
-void sortInsert(struct node* cur, struct node* new){
-	if(cur == NULL)readd(new);
-	else if(cur > new)addat(cur, new);
+void linked_list_sortInsert(struct node* cur, struct node* new){
+	if(cur == NULL)linked_list_readd(new);
+	else if(cur > new)linked_list_addAt(cur, new);
 	else{
 		while(cur->next != NULL && cur->next < new)
 			cur = cur->next;
-		addat(cur, new);
+		linked_list_addAt(cur, new);
 	}
 }
 
-void sort(){
+void linked_list_sort(){
 	struct node* sort = NULL;
 	struct node* cur = LIST->first;
 	while(cur!=NULL){
 		struct node* next = cur->next;
-		remove(cur);
-		sortInsert(sort, cur);
+		linked_list_remove(cur);
+		linked_list_sortInsert(sort, cur);
 		cur = next;
 	}
 }
 
 #include <stdio.h>
-void print(){
+void linked_list_print(){
 	struct node* cur = LIST->first;
 	while(cur!=NULL){
 		printf("%p\n",cur);

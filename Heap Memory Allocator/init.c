@@ -5,7 +5,7 @@
 *requests a new chunk of memory
 *@param size the size of the block
 */
-void* request(size_t size){
+void* init_request(size_t size){
 	void* v=mmap(
 		NULL,
 		size,
@@ -26,10 +26,10 @@ void* Mem_Init(int sizeOfRegion){
 	//Pass 0 to default to CHUNK
 	size_t size = sizeOfRegion == 0 ?
 		CHUNK : sizeOfRegion;
-	struct header* start=extend(size + LIST_HEAD);
-	init(start);
+	struct header* start=alloc_extend(size + LIST_HEAD);
+	linked_list_init(start);
 	void* it = start + 1;
-	add(it, size);
+	linked_list_add(it, size);
 	return it;
 	// |h|H|h|h|h| | | | | | |
 }
