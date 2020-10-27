@@ -51,6 +51,23 @@ struct linkedList* init(void* ptr){
 	return LIST;
 }
 
+void* readd(struct node* n){
+	if(LIST->first == NULL){
+		n->next == NULL;
+		n->prev == NULL;
+		LIST->first = n;
+		LIST->last = n;
+	}
+	else{
+		struct node* last = LIST->last;
+		LIST->last = n;
+		n->next = NULL;
+		n->prev = last;
+		last->next = n;
+	}
+	LIST->size++;
+}
+
 /**
 *adds the given location with the given size
 *this DOES NOT coalesce
@@ -61,20 +78,7 @@ struct node* add(void* start, size_t size){
 	struct node* n=(struct node*)start;
 	n->end=getNodeEnd(start);
 	n->end->start=n;
-	if(LIST->first==NULL){
-		n->next==NULL;
-		n->prev==NULL;
-		LIST->first=n;
-		LIST->last=n;
-	}
-	else{
-		struct node* last=LIST->last;
-		LIST->last=n;
-		n->next=NULL;
-		n->prev=last;
-		last->next=n;
-	}
-	LIST->size++;
+	readd(n);
 	return n;
 }
 
@@ -244,4 +248,66 @@ void* findBestFit(size_t* s){
 		}
 	}
 	return procss(s, small);
+}
+
+void swap(struct node* A, struct node* B){
+	if(A == B)return;
+	struct node* Aprev = A->prev;
+	struct node* Anext = A->next;
+	if(Anext != NULL)Anext->prev = B;
+	else LIST->last = B;
+	if(Aprev != NULL)Aprev->next = B;
+	else LIST->first = B;
+
+	struct node* Bprev = B->prev;
+	struct node* Bnext = B->next;
+	if(Bnext != NULL)Bnext->prev = A;
+	else LIST->last = A;
+	if(Bprev != NULL)Bprev->next = A;
+	else LIST->first = A;
+}
+
+void addat(struct node* before, struct node* n){
+	assert(before != NULL);
+	struct node* after = before->next;
+	before->next = n;
+	n->prev = before;
+	if(after!=NULL){
+		after->prev = n;
+		n->next = after;
+	}
+	else{
+		n->next = NULL;
+		LIST->last = n;
+	}
+}
+
+void sortInsert(struct node* cur, struct node* new){
+	if(cur == NULL)readd(new);
+	else if(cur > new)addat(cur, new);
+	else{
+		while(cur->next != NULL && cur->next < new)
+			cur = cur->next;
+		addat(cur, new);
+	}
+}
+
+void sort(){
+	struct node* sort = NULL;
+	struct node* cur = LIST->first;
+	while(cur!=NULL){
+		struct node* next = cur->next;
+		remove(cur);
+		sortInsert(sort, cur);
+		cur = next;
+	}
+}
+
+#include <stdio.h>
+void print(){
+	struct node* cur = LIST->first;
+	while(cur!=NULL){
+		printf("%p\n",cur);
+		cur = cur->next;
+	}
 }

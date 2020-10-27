@@ -55,4 +55,6 @@ void* find(size_t* s);
 void* findFirstFit(size_t* s);
 void* findWorstFit(size_t* s);
 void* findBestFit(size_t* s);
+void sort();
+void print();
 #endif
