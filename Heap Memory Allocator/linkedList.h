@@ -25,6 +25,7 @@ struct linkedList{
 	struct node* first;
 	struct node* last;
 	int size;
+	int MODE : FIRSTFIT;
 };
 
 extern struct linkedList* LIST;

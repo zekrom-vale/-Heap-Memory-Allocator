@@ -162,7 +162,7 @@ void linked_list_coalesce(struct node* start){
 *@return a pointer to the allocated space, NULL if not found (Does not expand memory)
 */
 void* linked_list_find(size_t* s){
-	switch(MODE){
+	switch(LIST->MODE){
 		case FIRSTFIT:
 			return linked_list_findFirstFit(s);
 		case BESTFIT:

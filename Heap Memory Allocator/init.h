@@ -14,8 +14,6 @@
 #define MAP_ANON        MAP_ANONYMOUS
 #endif
 
-int MODE = FIRSTFIT;
-
 void* init_request(size_t size);
 int Mem_Free(void* ptr);
 

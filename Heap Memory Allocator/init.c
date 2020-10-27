@@ -1,5 +1,4 @@
 #include "init.h"
-#include "linkedList.h"
 
 /**
 *requests a new chunk of memory
