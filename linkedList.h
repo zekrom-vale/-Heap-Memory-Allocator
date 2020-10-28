@@ -45,7 +45,7 @@ void linked_list_coalesce(struct node* start);
 void* linked_list_find(size_t* s);
 void* linked_list_findFirstFit(size_t* s);
 void* linked_list_findWorstFit(size_t* s);
-void* linked_list_linked_list_findBestFit(size_t* s);
+void* linked_list_findBestFit(size_t* s);
 void linked_list_sort();
 void linked_list_print();
 #endif

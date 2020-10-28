@@ -188,7 +188,7 @@ void* linked_list_find(size_t* s){
 		case FIRSTFIT:
 			return linked_list_findFirstFit(s);
 		case BESTFIT:
-			return linked_list_linked_list_findBestFit(s);
+			return linked_list_findBestFit(s);
 		case WORSTFIT:
 			return linked_list_findWorstFit(s);
 	}
@@ -250,7 +250,7 @@ void* linked_list_findWorstFit(size_t* s){
 }
 
 
-void* linked_list_linked_list_findBestFit(size_t* s){
+void* linked_list_findBestFit(size_t* s){
 	struct node* cur = LIST->first;
 	struct node* small = cur;
 	size_t size = *s;

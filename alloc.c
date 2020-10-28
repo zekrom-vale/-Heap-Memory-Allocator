@@ -41,22 +41,24 @@ struct header* alloc_extend(size_t size){
 	void* allocated = init_request(s);
 
 	if(allocated == NULL)exit(E_NO_SPACE);
+    if(LIST!=NULL){
+		//If size is smaller than ATTOMIC use that instead
+		if(size < ATOMIC)size = ATOMIC;
+		//If the allocated space is the same as the ATOMIC size
+		//This should never happen with the given settings
+		if(s!=ATOMIC){
+			//Get the location for the free space
+			linked_list_add(
+				linked_list_offset((struct node*)allocated, size),
+				size - s
+			);
+		}
+		//Init header
+		struct header* head = (struct header*)allocated;
 
-	//If size is smaller than ATTOMIC use that instead
-	if(size < ATOMIC)size = ATOMIC;
-	//If the allocated space is the same as the ATOMIC size
-	//This should never happen with the given settings
-	if(s!=ATOMIC){
-		//Get the location for the free space
-		linked_list_add(
-			linked_list_offset((struct node*)allocated, size),
-			size - s
-		);
+		head->magic = MAGIC;
+		head->size = size;
+		return head;
 	}
-	//Init header
-	struct header* head = (struct header*)allocated;
-
-	head->magic = MAGIC;
-	head->size = size;
-	return head;
+    return allocated;
 }
