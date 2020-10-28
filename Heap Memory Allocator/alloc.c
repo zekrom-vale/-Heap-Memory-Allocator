@@ -1,5 +1,9 @@
 #include "alloc.h"
 
+const int MAGIC = 0x144b36e8;
+const int CHUNK = 0x4000;
+const size_t HEADER_SIZE = sizeof(struct header);
+
 /**
 *Returns the starting location of the space
 *@param start the location of the heaer

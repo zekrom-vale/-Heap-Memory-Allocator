@@ -29,19 +29,9 @@ struct linkedList{
 };
 
 extern struct linkedList* LIST;
-
-const size_t LIST_HEAD = sizeof(struct linkedList);
-
-/**
-*The size of the end node
-*/
-const size_t END = sizeof(struct nodeEnd);
-
-/**
-*The absolute minumum of the free space
-*It is posible to allocate if the size is the same as struct node, but that requres more logic
-*/
-const size_t ATOMIC = sizeof(struct node) + END;
+extern const size_t LIST_HEAD;
+extern const size_t END;
+extern const size_t ATOMIC;
 
 struct node* linked_list_offset(struct node* start,size_t size);
 struct nodeEnd* linked_list_getNodeEnd(struct node* start);

@@ -49,6 +49,7 @@
     <ClCompile Include="..\init.c" />
     <ClCompile Include="..\linkedlist.c" />
     <ClCompile Include="..\main.c" />
+    <ClCompile Include="..\mem.c" />
     <ClCompile Include="..\util.c" />
   </ItemGroup>
   <ItemGroup>

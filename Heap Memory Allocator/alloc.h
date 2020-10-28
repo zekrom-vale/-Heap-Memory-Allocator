@@ -7,15 +7,15 @@
 #include <stdlib.h>
 #include <stddef.h>
 
-const int MAGIC = 0x144b36e8;
-const int CHUNK = 0x4000;
+extern const int MAGIC;
+extern const int CHUNK;
+extern const size_t HEADER_SIZE;
 
 struct header{
 	int magic;
 	size_t size;
 };
 
-const size_t HEADER_SIZE = sizeof(struct header);
 void* alloc_getVoid(struct header* start);
 void* Mem_Alloc(int size);
 struct header* alloc_extend(size_t size);

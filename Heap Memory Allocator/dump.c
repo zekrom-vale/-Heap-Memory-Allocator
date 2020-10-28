@@ -49,6 +49,7 @@ uintptr_t dump_loop(
 }
 
 void dump_map(){
+	if(LIST==NULL)return;
 	linked_list_sort();
 	struct node* cur = LIST->first;
 	//List is the start of the 
