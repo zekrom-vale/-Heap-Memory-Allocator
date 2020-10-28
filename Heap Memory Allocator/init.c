@@ -15,7 +15,7 @@ void* init_request(size_t size){
 		sysconf(_SC_PAGE_SIZE)
 	);
 	if(v == MAP_FAILED){
-		perror("mmap");
+		//perror("mmap");
 		return NULL;
 	}
     return v;

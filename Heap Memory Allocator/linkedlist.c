@@ -75,8 +75,8 @@ struct linkedList* linked_list_init(void* ptr){
 
 void linked_list_readd(struct node* n){
 	if(LIST->first == NULL){
-		n->next == NULL;
-		n->prev == NULL;
+		n->next = NULL;
+		n->prev = NULL;
 		LIST->first = n;
 		LIST->last = n;
 	}

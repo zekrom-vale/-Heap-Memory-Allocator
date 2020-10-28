@@ -15,7 +15,7 @@ void* alloc_getVoid(struct header* start){
 void* Mem_Alloc(int size){
 	if(size <= 0)exit(E_BAD_ARGS);
 	size_t s=size+HEADER_SIZE;
-	void* start=linked_list_find(s);
+	void* start=linked_list_find(&s);
 	if(start!=NULL){
 		struct header* head=(struct header*)start;
 		head->magic=MAGIC;
