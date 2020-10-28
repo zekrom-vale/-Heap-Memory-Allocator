@@ -122,6 +122,8 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <Verbose>true</Verbose>
+      <CLanguageStandard>gnu99</CLanguageStandard>
+      <CppLanguageStandard>gnu++98</CppLanguageStandard>
     </ClCompile>
     <Link>
       <ShowProgress>true</ShowProgress>
@@ -131,7 +133,17 @@
     </Link>
     <Link>
       <Trace>true</Trace>
+      <WholeArchiveBegin>false</WholeArchiveBegin>
     </Link>
+    <RemotePreBuildEvent>
+      <Command>ls</Command>
+    </RemotePreBuildEvent>
+    <RemotePreLinkEvent>
+      <Command>ls</Command>
+    </RemotePreLinkEvent>
+    <RemotePostBuildEvent>
+      <Command>ls</Command>
+    </RemotePostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

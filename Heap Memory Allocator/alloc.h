@@ -1,5 +1,5 @@
-#ifndef __alloc_h__
-#define __alloc_h__
+#ifndef ALLOC_H
+#define ALLOC_H
 
 #include "linkedList.h"
 #include "util.h"

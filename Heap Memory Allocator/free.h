@@ -1,5 +1,5 @@
-#ifndef __free_h__
-#define __free_h__
+#ifndef FREE_H
+#define FREE_H
 
 #include "alloc.h"
 #include "linkedList.h"

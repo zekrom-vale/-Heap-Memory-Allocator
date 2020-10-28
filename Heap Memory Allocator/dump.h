@@ -1,5 +1,5 @@
-#ifndef __DUMP_H__
-#define __DUMP_H__
+#ifndef DUMP_H
+#define DUMP_H
 
 #include <stdio.h>
 #include "linkedList.h"

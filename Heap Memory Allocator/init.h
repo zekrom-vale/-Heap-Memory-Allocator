@@ -1,5 +1,5 @@
-#ifndef __init_h__
-#define __init_h__
+#ifndef INIT_H
+#define INIT_H
 
 #include <stdlib.h>
 #include <unistd.h>

@@ -1,5 +1,5 @@
-#ifndef __linkedList_h__
-#define __linkedList_h__
+#ifndef LINKED_LIST_H
+#define LINKED_LIST_H
 
 #include <assert.h>
 #include <stdbool.h>

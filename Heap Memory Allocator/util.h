@@ -1,5 +1,5 @@
-#ifndef __util_h__
-#define __util_h__
+#ifndef UTIL_H
+#define UTIL_H
 #include <stddef.h>
 
 void* util_ptrAdd(void* ptr, size_t shift);
