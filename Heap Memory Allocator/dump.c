@@ -17,7 +17,7 @@ uintptr_t dump_loop(
 	int sect = now % 0x100;
 	if(mod!=0x10){
 		for(int j = 0x10-*mod; j >= 0; j--){
-			strncat(str, &ps, STR_SIZE);
+			strncat(str, ps, STR_SIZE);
 		}
 		dump_line(sect, now >> 4, str);
 		strcpy(str, "");
@@ -37,10 +37,10 @@ uintptr_t dump_loop(
 
 	*mod = length;
 	for(int j = *mod; j >= 0; j--){
-		strncat(str, &ps, STR_SIZE);
+		strncat(str, ps, STR_SIZE);
 	}
 	//Not garentted to be under 0x10
-	if(mod == 0x10){
+	if(*mod == 0x10){
 		dump_line(*mod,now >> 4,str);
 		strcpy(str,""); //Clear string
 	}
@@ -52,7 +52,7 @@ void dump_map(){
 	linked_list_sort();
 	struct node* cur = LIST->first;
 	//List is the start of the 
-	uintptr_t start = (uintptr_t)LIST;
+	//uintptr_t start = (uintptr_t)LIST;
 	char str[STR_SIZE];
 	int mod=0x10;
 

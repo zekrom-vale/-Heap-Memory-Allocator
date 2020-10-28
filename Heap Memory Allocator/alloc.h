@@ -7,8 +7,8 @@
 #include <stdlib.h>
 #include <stddef.h>
 
-extern const int MAGIC = 0x144b36e8;
-extern const int CHUNK = 0x4000;
+const int MAGIC = 0x144b36e8;
+const int CHUNK = 0x4000;
 
 struct header{
 	int magic;
@@ -16,7 +16,7 @@ struct header{
 };
 
 const size_t HEADER_SIZE = sizeof(struct header);
-void* alloc_getVoid(void* start);
+void* alloc_getVoid(struct header* start);
 void* Mem_Alloc(int size);
-void* alloc_extend(size_t size);
+struct header* alloc_extend(size_t size);
 #endif

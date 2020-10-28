@@ -114,7 +114,25 @@
     <RemoteCCompileToolExe>gcc</RemoteCCompileToolExe>
     <RemoteCppCompileToolExe>gcc</RemoteCppCompileToolExe>
   </PropertyGroup>
-  <ItemDefinitionGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <RemoteCCompileToolExe>gcc</RemoteCCompileToolExe>
+    <RemoteCppCompileToolExe>gcc</RemoteCppCompileToolExe>
+    <RemoteLdToolExe>gcc</RemoteLdToolExe>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <Verbose>true</Verbose>
+    </ClCompile>
+    <Link>
+      <ShowProgress>true</ShowProgress>
+    </Link>
+    <Link>
+      <VerboseOutput>true</VerboseOutput>
+    </Link>
+    <Link>
+      <Trace>true</Trace>
+    </Link>
+  </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
 </Project>

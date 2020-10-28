@@ -45,7 +45,7 @@ const size_t ATOMIC = sizeof(struct node) + END;
 
 struct node* linked_list_offset(struct node* start,size_t size);
 struct nodeEnd* linked_list_getNodeEnd(struct node* start);
-bool linked_list_validate(struct node* start,struct nodeEnd* end);
+void linked_list_validate(struct node* start, struct nodeEnd* end);
 struct node* linked_list_getPrevNode(struct node* start);
 struct linkedList* linked_list_init();
 struct node* linked_list_add(void* start,size_t size);

@@ -45,7 +45,7 @@ struct header* alloc_extend(size_t size){
 	if(s!=ATOMIC){
 		//Get the location for the free space
 		linked_list_add(
-			linkedList_Offset((struct node*)allocated, size),
+			linked_list_offset((struct node*)allocated, size),
 			size - s
 		);
 	}

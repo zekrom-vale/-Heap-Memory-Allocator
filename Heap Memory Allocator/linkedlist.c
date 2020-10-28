@@ -56,7 +56,7 @@ struct linkedList* linked_list_init(void* ptr){
 	return LIST;
 }
 
-void* linked_list_readd(struct node* n){
+void linked_list_readd(struct node* n){
 	if(LIST->first == NULL){
 		n->next == NULL;
 		n->prev == NULL;
@@ -132,8 +132,8 @@ void linked_list_shift(struct node* start, size_t size){
 
 	//re-point other nodes
 
-	struct node* prev = start->prev;
-	struct node* next=start->next;
+	prev=start->prev;
+	next=start->next;
 	if(next!=NULL)next->prev=newstart;
 	else LIST->last=newstart;
 	if(prev!=NULL)prev->next=newstart;
@@ -175,10 +175,11 @@ void* linked_list_find(size_t* s){
 		case WORSTFIT:
 			return linked_list_findWorstFit(s);
 	}
+	return NULL;
 }
 
 void* linked_list_process(size_t* s,struct node* start){
-	if(start->size < s){
+	if(start->size < *s){
 		//Failure space is too small
 		return NULL;
 	}
@@ -205,7 +206,7 @@ void* linked_list_findFirstFit(size_t* s){
 				linked_list_remove(cur);
 				return cur;
 			}
-			return procss(s, cur);
+			return linked_list_process(s, cur);
 		}
 	}
 	//Failure
@@ -228,7 +229,7 @@ void* linked_list_findWorstFit(size_t* s){
 			if(cur->size > large->size)large=cur;
 		}
 	}
-	return procss(s, large);
+	return linked_list_process(s, large);
 }
 
 
@@ -252,7 +253,7 @@ void* linked_list_linked_list_findBestFit(size_t* s){
 			)small = cur;
 		}
 	}
-	return procss(s, small);
+	return linked_list_process(s, small);
 }
 
 void linked_list_swap(struct node* A, struct node* B){
