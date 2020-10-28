@@ -50,7 +50,7 @@ struct header* alloc_extend(size_t size){
 			//Get the location for the free space
 			linked_list_add(
 				linked_list_offset((struct node*)allocated, size),
-				size - s
+				s - size
 			);
 		}
 		//Init header

@@ -1,4 +1,5 @@
 #include "linkedList.h"
+#define MAX_SIZE 4e7 //4e9
 
 struct linkedList* LIST;
 
@@ -97,6 +98,7 @@ void linked_list_readd(struct node* n){
 *@param size the size of the node
 */
 struct node* linked_list_add(void* start, size_t size){
+  if (size > MAX_SIZE) exit(E_NO_SPACE);
   struct node* n = (struct node*)start;
 	n->size = size;
 	n->end=linked_list_getNodeEnd(start);
