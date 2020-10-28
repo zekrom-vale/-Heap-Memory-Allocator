@@ -67,7 +67,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{2c2407f5-cab0-4d24-b615-57ecbe95be7b}</ProjectGuid>
     <Keyword>Linux</Keyword>
-    <RootNamespace>Project1</RootNamespace>
+    <RootNamespace>Heap-Memory-Allocator</RootNamespace>
     <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
     <ApplicationType>Linux</ApplicationType>
     <ApplicationTypeRevision>1.0</ApplicationTypeRevision>
