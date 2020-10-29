@@ -58,7 +58,7 @@ struct node* linked_list_getPrevNode(struct node* start) {
 *@param end the corisponding end node to validate
 */
 void linked_list_validate(struct node* start){
-#if VALIDATE
+#if VALIDATE && USE_END
 	 struct nodeEnd* end=start->end;
 	if(
 		start==NULL
@@ -73,8 +73,8 @@ void linked_list_validate(struct node* start){
 /**
 *Creates the linkedList
 */
-struct linkedList* linked_list_init(void* ptr){
-	LIST = (struct linkedList*)ptr;
+struct linkedList* linked_list_init(struct linkedList* ptr) {
+	LIST = ptr;
 	LIST->size=0;
 	LIST->first=NULL;
 	LIST->last=NULL;

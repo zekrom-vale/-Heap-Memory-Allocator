@@ -35,12 +35,19 @@ int alloc_roundUp(int num, int mult){
 	return num + mult - num % mult;
 }
 
+size_t alloc_calcSpace(size_t size){
+  if (size < CHUNK / 0x40)
+    return CHUNK;
+  if (size < CHUNK / 0x4)
+	  return alloc_roundUp(0x10 * size, CHUNK);
+  return alloc_roundUp(0x4 * size, CHUNK);
+}
+
+#define BUFFER 0x20
+
 struct header* alloc_extend(size_t size){
-	//Calculate allocation size
-	size_t s;
-	if(size < CHUNK/0x40)s = CHUNK;
-	else if(size < CHUNK/0x4)s = alloc_roundUp(0x10 * size, CHUNK);
-	else s = alloc_roundUp(0x4 * size, CHUNK);
+	size_t s = alloc_calcSpace(size + BUFFER);
+	
 	//Request
 	void* allocated = init_request(s);
 
