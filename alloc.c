@@ -23,7 +23,11 @@ void* Mem_Alloc(int size){
 		return alloc_getVoid(start);
 	}
 	else{
+		#if EXPAND
 		return alloc_getVoid(alloc_extend(size));
+		#else
+			exit(E_NO_SPACE);
+		#endif
 	}
 }
 

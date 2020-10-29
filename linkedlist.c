@@ -1,14 +1,15 @@
 #include "linkedList.h"
-#define MAX_SIZE 4e7 //4e9
 
 struct linkedList* LIST;
 
 const size_t LIST_HEAD = sizeof(struct linkedList);
 
+#if USE_END
 /**
  *The size of the end node
  */
 const size_t END = sizeof(struct nodeEnd);
+
 
 /**
  *The absolute minumum of the free space
@@ -16,7 +17,9 @@ const size_t END = sizeof(struct nodeEnd);
  *requres more logic
  */
 const size_t ATOMIC = sizeof(struct node) + END;
-
+#else
+const size_t ATOMIC = sizeof(struct node);
+#endif
 
 /**
 *gets the next location of the node
@@ -29,6 +32,7 @@ struct node* linked_list_offset(struct node* start, size_t size){
 	return next;
 }
 
+#if USE_END
 /**
 *returns the location of the end of the node
 *@param start the node to get the end of
@@ -40,13 +44,22 @@ struct nodeEnd* linked_list_getNodeEnd(struct node* start){
 	// 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5
 }
 
+struct node* linked_list_getPrevNode(struct node* start) {
+  struct nodeEnd* end = ((struct nodeEnd*)start) - 1;
+  linked_list_validate(end->start);
+  return end->start;
+}
+#endif
+
 /**
 *validates the given node
 *@code{validate(node, node->end);}
 *@param start the node to verify
 *@param end the corisponding end node to validate
 */
-void linked_list_validate(struct node* start, struct nodeEnd* end){
+void linked_list_validate(struct node* start){
+#if VALIDATE
+	 struct nodeEnd* end=start->end;
 	if(
 		start==NULL
 		||
@@ -54,13 +67,7 @@ void linked_list_validate(struct node* start, struct nodeEnd* end){
 		||
 		start->end != end
 	)exit(E_CORRUPT_FREESPACE);
-}
-
-struct node* linked_list_getPrevNode(struct node* start){
-	//|e|e|e|e|x|x|x|x|x|
-	struct nodeEnd* end=(struct nodeEnd*)util_ptrSub(start, END);
-	linked_list_validate(end->start, end);
-	return end->start;
+#endif
 }
 
 /**
@@ -68,14 +75,16 @@ struct node* linked_list_getPrevNode(struct node* start){
 */
 struct linkedList* linked_list_init(void* ptr){
 	LIST = (struct linkedList*)ptr;
+	LIST->size=0;
 	LIST->first=NULL;
 	LIST->last=NULL;
-	LIST->size=0;
 	return LIST;
 }
 
 void linked_list_readd(struct node* n){
-	LIST->size = LIST->size + 1;
+	LIST->size++;
+	//WARNING:
+	//Needs to be done first due to corruption
 	if(LIST->first == NULL){
 		n->next = NULL;
 		n->prev = NULL;
@@ -101,8 +110,10 @@ struct node* linked_list_add(void* start, size_t size){
   if (size > MAX_SIZE) exit(E_NO_SPACE);
   struct node* n = (struct node*)start;
 	n->size = size;
+#if USE_END
 	n->end=linked_list_getNodeEnd(start);
 	n->end->start=n;
+#endif
 	linked_list_readd(n);
 	return n;
 }
@@ -114,10 +125,13 @@ struct node* linked_list_add(void* start, size_t size){
 void linked_list_remove(struct node* n){
 	assert(LIST->size!=0);
 	assert(n!=NULL);
-	//Clear the end noe
+	//Clear the end node
+#if USE_END
 	struct nodeEnd* end=n->end;
-	linked_list_validate(n, end);
+	linked_list_validate(n);
 	end->start=NULL;
+#endif
+	LIST->size--;
 	//Attach the next and perv to eachother if they exist
 	//If not update the LIST
 	struct node* prev = n->prev;
@@ -126,7 +140,6 @@ void linked_list_remove(struct node* n){
 	else LIST->last=prev;
 	if(prev!=NULL)prev->next=next;
 	else LIST->first=next;
-	LIST->size--;
 	//dealocate node
 }
 
@@ -138,22 +151,20 @@ void linked_list_remove(struct node* n){
 void linked_list_shift(struct node* start, size_t size){
 	struct node* newstart = linked_list_offset(start,size);
 	struct node* next = start->next;
-	struct node* prev=start->prev;
+	struct node* prev = start->prev;
 	//Update end node
-
+#if USE_END
 	struct nodeEnd* end=start->end;
 	end->start=newstart;
-
+	newstart->end=end;
+#endif
 	//copy to new node
 	newstart->next=next;
 	newstart->prev=prev;
 	newstart->size=start->size-size;
-	newstart->end=end;
 
 	//re-point other nodes
 
-	prev=start->prev;
-	next=start->next;
 	if(next!=NULL)next->prev=newstart;
 	else LIST->last=newstart;
 	if(prev!=NULL)prev->next=newstart;
@@ -166,19 +177,23 @@ void linked_list_shift(struct node* start, size_t size){
 */
 void linked_list_coalesce(struct node* start){
 	struct node* next=linked_list_offset(start, start->size);
-	struct node* prev=linked_list_getPrevNode(start);
 	if(next!=NULL){
 		start->size+=next->size;
 		linked_list_remove(next);
+#if USE_END
 		start->end=next->end;
 		start->end->start=start;
+#endif
 	}
+#if USE_END
+	struct node* prev = linked_list_getPrevNode(start);
 	if(prev!=NULL){
 		prev->size+=start->size;
 		linked_list_remove(start);
 		prev->end=next->end;
 		prev->end->start=prev;
 	}
+#endif
 }
 
 /**

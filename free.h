@@ -8,6 +8,8 @@
 #include <stdlib.h>
 #include "mem.h"
 
+#define COALESCE false
+
 int Mem_Free(void* ptr);
 struct header* free_getHead(void* start);
 

@@ -10,6 +10,7 @@
 extern const int MAGIC;
 extern const int CHUNK;
 extern const size_t HEADER_SIZE;
+#define EXPAND false
 
 struct header{
 	int magic;

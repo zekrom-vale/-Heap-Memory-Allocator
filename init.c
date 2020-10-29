@@ -12,7 +12,11 @@ void* init_request(size_t size){
 		MAP_PRIVATE|MAP_ANONYMOUS,
 		//Don't need file device (fd) with MAP_ANONYMOUS
 		0,
+		#if PAGE
 		sysconf(_SC_PAGE_SIZE)
+		#else
+		0
+		#endif
 	);
 	if(v == MAP_FAILED){
 		//perror("mmap");
@@ -22,7 +26,7 @@ void* init_request(size_t size){
 }
 
 void* Mem_Init(int sizeOfRegion){
-	if(sizeOfRegion<=0){
+  if (sizeOfRegion <= 0 || sizeOfRegion > MAX_SIZE) {
 		m_error = E_BAD_ARGS;
 		return NULL;
 	}

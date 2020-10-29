@@ -13,6 +13,7 @@
 #define MAP_ANONYMOUS   0x20
 #define MAP_ANON        MAP_ANONYMOUS
 #endif
+#define PAGE false
 
 void* init_request(size_t size);
 int Mem_Free(void* ptr);
