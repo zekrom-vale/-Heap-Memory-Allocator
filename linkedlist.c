@@ -27,7 +27,7 @@ const size_t ATOMIC = sizeof(struct node);
 *@param size the offset
 */
 struct node* linked_list_offset(struct node* start, size_t size){
-	assert(size > ATOMIC);
+	assert(size >= ATOMIC);
 	struct node* next = (struct node*)util_ptrAdd(start, size + 1);
 	return next;
 }
@@ -220,12 +220,15 @@ void* linked_list_process(size_t* s, struct node* start){
 	}
 	// If the remaning space is not attomic allocate more and update s
 	size_t min = *s + ATOMIC;
-	if(start->size < min){
+	if(start->size - *s < min){
 		*s = min;
 		linked_list_remove(start);
 	}
 	//Otherwise just sift it
-	else linked_list_shift(start,*s);
+	else{
+		if(*s < ATOMIC) *s=ATOMIC;
+		linked_list_shift(start, *s);
+	}
 	//Return the location of the space
 	return start;
 }

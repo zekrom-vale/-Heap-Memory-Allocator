@@ -2,6 +2,7 @@
 
 #define ALLOC_SIZE 0x3900
 #define M_FREE true
+#define BREAK false
 
 int main(){
 	Mem_Init(ALLOC_SIZE);
@@ -26,6 +27,7 @@ int main(){
 	//Force it to expand memory
 	a = Mem_Alloc(2 * ALLOC_SIZE);
 
+#if BREAK
 	//This will destroy the allocator
 	void* alc=Mem_Alloc(20);
 	int* mangle = (int*)(alc + 21);
@@ -34,4 +36,5 @@ int main(){
 	//This will certainly be an unexpected result
 	void* unknown = Mem_Alloc(20);
 	//Malloc does not prevent this and adding support to support bad practice is not a good idea
+#endif
 }

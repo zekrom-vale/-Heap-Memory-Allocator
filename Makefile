@@ -26,3 +26,8 @@ main: mem setPath
 
 clean: restorePath
 	rm mem$(objsuf)
+
+# this is to run on visual studio as it is glitched
+vsfix:
+	mkdir -p ~/projects/Heap-Memory-Allocator/bin/x64/Debug
+	ln ~/projects/Heap-Memory-Allocator/Heap-Memory-Allocator/bin/x64/Debug/Heap-Memory-Allocator.out ~/projects/Heap-Memory-Allocator/bin/x64/Debug/Heap-Memory-Allocator.out
