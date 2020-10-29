@@ -28,12 +28,16 @@ struct nodeEnd{
 };
 #endif
 
+#define SPACER_L  10578893898196204523L
+#define SPACER_L2 13374869405924862712L
 
 struct linkedList{
+	long long spacer : SPACER_L;
 	struct node* first;
 	struct node* last;
 	int size;
 	int MODE : FIRSTFIT;
+	long long spacer : SPACER_L2;
 };
 
 extern struct linkedList* LIST;
