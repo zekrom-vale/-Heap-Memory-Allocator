@@ -20,5 +20,6 @@ struct header{
 void* alloc_getVoid(struct header* start);
 void* Mem_Alloc(int size);
 struct header* alloc_extend(size_t size);
+struct header* alloc_extendInit(size_t size);
 size_t alloc_calcSpace(size_t size);
 #endif

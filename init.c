@@ -33,12 +33,6 @@ void* Mem_Init(int sizeOfRegion){
 	//Pass 0 to default to CHUNK
 	size_t size = sizeOfRegion == 0 ?
 		CHUNK : sizeOfRegion;
-	struct linkedList* start=alloc_extend(
-		size + sizeof(struct linkedList)
-	);
-	linked_list_init(start);
-	void* it = start + 1;
-	linked_list_add(it, size);
-	return it;
+	return alloc_extendInit(size);
 	// |h|H|h|h|h| | | | | | |
 }

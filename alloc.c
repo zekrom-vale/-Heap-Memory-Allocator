@@ -43,7 +43,7 @@ size_t alloc_calcSpace(size_t size){
   return alloc_roundUp(0x4 * size, CHUNK);
 }
 
-#define BUFFER 0x20
+#define BUFFER 0
 
 struct header* alloc_extend(size_t size){
 	size_t s = alloc_calcSpace(size + BUFFER);
@@ -52,24 +52,40 @@ struct header* alloc_extend(size_t size){
 	void* allocated = init_request(s);
 
 	if(allocated == NULL)exit(E_NO_SPACE);
-    if(LIST!=NULL){
-		//If size is smaller than ATTOMIC use that instead
-		if(size < ATOMIC)size = ATOMIC;
-		//If the allocated space is the same as the ATOMIC size
-		//This should never happen with the given settings
-		if(s!=ATOMIC){
-			//Get the location for the free space
-			linked_list_add(
-				linked_list_offset((struct node*)allocated, size),
-				s - size
-			);
-		}
-		//Init header
-		struct header* head = (struct header*)allocated;
-
-		head->magic = MAGIC;
-		head->size = size;
-		return head;
+	//If size is smaller than ATTOMIC use that instead
+	if(size < ATOMIC)size = ATOMIC;
+	//If the allocated space is the same as the ATOMIC size
+	//This should never happen with the given settings
+	if(s!=ATOMIC){
+		//Get the location for the free space
+		linked_list_add(
+			linked_list_offset((struct node*)allocated, size),
+			s - size
+		);
 	}
-    return allocated;
+	//Init header
+	struct header* head = (struct header*)allocated;
+
+	head->magic = MAGIC;
+	head->size = size;
+	return head;
+}
+
+struct header* alloc_extendInit(size_t size){
+	size_t s = alloc_calcSpace(
+		size + BUFFER
+		+ sizeof(struct linkedList)
+	);
+	
+	// Request
+	struct linkedList* allocated =
+		(struct linkedList*)init_request(s);
+
+	if(allocated == NULL)exit(E_NO_SPACE);
+	linked_list_init(allocated);
+	linked_list_add(
+		allocated + 1,
+		s - sizeof(struct linkedList)
+	);
+	return (struct header*)allocated;
 }
