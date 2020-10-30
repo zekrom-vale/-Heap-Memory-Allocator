@@ -6,11 +6,12 @@
 #include "mem.h"
 #include <stdlib.h>
 #include <stddef.h>
+#include <stdbool.h>
 
 extern const int MAGIC;
 extern const int CHUNK;
 extern const size_t HEADER_SIZE;
-#define EXPAND false
+#define EXPAND true
 
 struct header{
 	int magic;

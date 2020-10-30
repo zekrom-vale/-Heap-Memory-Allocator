@@ -1,7 +1,7 @@
 #include "alloc.h"
 
 const int MAGIC = 0x144b36e8;
-const int CHUNK = 0x4000;
+const int CHUNK = 0x4000UL;
 const size_t HEADER_SIZE = sizeof(struct header);
 
 /**
@@ -14,7 +14,7 @@ void* alloc_getVoid(struct header* start){
 
 void* Mem_Alloc(int size){
 	if(size <= 0)exit(E_BAD_ARGS);
-	size_t s=size+HEADER_SIZE;
+	size_t s=(size_t)size+HEADER_SIZE;
 	void* start=linked_list_find(&s);
 	if(start!=NULL){
 		struct header* head=(struct header*)start;
@@ -24,7 +24,7 @@ void* Mem_Alloc(int size){
 	}
 	else{
 		#if EXPAND
-		return alloc_getVoid(alloc_extend(size));
+		return alloc_getVoid(alloc_extend((size_t)size));
 		#else
 			exit(E_NO_SPACE);
 		#endif

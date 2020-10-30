@@ -6,9 +6,10 @@
 #include "util.h"
 #include <assert.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include "mem.h"
 
-#define COALESCE false
+#define COALESCE true
 
 int Mem_Free(void* ptr);
 struct header* free_getHead(void* start);

@@ -6,9 +6,9 @@
 #include <string.h>
 #include <stdint.h>
 
-#define CLUSTER_BYTES 3
+#define CLUSTER_BYTES 1
 #define CLUSTER 32 << CLUSTER_BYTES
-#define CLUSTER_STR "000"
+#define CLUSTER_STR "0"
 #define STR_SIZE 0x21
 
 void dump_map();

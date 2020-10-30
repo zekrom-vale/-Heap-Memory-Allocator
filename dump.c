@@ -14,28 +14,28 @@ uintptr_t dump_loop(
 	char p[], char ps[]
 ){
 	//Deal with starting chunks
-	int sect = now % 0x100;
-	if(mod!=0x10){
+  int sect = now % CLUSTER;
+	if(*mod!=0x10){
 		for(int j = 0x10-*mod; j >= 0; j--){
 			strncat(str, ps, STR_SIZE);
 		}
 		dump_line(sect, now >> 4, str);
 		strcpy(str, "");
 	}
-	sect = now % 0x100;
+	sect = now % CLUSTER;
 
 	//Deal with 0x10 chunks
-	for(int i = length >> 4; i > 0; i--){
+	for(size_t i = length >> 4; i > 0; i--){
 		*mod = length % 0x10;
 		dump_line(sect, now >> 4, p);
 		now += 0x10;
 		length -= 0x10;
-		sect = now % 0x100;
+		sect = now % CLUSTER;
 	}
 
 	//Deal with excess length
 
-	*mod = length;
+	*mod = (int)length;
 	for(int j = *mod; j >= 0; j--){
 		strncat(str, ps, STR_SIZE);
 	}
@@ -62,10 +62,6 @@ void dump_map(){
 		size_t length = cur->size / CLUSTER;
 		uintptr_t now = (uintptr_t)cur / CLUSTER;
 
-		if(prev!=now&&mod!=0x10){
-			//Small offset
-		}
-
 		dump_loop(
 			&mod, str, prev-now, prev,
 			" x x x x x x x x x x x x x x x x", " x"
@@ -75,5 +71,42 @@ void dump_map(){
 			&mod, str, length, now,
 			" - - - - - - - - - - - - - - - -", " -"
 		);
+		cur=cur->next;
 	}
+}
+
+void dump_raw(){
+	if (LIST == NULL) return;
+	printf(
+		"struct linkedList*=%p[first=%p, last=%p, size=%zu, MODE=%d]\n",
+		LIST,
+		LIST->first,
+		LIST->last,
+		LIST->size,
+		LIST->MODE
+	);
+	for(
+		struct node* cur=LIST->first;
+		cur!=NULL;
+		cur=cur->next
+	){
+		printf(
+			"struct node*=%p[next=%p, prev=%p, size=%zu, end+1=%p]\n",
+			cur,
+			cur->next,
+			cur->prev,
+			cur->size,
+#if USE_END
+			cur->end+1
+#else
+			NULL
+#endif
+		);
+	}
+    printf("\n");
+}
+
+void Mem_Dump(){
+  dump_raw();
+	//dump_map();
 }
