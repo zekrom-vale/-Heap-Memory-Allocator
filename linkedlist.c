@@ -45,9 +45,9 @@ struct nodeEnd* linked_list_getNodeEnd(struct node* start){
 }
 
 struct node* linked_list_getPrevNode(struct node* start) {
-  struct nodeEnd* end = ((struct nodeEnd*)start) - 1;
-  linked_list_validate(end->start);
-  return end->start;
+  struct nodeEnd* end = util_ptrSub((struct nodeEnd*)start - 1, 1);
+  if(linked_list_validateEnd(end))return end->start;
+  return NULL;
 }
 #endif
 
@@ -62,9 +62,22 @@ bool linked_list_validate(struct node* start){
 	if(start==NULL||start<LIST)return false;
 #if USE_END
 	struct nodeEnd* end=start->end;
-	return start==NULL || end==NULL || start->end != end;
+	if(end<LIST)return false;
+	return !(start==NULL || end==NULL || end->start != start);
 #endif
 	return true;
+#endif
+}
+
+bool linked_list_validateEnd(struct nodeEnd* end) {
+#if VALIDATE
+  if (end == NULL || end < LIST) return false;
+#if USE_END
+  struct node* start = end->start;
+  if(start<LIST)return false;
+  return !(start == NULL || end == NULL || start->end != end);
+#endif
+  return true;
 #endif
 }
 
@@ -174,7 +187,7 @@ void linked_list_shift(struct node* start, size_t size){
 *@param start the node to coalesce arround
 */
 void linked_list_coalesce(struct node* start){
-  struct node* next = linked_list_getNodeEnd(start)+1;
+  struct node* next = util_ptrAdd(linked_list_getNodeEnd(start)+1,1);
 	if(linked_list_validate(next)){
 		start->size+=next->size;
 		linked_list_remove(next);
@@ -185,7 +198,7 @@ void linked_list_coalesce(struct node* start){
 	}
 #if USE_END
 	struct node* prev = linked_list_getPrevNode(start);
-	if(linked_list_validate(prev)){
+	if(prev!=NULL){
 		prev->size+=start->size;
 		linked_list_remove(start);
 		prev->end=next->end;
