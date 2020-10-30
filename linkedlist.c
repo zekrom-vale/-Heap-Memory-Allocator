@@ -57,16 +57,14 @@ struct node* linked_list_getPrevNode(struct node* start) {
 *@param start the node to verify
 *@param end the corisponding end node to validate
 */
-void linked_list_validate(struct node* start){
-#if VALIDATE && USE_END
-	 struct nodeEnd* end=start->end;
-	if(
-		start==NULL
-		||
-		end==NULL
-		||
-		start->end != end
-	)exit(E_CORRUPT_FREESPACE);
+bool linked_list_validate(struct node* start){
+#if VALIDATE
+	if(start==NULL||start<LIST)return false;
+#if USE_END
+	struct nodeEnd* end=start->end;
+	return start==NULL || end==NULL || start->end != end;
+#endif
+	return true;
 #endif
 }
 
@@ -176,8 +174,8 @@ void linked_list_shift(struct node* start, size_t size){
 *@param start the node to coalesce arround
 */
 void linked_list_coalesce(struct node* start){
-	struct node* next=linked_list_offset(start, start->size);
-	if(next!=NULL){
+  struct node* next = linked_list_getNodeEnd(start)+1;
+	if(linked_list_validate(next)){
 		start->size+=next->size;
 		linked_list_remove(next);
 #if USE_END
@@ -187,7 +185,7 @@ void linked_list_coalesce(struct node* start){
 	}
 #if USE_END
 	struct node* prev = linked_list_getPrevNode(start);
-	if(prev!=NULL){
+	if(linked_list_validate(prev)){
 		prev->size+=start->size;
 		linked_list_remove(start);
 		prev->end=next->end;

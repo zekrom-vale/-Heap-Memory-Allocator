@@ -43,7 +43,7 @@ extern const size_t ATOMIC;
 
 struct node* linked_list_offset(struct node* start,size_t size);
 struct nodeEnd* linked_list_getNodeEnd(struct node* start);
-void linked_list_validate(struct node* start);
+bool linked_list_validate(struct node* start);
 struct node* linked_list_getPrevNode(struct node* start);
 struct linkedList* linked_list_init(struct linkedList* ptr);
 struct node* linked_list_add(void* start, size_t size);
