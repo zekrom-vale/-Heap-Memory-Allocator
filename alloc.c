@@ -1,9 +1,5 @@
 #include "alloc.h"
 
-const int MAGIC = 0x144b36e8;
-const int CHUNK = 0x4000UL;
-const size_t HEADER_SIZE = sizeof(struct header);
-
 /**
 *Returns the starting location of the space
 *@param start the location of the heaer
@@ -14,7 +10,10 @@ void* alloc_getVoid(struct header* start){
 
 void* Mem_Alloc(int size){
 	if(size <= 0)exit(E_BAD_ARGS);
-	size_t s=(size_t)size+HEADER_SIZE;
+	size_t s = (size_t)util_roundUp(
+	  size + sizeof(struct header),
+	  ALIGN
+	);
 	void* start=linked_list_find(&s);
 	if(start!=NULL){
 		struct header* head=(struct header*)start;
@@ -31,16 +30,12 @@ void* Mem_Alloc(int size){
 	}
 }
 
-int alloc_roundUp(int num, int mult){
-	return num + mult - num % mult;
-}
-
 size_t alloc_calcSpace(size_t size){
   if (size < CHUNK / 0x40)
     return CHUNK;
   if (size < CHUNK / 0x4)
-	  return alloc_roundUp(0x10 * size, CHUNK);
-  return alloc_roundUp(0x4 * size, CHUNK);
+	  return util_roundUp(0x10 * size, CHUNK);
+  return util_roundUp(0x4 * size, CHUNK);
 }
 
 #define BUFFER 0

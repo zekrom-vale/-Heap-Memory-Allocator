@@ -2,7 +2,7 @@
 
 struct linkedList* LIST;
 
-const size_t LIST_HEAD = sizeof(struct linkedList);
+#define LIST_HEAD sizeof(struct linkedList)
 
 #if USE_END
 /**
@@ -16,10 +16,11 @@ const size_t END = sizeof(struct nodeEnd);
  *It is posible to allocate if the size is the same as struct node, but that
  *requres more logic
  */
-const size_t ATOMIC = sizeof(struct node) + END;
+#define RAW_ATOMIC sizeof(struct node) + END + 1
 #else
-const size_t ATOMIC = sizeof(struct node);
+#define RAW_ATOMIC sizeof(struct node)
 #endif
+#define ATOMIC RAW_ATOMIC + ALIGN - RAW_ATOMIC % ALIGN
 
 /**
 *gets the next location of the node

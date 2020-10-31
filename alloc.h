@@ -8,10 +8,10 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-extern const int MAGIC;
-extern const int CHUNK;
-extern const size_t HEADER_SIZE;
+#define MAGIC 0x144b36e8
+#define CHUNK 0x4000UL
 #define EXPAND true
+#define ALIGN 0x8 //0x1 to disable
 
 struct header{
 	int magic;
