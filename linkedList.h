@@ -69,12 +69,26 @@ struct linkedList{
  * The sudo constant pointer to the linked list
  */
 extern struct linkedList* LIST;
-extern const size_t LIST_HEAD;
-extern const size_t END;
-/** 
- * The abolute minimum size of the free space or allocated space
+
+#define LIST_HEAD sizeof(struct linkedList)
+
+#if USE_END
+/**
+ *The size of the end node
  */
-extern const size_t ATOMIC;
+#define END sizeof(struct nodeEnd)
+
+/**
+ *The absolute minumum of the free space
+ *It is posible to allocate if the size is the same as struct node, but that
+ *requres more logic
+ */
+#define RAW_ATOMIC sizeof(struct node) + END + 1
+#else
+#define RAW_ATOMIC 1 * sizeof(struct node)
+#endif
+#define ATOMIC RAW_ATOMIC + ALIGN - RAW_ATOMIC % ALIGN
+
 
 bool linked_list_validate(struct node* start);
 bool linked_list_validateEnd(struct nodeEnd* end);

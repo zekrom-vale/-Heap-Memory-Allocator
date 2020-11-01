@@ -2,26 +2,6 @@
 
 struct linkedList* LIST;
 
-#define LIST_HEAD sizeof(struct linkedList)
-
-#if USE_END
-/**
- *The size of the end node
- */
-const size_t END = sizeof(struct nodeEnd);
-
-
-/**
- *The absolute minumum of the free space
- *It is posible to allocate if the size is the same as struct node, but that
- *requres more logic
- */
-#define RAW_ATOMIC sizeof(struct node) + END + 1
-#else
-#define RAW_ATOMIC sizeof(struct node)
-#endif
-#define ATOMIC RAW_ATOMIC + ALIGN - RAW_ATOMIC % ALIGN
-
 /**
  * Validates the given node
  * @code{validate(node, node->end);}

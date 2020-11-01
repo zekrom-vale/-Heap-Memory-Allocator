@@ -102,7 +102,7 @@ struct header* alloc_extendInit(size_t size){
 		(struct linkedList*)init_request(s);
 
 	if(allocated == NULL)exit(E_NO_SPACE);
-	linked_list_init(allocated);
+	init_list(allocated);
 	linked_list_add(
 		allocated + 1,
 		s - sizeof(struct linkedList)
