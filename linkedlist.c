@@ -46,12 +46,24 @@ struct nodeEnd* linked_list_getNodeEnd(struct node* start){
 }
 
 /**
+ * Returns the next node
+ * @param cur the current node
+ * @return the next node
+ */
+struct node* linked_list_getNextNode(struct node* cur){
+	return util_ptrAdd(cur->end+1, 1);
+}
+
+/**
  * Return the previous node if valid, NULL if not
  * @param start the current noe
  * @return The previous node, NULL if invalid
  */
 struct node* linked_list_getPrevNode(struct node* start) {
-  struct nodeEnd* end = util_ptrSub((struct nodeEnd*)start - 1, 1);
+  struct nodeEnd* end = util_ptrSub(
+	  (struct nodeEnd*)start - 1,
+	  1
+  );
   if(linked_list_validateEnd(end))return end->start;
   return NULL;
 }
@@ -449,7 +461,7 @@ void linked_list_printNode(struct node* cur){
 			cur->prev,
 			cur->size,
 #if USE_END
-			util_ptrAdd(cur->end+1, 1),
+			linked_list_getNextNode(cur),
 			cur->end
 #else
 			NULL,
