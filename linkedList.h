@@ -10,11 +10,28 @@
 #include "mem.h"
 #include "util.h"
 
-
+/**
+ * Should we validdate the nodes?
+ * Not using this will cause crashes!!
+ */
 #define VALIDATE true
+/** 
+ * Should we create end nodes to allow for previous coalescing 
+ */
 #define USE_END true
+/** 
+ * The max size to allow for
+ * There is no point to allow for memory that is phicicaly imposible
+ */
 #define MAX_SIZE 0.01 * 1.074e9L
 
+/** 
+ * The free space node
+ * @member next the next node in the list
+ * @member prev the previous node in the list
+ * @member size the size of the free space
+ * @member end the end of the free space, if USE_END
+ */
 struct node{
 	struct node* next;
 	struct node* prev;
@@ -25,12 +42,21 @@ struct node{
 };
 
 #if USE_END
+/** 
+ * The end of the free space to point used to linararly get the previous node
+ */
 struct nodeEnd{
 	struct node* start;
 };
 #endif
 
-
+/** 
+ * The base of the linked list and other information
+ * @member first the first node of the linked list
+ * @member last the last node of the linked list
+ * @member the size of the linked list
+ * @member MODE the mode of the allocation
+ */
 struct linkedList{
 	struct node* first;
 	struct node* last;
@@ -38,9 +64,15 @@ struct linkedList{
 	int MODE : FIRSTFIT;
 };
 
+/** 
+ * The sudo constant pointer to the linked list
+ */
 extern struct linkedList* LIST;
 extern const size_t LIST_HEAD;
 extern const size_t END;
+/** 
+ * The abolute minimum size of the free space or allocated space
+ */
 extern const size_t ATOMIC;
 
 struct node* linked_list_offset(struct node* start,size_t size);

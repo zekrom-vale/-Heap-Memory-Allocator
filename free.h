@@ -9,6 +9,9 @@
 #include <stdbool.h>
 #include "mem.h"
 
+/** 
+ * If true coalesce the free space
+ */
 #define COALESCE true
 
 int Mem_Free(void* ptr);
