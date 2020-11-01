@@ -23,53 +23,6 @@ const size_t END = sizeof(struct nodeEnd);
 #define ATOMIC RAW_ATOMIC + ALIGN - RAW_ATOMIC % ALIGN
 
 /**
-*gets the next location of the node
-*@param start the original node
-*@param size the offset
-*/
-struct node* linked_list_offset(struct node* start, size_t size){
-	assert(size >= ATOMIC);
-	struct node* next = (struct node*)util_ptrAdd(start, size + 1);
-	return next;
-}
-
-#if USE_END
-/**
-*returns the location of the end of the node
-*@param start the node to get the end of
-*/
-struct nodeEnd* linked_list_getNodeEnd(struct node* start){
-	return (struct nodeEnd*)util_ptrAdd(start, start->size-END);
-	//|x|x|x|x|x|x|x|x|x| | | | | | | | | | | | |e|e|e|e| |
-	// 0                 1                   2
-	// 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5
-}
-
-/**
- * Returns the next node
- * @param cur the current node
- * @return the next node
- */
-struct node* linked_list_getNextNode(struct node* cur){
-	return util_ptrAdd(cur->end+1, 1);
-}
-
-/**
- * Return the previous node if valid, NULL if not
- * @param start the current noe
- * @return The previous node, NULL if invalid
- */
-struct node* linked_list_getPrevNode(struct node* start) {
-  struct nodeEnd* end = util_ptrSub(
-	  (struct nodeEnd*)start - 1,
-	  1
-  );
-  if(linked_list_validateEnd(end))return end->start;
-  return NULL;
-}
-#endif
-
-/**
  * Validates the given node
  * @code{validate(node, node->end);}
  * @param start the node to verify
@@ -108,18 +61,6 @@ bool linked_list_validateEnd(struct nodeEnd* end) {
 }
 
 /**
- * Creates the linkedList
- * @param ptr the start of the mmaped space
- */
-struct linkedList* linked_list_init(struct linkedList* ptr) {
-	LIST = ptr;
-	LIST->size=0;
-	LIST->first=NULL;
-	LIST->last=NULL;
-	return LIST;
-}
-
-/**
  * Adds the given node back to the linked list
  * @param n the node to add back
  */
@@ -152,7 +93,7 @@ struct node* linked_list_add(void* start, size_t size){
   struct node* n = (struct node*)start;
 	n->size = size;
 #if USE_END
-	n->end=linked_list_getNodeEnd(start);
+	n->end=list_find_getNodeEnd(start);
 	n->end->start=n;
 #endif
 	linked_list_readd(n);
@@ -190,7 +131,7 @@ void linked_list_remove(struct node* n){
  * @param size the size to offest
  */
 void linked_list_shift(struct node* start, size_t size){
-	struct node* newstart = linked_list_offset(start,size);
+	struct node* newstart = list_find_offset(start,size);
 	struct node* next = start->next;
 	struct node* prev = start->prev;
 	//Update end node
@@ -210,151 +151,6 @@ void linked_list_shift(struct node* start, size_t size){
 	else LIST->last=newstart;
 	if(prev!=NULL)prev->next=newstart;
 	else LIST->first=newstart;
-}
-
-/**
- * coalesces the linked list
- * If USE_END it will coalesce the previous node, if not it will only do the next node
- * It is not optimal when USE_END is false due to the posiblilty of non  coalesced free space
- * @param start the node to coalesce arround
- */
-void linked_list_coalesce(struct node* start){
-  struct node* next = util_ptrAdd(linked_list_getNodeEnd(start)+1,1);
-	if(linked_list_validate(next)){
-		start->size+=next->size;
-		linked_list_remove(next);
-#if USE_END
-		start->end=next->end;
-		start->end->start=start;
-#endif
-	}
-#if USE_END
-	struct node* prev = linked_list_getPrevNode(start);
-	if(prev!=NULL){
-		prev->size+=start->size;
-		linked_list_remove(start);
-		prev->end=next->end;
-		prev->end->start=prev;
-	}
-#endif
-}
-
-/**
- * Finds the next space avalbe
- * @param s the size to find, updated if remaning space is not attomic
- * @return a pointer to the allocated space, NULL if not found (Does not expand memory)
- */
-void* linked_list_find(size_t* s){
-	switch(LIST->MODE){
-		case FIRSTFIT:
-			return linked_list_findFirstFit(s);
-		case BESTFIT:
-			return linked_list_findBestFit(s);
-		case WORSTFIT:
-			return linked_list_findWorstFit(s);
-	}
-	return NULL;
-}
-
-void* linked_list_process(size_t* s, struct node* start){
-	if(start->size < *s){
-		//Failure space is too small
-		return NULL;
-	}
-	// If the remaning space is not attomic allocate more and update s
-	size_t min = *s + ATOMIC;
-	if(start->size - *s < min){
-		*s = min;
-		linked_list_remove(start);
-	}
-	//Otherwise just sift it
-	else{
-		if(*s < ATOMIC) *s=ATOMIC;
-		linked_list_shift(start, *s);
-	}
-	//Return the location of the space
-	return start;
-}
-
-/**
- * Finds the first fit for the requested space
- * This finds the first valid space
- * @param s the size of the requested space
- * @return the location of the first fit, if not NULL
- */
-void* linked_list_findFirstFit(size_t* s){
-	struct node* cur=LIST->first;
-	size_t size=*s;
-	while(cur!=NULL){
-		//If the size is larger than requested
-		if(cur->size>=size){
-			//If a perfect match
-			if(cur->size==size){
-				linked_list_remove(cur);
-				return cur;
-			}
-			return linked_list_process(s, cur);
-		}
-		cur=cur->next;
-	}
-	//Failure
-	return NULL;
-}
-
-/**
- * Finds the wost fit for the requested space
- * This finds the largest space
- * @param s the size of the requested space
- * @return the location of the wost fit, if not NULL
- */
-void* linked_list_findWorstFit(size_t* s){
-	struct node* cur = LIST->first;
-	struct node* large = cur;
-	size_t size = *s;
-	while(cur != NULL){
-		//If the size is larger than requested
-		if(cur->size >= size){
-			//If a perfect match
-			if(cur->size == size){
-				linked_list_remove(cur);
-				return cur;
-			}
-			//If cur is larger replace large
-			if(cur->size > large->size)large=cur;
-		}
-		cur=cur->next;
-	}
-	return linked_list_process(s, large);
-}
-
-/**
- * Finds the wost best for the requested space
- * This finds the smallest space
- * @param s the size of the requested space
- * @return the location of the best fit, if not NULL
- */
-void* linked_list_findBestFit(size_t* s){
-	struct node* cur = LIST->first;
-	struct node* small = cur;
-	size_t size = *s;
-	while(cur != NULL){
-		//If the size is larger than requested
-		if(cur->size >= size){
-			//If a perfect match
-			if(cur->size == size){
-				linked_list_remove(cur);
-				return cur;
-			}
-			//If cur is larger replace large
-			if(
-				cur->size > size
-				&& 
-				cur->size < small->size
-			)small = cur;
-		}
-		cur=cur->next;
-	}
-	return linked_list_process(s, small);
 }
 
 /**
@@ -461,7 +257,7 @@ void linked_list_printNode(struct node* cur){
 			cur->prev,
 			cur->size,
 #if USE_END
-			linked_list_getNextNode(cur),
+			list_find_getNextNode(cur),
 			cur->end
 #else
 			NULL,

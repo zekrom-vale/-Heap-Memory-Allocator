@@ -2,6 +2,7 @@
 #define ALLOC_H
 
 #include "linkedList.h"
+#include "listFind.h"
 #include "util.h"
 #include "mem.h"
 #include <stdlib.h>

@@ -48,6 +48,7 @@
     <ClCompile Include="..\free.c" />
     <ClCompile Include="..\init.c" />
     <ClCompile Include="..\linkedlist.c" />
+    <ClCompile Include="..\lsitFind.c" />
     <ClCompile Include="..\main.c" />
     <ClCompile Include="..\mem.c" />
     <ClCompile Include="..\util.c" />
@@ -58,6 +59,7 @@
     <ClInclude Include="..\free.h" />
     <ClInclude Include="..\init.h" />
     <ClInclude Include="..\linkedList.h" />
+    <ClInclude Include="..\listFind.h" />
     <ClInclude Include="..\mem.h" />
     <ClInclude Include="..\util.h" />
   </ItemGroup>

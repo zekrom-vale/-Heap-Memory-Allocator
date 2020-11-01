@@ -23,7 +23,7 @@ void* Mem_Alloc(int size){
 	  size + sizeof(struct header),
 	  ALIGN
 	);
-	void* start=linked_list_find(&s);
+	void* start=list_find_find(&s);
 	if(start!=NULL){
 		struct header* head=(struct header*)start;
 		head->magic=MAGIC;
@@ -73,7 +73,7 @@ struct header* alloc_extend(size_t size){
 	if(s!=ATOMIC){
 		//Get the location for the free space
 		linked_list_add(
-			linked_list_offset((struct node*)allocated, size),
+			list_find_offset((struct node*)allocated, size),
 			s - size
 		);
 	}

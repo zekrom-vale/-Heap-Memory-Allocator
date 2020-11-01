@@ -8,10 +8,10 @@ shasuf=.so
 all:
 	mem
 
-mem: init.c free.c linkedList.c alloc.c dump.c main.c mem.c util.c \
-	init.h free.h linkedList.h alloc.h dump.h mem.h util.h
+mem: init.c free.c linkedList.c alloc.c dump.c main.c mem.c util.c listFind.c \
+	init.h free.h linkedList.h alloc.h dump.h mem.h util.h listFind.h
 	gcc -c -fpic init.c free.c linkedList.c alloc.c util.c \
-		dump.c main.c mem.c -o mem$(objsuf) -Wall -Werror
+		dump.c main.c mem.c listFind.c -o mem$(objsuf) -Wall -Werror
 	gcc -shared -o libmem$(shasuf) mem$(objsuf)
 
 setPath:

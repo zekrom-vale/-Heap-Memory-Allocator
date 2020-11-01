@@ -23,5 +23,6 @@
 
 void* init_request(size_t size);
 int Mem_Free(void* ptr);
+struct linkedList* init_list(struct linkedList* ptr);
 
 #endif
