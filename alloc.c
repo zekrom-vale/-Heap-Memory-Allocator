@@ -1,13 +1,22 @@
 #include "alloc.h"
 
 /**
-*Returns the starting location of the space
-*@param start the location of the heaer
-*/
+ * Returns the starting location of the space
+ * @param start the location of the heaer
+ * @return the pointer of the free/allocd space
+ */
 void* alloc_getVoid(struct header* start){
 	return start + 1;
 }
 
+/**
+ * Alocates new space to be used
+ * @param size the minimum size to allocate
+ * If the size is less than the ATOMIC size it will allocate the atomic size
+ * If not a factor of ALIGN (0x8) it will round up
+ * If the remaning free space is less than ATOMIC it will include that space
+ * @return The pointer to the starting space of the allocated space
+ */
 void* Mem_Alloc(int size){
 	if(size <= 0)exit(E_BAD_ARGS);
 	size_t s = (size_t)util_roundUp(
@@ -30,6 +39,11 @@ void* Mem_Alloc(int size){
 	}
 }
 
+/**
+ * Calculates the extended space
+ * @param size the size to modify
+ * @return the modified size
+ */
 size_t alloc_calcSpace(size_t size){
   if (size < CHUNK / 0x40)
     return CHUNK;
@@ -40,6 +54,11 @@ size_t alloc_calcSpace(size_t size){
 
 #define BUFFER 0
 
+/** 
+ * Extends the space by using mmap
+ * @param size the size hint to expand by
+ * @return the header of the expanded size
+ */
 struct header* alloc_extend(size_t size){
 	size_t s = alloc_calcSpace(size + BUFFER);
 	
@@ -66,10 +85,16 @@ struct header* alloc_extend(size_t size){
 	return head;
 }
 
+/** 
+ * mmaps a new space for the start of the allocations
+ * @param size the minimum size to expand
+ * @return the header of the new mmaped space
+ */
 struct header* alloc_extendInit(size_t size){
-	size_t s = alloc_calcSpace(
+	size_t s = util_roundUp(
 		size + BUFFER
-		+ sizeof(struct linkedList)
+		+ sizeof(struct linkedList),
+		CHUNK
 	);
 	
 	// Request

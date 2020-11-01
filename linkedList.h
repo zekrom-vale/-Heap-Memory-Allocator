@@ -4,6 +4,8 @@
 #include <assert.h>
 #include <stdbool.h>
 #include <stdlib.h>
+//Only to provide print node nad linked list functions for other files
+#include <stdio.h>
 #include "init.h"
 #include "mem.h"
 #include "util.h"
@@ -57,4 +59,6 @@ void* linked_list_findWorstFit(size_t* s);
 void* linked_list_findBestFit(size_t* s);
 void linked_list_sort();
 void linked_list_print();
+void linked_list_printLinkedList();
+void linked_list_printNode(struct node* cur);
 #endif

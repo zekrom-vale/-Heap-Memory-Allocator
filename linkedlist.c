@@ -45,6 +45,11 @@ struct nodeEnd* linked_list_getNodeEnd(struct node* start){
 	// 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5
 }
 
+/**
+ * Return the previous node if valid, NULL if not
+ * @param start the current noe
+ * @return The previous node, NULL if invalid
+ */
 struct node* linked_list_getPrevNode(struct node* start) {
   struct nodeEnd* end = util_ptrSub((struct nodeEnd*)start - 1, 1);
   if(linked_list_validateEnd(end))return end->start;
@@ -53,11 +58,12 @@ struct node* linked_list_getPrevNode(struct node* start) {
 #endif
 
 /**
-*validates the given node
-*@code{validate(node, node->end);}
-*@param start the node to verify
-*@param end the corisponding end node to validate
-*/
+ * Validates the given node
+ * @code{validate(node, node->end);}
+ * @param start the node to verify
+ * @param end the corisponding end node to validate
+ * @return true if valid, false otherwise
+ */
 bool linked_list_validate(struct node* start){
 #if VALIDATE
 	if(start==NULL||start<LIST)return false;
@@ -70,6 +76,13 @@ bool linked_list_validate(struct node* start){
 #endif
 }
 
+/**
+ * Validates the given end node
+ * This should be used with the end node rather than geting the start, as end may be invalid
+ * @param start the node to verify
+ * @param end the corisponding end node to validate
+ * @return true if valid, false otherwise
+ */
 bool linked_list_validateEnd(struct nodeEnd* end) {
 #if VALIDATE
   if (end == NULL || end < LIST) return false;
@@ -83,8 +96,9 @@ bool linked_list_validateEnd(struct nodeEnd* end) {
 }
 
 /**
-*Creates the linkedList
-*/
+ * Creates the linkedList
+ * @param ptr the start of the mmaped space
+ */
 struct linkedList* linked_list_init(struct linkedList* ptr) {
 	LIST = ptr;
 	LIST->size=0;
@@ -93,10 +107,12 @@ struct linkedList* linked_list_init(struct linkedList* ptr) {
 	return LIST;
 }
 
+/**
+ * Adds the given node back to the linked list
+ * @param n the node to add back
+ */
 void linked_list_readd(struct node* n){
 	LIST->size++;
-	//WARNING:
-	//Needs to be done first due to corruption
 	if(LIST->first == NULL){
 		n->next = NULL;
 		n->prev = NULL;
@@ -113,11 +129,12 @@ void linked_list_readd(struct node* n){
 }
 
 /**
-*adds the given location with the given size
-*this DOES NOT coalesce
-*@param start the space to add
-*@param size the size of the node
-*/
+ * adds the given location with the given size
+ * this DOES NOT coalesce
+ * @param start the space to add
+ * @param size the size of the node
+ * @return the node created
+ */
 struct node* linked_list_add(void* start, size_t size){
   if (size > MAX_SIZE) exit(E_NO_SPACE);
   struct node* n = (struct node*)start;
@@ -131,9 +148,9 @@ struct node* linked_list_add(void* start, size_t size){
 }
 
 /**
-*removes the given node
-*@param n the node to remove
-*/
+ * removes the given node
+ * @param n the node to remove
+ */
 void linked_list_remove(struct node* n){
 	assert(LIST->size!=0);
 	assert(n!=NULL);
@@ -156,10 +173,10 @@ void linked_list_remove(struct node* n){
 }
 
 /**
-*shifts the given node the given size
-*@param start the node to shift
-*@param size the size to offest
-*/
+ * shifts the given node the given size
+ * @param start the node to shift
+ * @param size the size to offest
+ */
 void linked_list_shift(struct node* start, size_t size){
 	struct node* newstart = linked_list_offset(start,size);
 	struct node* next = start->next;
@@ -184,9 +201,11 @@ void linked_list_shift(struct node* start, size_t size){
 }
 
 /**
-*coalesces the linked list
-*@param start the node to coalesce arround
-*/
+ * coalesces the linked list
+ * If USE_END it will coalesce the previous node, if not it will only do the next node
+ * It is not optimal when USE_END is false due to the posiblilty of non  coalesced free space
+ * @param start the node to coalesce arround
+ */
 void linked_list_coalesce(struct node* start){
   struct node* next = util_ptrAdd(linked_list_getNodeEnd(start)+1,1);
 	if(linked_list_validate(next)){
@@ -209,10 +228,10 @@ void linked_list_coalesce(struct node* start){
 }
 
 /**
-*Finds the next space avalbe
-*@param s the size to find, updated if remaning space is not attomic
-*@return a pointer to the allocated space, NULL if not found (Does not expand memory)
-*/
+ * Finds the next space avalbe
+ * @param s the size to find, updated if remaning space is not attomic
+ * @return a pointer to the allocated space, NULL if not found (Does not expand memory)
+ */
 void* linked_list_find(size_t* s){
 	switch(LIST->MODE){
 		case FIRSTFIT:
@@ -245,6 +264,12 @@ void* linked_list_process(size_t* s, struct node* start){
 	return start;
 }
 
+/**
+ * Finds the first fit for the requested space
+ * This finds the first valid space
+ * @param s the size of the requested space
+ * @return the location of the first fit, if not NULL
+ */
 void* linked_list_findFirstFit(size_t* s){
 	struct node* cur=LIST->first;
 	size_t size=*s;
@@ -264,6 +289,12 @@ void* linked_list_findFirstFit(size_t* s){
 	return NULL;
 }
 
+/**
+ * Finds the wost fit for the requested space
+ * This finds the largest space
+ * @param s the size of the requested space
+ * @return the location of the wost fit, if not NULL
+ */
 void* linked_list_findWorstFit(size_t* s){
 	struct node* cur = LIST->first;
 	struct node* large = cur;
@@ -284,7 +315,12 @@ void* linked_list_findWorstFit(size_t* s){
 	return linked_list_process(s, large);
 }
 
-
+/**
+ * Finds the wost best for the requested space
+ * This finds the smallest space
+ * @param s the size of the requested space
+ * @return the location of the best fit, if not NULL
+ */
 void* linked_list_findBestFit(size_t* s){
 	struct node* cur = LIST->first;
 	struct node* small = cur;
@@ -309,6 +345,11 @@ void* linked_list_findBestFit(size_t* s){
 	return linked_list_process(s, small);
 }
 
+/**
+ * Swapps the nodes locaions in the linked list
+ * @param A 
+ * @param B 
+ */
 void linked_list_swap(struct node* A, struct node* B){
 	if(A == B)return;
 	struct node* Aprev = A->prev;
@@ -341,6 +382,11 @@ void linked_list_addAt(struct node* before, struct node* n){
 	}
 }
 
+/**
+ * Inserts the node in the right location according to address
+ * @param cur the first node that is not sorted
+ * @param new the new node to add
+ */
 void linked_list_sortInsert(struct node* cur, struct node* new){
 	if(cur == NULL)linked_list_readd(new);
 	else if(cur > new)linked_list_addAt(cur, new);
@@ -351,6 +397,9 @@ void linked_list_sortInsert(struct node* cur, struct node* new){
 	}
 }
 
+/** 
+ * Sorts the linked list via insertion sorting
+ */
 void linked_list_sort(){
 	struct node* sort = NULL;
 	struct node* cur = LIST->first;
@@ -362,11 +411,49 @@ void linked_list_sort(){
 	}
 }
 
-#include <stdio.h>
+/** 
+ * Prints the linked list of nodes
+ */
+//TODO swap out with that in dump.h
 void linked_list_print(){
 	struct node* cur = LIST->first;
 	while(cur!=NULL){
 		printf("%p\n",cur);
 		cur = cur->next;
 	}
+}
+
+/** 
+ * Prints the linked list to sdtout
+ */
+void linked_list_printLinkedList(){
+	printf(
+		"struct linkedList*=%p[first=%p, last=%p, size=%zu, MODE=%d]\n",
+		LIST,
+		LIST->first,
+		LIST->last,
+		LIST->size,
+		LIST->MODE
+	);
+}
+
+/**
+ * Prints the node to stdout
+ * @param cur the node to print
+ */
+void linked_list_printNode(struct node* cur){
+	printf(
+			"struct node*=%p[next=%p, prev=%p, size=%zu, end=%p, lin_next=%p]\n",
+			cur,
+			cur->next,
+			cur->prev,
+			cur->size,
+#if USE_END
+			util_ptrAdd(cur->end+1, 1),
+			cur->end
+#else
+			NULL,
+			NULL
+#endif
+		);
 }
