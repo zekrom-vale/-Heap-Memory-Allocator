@@ -5,14 +5,19 @@ objsuf=.o
 # Suffix for shared object files
 shasuf=.so
 
-all:
-	mem
+#defines the files to use
+cfiles=init.c free.c linkedList.c alloc.c dump.c mem.c util.c listFind.c error.c
+hfiles=init.h free.h linkedList.h alloc.h dump.h mem.h util.h listFind.h error.h
 
-mem: init.c free.c linkedList.c alloc.c dump.c main.c mem.c util.c listFind.c \
-	init.h free.h linkedList.h alloc.h dump.h mem.h util.h listFind.h
-	gcc -c -fpic init.c free.c linkedList.c alloc.c util.c \
-		dump.c main.c mem.c listFind.c -o mem$(objsuf) -Wall -Werror
+all:
+	memory main
+
+memory: $(cfiles) $(hfiles)
+	gcc -c -fpic $(cfiles) -o mem$(objsuf) -Wall -Werror
 	gcc -shared -o libmem$(shasuf) mem$(objsuf)
+
+memdirect: $(cfiles) $(hfiles) main.c
+	gcc $(cfiles) $(hfiles) main.c -o memdir$(objsuf)
 
 setPath:
 	export OLD_LD_LIBRARY_PATH=$$LD_LIBRARY_PATH
@@ -21,13 +26,8 @@ setPath:
 restorePath:
 	export LD_LIBRARY_PATH=$$OLD_LD_LIBRARY_PATH
 
-main: mem setPath
+main: memory setPath
 	gcc -L. -o main$(objsuf) main.c -Wall -Werror -lmem
 
 clean: restorePath
 	rm mem$(objsuf)
-
-# this is to run on visual studio as it is glitched
-vsfix:
-	mkdir -p ~/projects/Heap-Memory-Allocator/bin/x64/Debug
-	ln ~/projects/Heap-Memory-Allocator/Heap-Memory-Allocator/bin/x64/Debug/Heap-Memory-Allocator.out ~/projects/Heap-Memory-Allocator/bin/x64/Debug/Heap-Memory-Allocator.out
