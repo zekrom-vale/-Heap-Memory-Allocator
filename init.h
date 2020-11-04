@@ -4,6 +4,7 @@
 #include <stdlib.h>
 
 #include "alloc.h"
+#include "extend.h"
 #include "linkedList.h"
 #include "mem.h"
 
