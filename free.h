@@ -1,16 +1,17 @@
 #ifndef FREE_H
 #define FREE_H
 
-#include "alloc.h"
-#include "linkedList.h"
-#include "util.h"
 #include <assert.h>
-#include <stdlib.h>
 #include <stdbool.h>
-#include "mem.h"
-#include "error.h"
+#include <stdlib.h>
 
-/** 
+#include "alloc.h"
+#include "error.h"
+#include "linkedList.h"
+#include "mem.h"
+#include "util.h"
+
+/**
  * If true coalesce the free space
  */
 #define COALESCE true

@@ -38,27 +38,27 @@ int main(){
 #if MM_FREE
 	Mem_Free(a3);
 	printf("Free a3\n");
-    Mem_Dump();
+	Mem_Dump();
 
 	Mem_Free(a1);
-    printf("Free a1\n");
-    Mem_Dump();
+	printf("Free a1\n");
+	Mem_Dump();
 	
 	Mem_Free(a2);
 	printf("Free a2\n");
-    Mem_Dump();
+	Mem_Dump();
 #endif
 	a1=Mem_Alloc(310);
 	printf("Alloc 310 a1\n");
-    Mem_Dump();
+	Mem_Dump();
 	printf("Alloc 1 a2\n");
 	a2 = Mem_Alloc(1);
-    Mem_Dump();
+	Mem_Dump();
 
 	//Force it to expand memory
-    a = Mem_Alloc(2 * ALLOC_SIZE);
-    printf("Alloc 2ALLOC_SIZE a\n");
-    Mem_Dump();
+	a = Mem_Alloc(2 * ALLOC_SIZE);
+	printf("Alloc 2ALLOC_SIZE a\n");
+	Mem_Dump();
 
 #if BREAK
 	//This will destroy the allocator

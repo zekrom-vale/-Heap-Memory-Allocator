@@ -9,7 +9,7 @@ struct linkedList* LIST;
  * @param end the corisponding end node to validate
  * @return true if valid, false otherwise
  */
-bool linked_list_validate(struct node* start){
+bool linked_list_validate(struct node* start) {
 #if VALIDATE
 	if(start==NULL||start<LIST)return false;
 #if USE_END
@@ -18,12 +18,12 @@ bool linked_list_validate(struct node* start){
 	return !(start==NULL || end==NULL || end->start != start);
 #else
 	if(
-        cur==NULL
-        ||
-        cur->next!=NULL && cur->next->prev!=cur
-        ||
-        cur->prev != NULL && cur->prev->next != cur
-    )return false;
+		cur==NULL
+		||
+		cur->next!=NULL && cur->next->prev!=cur
+		||
+		cur->prev != NULL && cur->prev->next != cur
+	)return false;
 #endif
 	return true;
 #endif

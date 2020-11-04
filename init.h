@@ -2,21 +2,22 @@
 #define INIT_H
 
 #include <stdlib.h>
-#include <unistd.h>
 #include <sys/mman.h>
-#include "mem.h"
-#include "linkedList.h"
+#include <unistd.h>
+
 #include "alloc.h"
+#include "linkedList.h"
+#include "mem.h"
 
 /**
  * Fix MAP_ANONYMOUS not defined
  * Likely an issue with Visual Studio and WSL
  */
 #ifndef MAP_ANONYMOUS
-#define MAP_ANONYMOUS   0x20
-#define MAP_ANON        MAP_ANONYMOUS
+#define MAP_ANONYMOUS 0x20
+#define MAP_ANON MAP_ANONYMOUS
 #endif
-/** 
+/**
  * If true pass the page size to mmap, 0 otherwise
  */
 #define PAGE false

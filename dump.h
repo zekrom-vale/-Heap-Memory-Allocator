@@ -1,10 +1,11 @@
 #ifndef DUMP_H
 #define DUMP_H
 
-#include <stdio.h>
-#include "linkedList.h"
-#include <string.h>
 #include <stdint.h>
+#include <stdio.h>
+#include <string.h>
+
+#include "linkedList.h"
 
 #define CLUSTER_BYTES 1
 #define CLUSTER 32 << CLUSTER_BYTES

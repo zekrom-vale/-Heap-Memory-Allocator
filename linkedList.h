@@ -4,12 +4,13 @@
 #include <assert.h>
 #include <stdbool.h>
 #include <stdlib.h>
-//Only to provide print node nad linked list functions for other files
+// Only to provide print node nad linked list functions for other files
 #include <stdio.h>
+
 #include "init.h"
+#include "listFind.h"
 #include "mem.h"
 #include "util.h"
-#include "listFind.h"
 
 /**
  * Should we validdate the nodes?
@@ -89,7 +90,7 @@ bool linked_list_validate(struct node* start);
 bool linked_list_validateEnd(struct nodeEnd* end);
 struct node* linked_list_add(void* start, size_t size);
 void linked_list_remove(struct node* n);
-void linked_list_shift(struct node* start,size_t size);
+void linked_list_shift(struct node* start, size_t size);
 void linked_list_sort();
 void linked_list_print();
 void linked_list_printLinkedList();
