@@ -11,6 +11,7 @@
 #include "listFind.h"
 #include "mem.h"
 #include "util.h"
+#include "extend.h"
 
 /**
  * Should we validdate the nodes?
@@ -58,7 +59,11 @@ struct linkedList{
 	struct node* first;
 	struct node* last;
 	int size;
-	int MODE : FIRSTFIT;
+	int MODE;
+#if USE_FRAME
+	struct frame* firstFrame;
+	struct frame* lastFrame;
+#endif
 };
 
 /** 
