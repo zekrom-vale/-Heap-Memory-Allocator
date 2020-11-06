@@ -25,7 +25,7 @@ void* alloc_core(struct header* head, size_t s){
  */
 void* Mem_Alloc(int size){
 	error_args(size);
-	size_t s = util_roundUp_t(
+	size_t s = (size_t)util_roundUp(
 	  size + sizeof(struct header),
 	  ALIGN
 	);
