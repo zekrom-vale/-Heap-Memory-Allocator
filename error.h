@@ -10,6 +10,7 @@
  * There is no point to allow for memory that is phicicaly imposible
  */
 #define MAX_SIZE 0.01 * 1.074e9L
+#define DBG true
 
 void error_noSpace();
 

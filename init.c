@@ -23,7 +23,7 @@ void* Mem_Init(int sizeOfRegion){
  * Creates the linkedList
  * @param ptr the start of the mmaped space
  */
-struct linkedList* init_list(struct linkedList* ptr) {
+struct linkedList* init_list(struct linkedList* ptr){
   LIST = ptr;
   LIST->size = 0;
   LIST->first = NULL;

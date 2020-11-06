@@ -7,8 +7,21 @@
  * This will be updated to the free space size so you need to pass a pointer (&size)
  * @return the start of te free space
  */
-void* extend_addFrame(void* start, size_t* size){
-	struct frame* head=start;
+void* extend_addFrame(struct frame* head, size_t* size){
+	void* ret;
+	size_t newSize;
+	if(LIST == NULL){
+		//Shift the return by linkedList and frame
+		ret=init_list(head+1)+1;
+		//Subtract 
+		newSize=*size-sizeof(struct linkedList) - sizeof(struct frame);
+	}
+	else{
+		//Shift the return by frame
+		ret=head+1;
+		//Subtract size by frame
+		newSize=*size-sizeof(struct frame);
+	}
 	if(LIST->firstFrame==NULL){
 		LIST->firstFrame=head;
 	}
@@ -17,23 +30,28 @@ void* extend_addFrame(void* start, size_t* size){
 		//If the frames are next to eachother
 		if(util_ptrAdd(prev, prev->size)==head){
 			//coalece frames
+			//Well, don't create a new one in the first place
 			prev->size+=*size;
-			struct node* n=linked_list_add(start, *size);
+			struct node* n=linked_list_add(head, *size);
 			*size=0;
-#if COALESCE
+#if COALESCE && USE_END
+			//Coalesce free lists and return the prev node
 			return linked_list_coalesce(n);
+#else
+			return;
 #endif
-			return start;
 		}
+		//Set up the chain
 		prev->next=head;
 	}
 	head->size=*size;
 	head->next=NULL;
+	//Update the frame next
 	LIST->lastFrame=head;
 	//Update the size
-	*size=size-sizeof(struct frame);
+	*size=newSize;
 	//Shift by one frame to get the free space
-	return head + 1;
+	return ret;
 }
 
 /**
@@ -41,7 +59,7 @@ void* extend_addFrame(void* start, size_t* size){
  * @param size the size of the block
  * @return the pointer of the start of the mmap
  */
-void* extend_request(size_t* size) {
+void* extend_request(size_t* size){
 	void* v =
 			mmap(NULL, *size,
 			PROT_READ | PROT_WRITE,
@@ -122,10 +140,17 @@ struct header* extend_extend(size_t requestedSize) {
  * @return the header of the new mmaped space
  */
 struct header* extend_extendInit(size_t size) {
-	size_t s = util_roundUp(size + sizeof(struct linkedList), CHUNK);
+	size_t s = util_roundUp(
+		size + sizeof(struct linkedList)
+#if USE_FRAME
+		+ sizeof(struct frame)
+#endif
+        ,
+		CHUNK
+	);
 
 	// Request
-	struct linkedList* allocated = (struct linkedList*)extend_request(s);
+	struct linkedList* allocated = extend_request(&s);
 
 	if (allocated == NULL) error_noSpace();
 	init_list(allocated);
