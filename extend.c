@@ -9,6 +9,14 @@
  */
 void* extend_addFrame(void* start, size_t* size){
 	struct frame* head=start;
+	struct node* n;
+	if(LIST==NULL){
+		struct linkedList* list=init_list(head+1);
+		n=list+1;
+	}
+	else{
+		n=start+1;
+	}
 	if(LIST->firstFrame==NULL){
 		LIST->firstFrame=head;
 	}
@@ -18,7 +26,7 @@ void* extend_addFrame(void* start, size_t* size){
 		if(util_ptrAdd(prev, prev->size)==head){
 			//coalece frames
 			prev->size+=*size;
-			struct node* n=linked_list_add(start, *size);
+			n=linked_list_add(n, *size);
 			*size=0;
 #if COALESCE
 			return linked_list_coalesce(n);
@@ -31,9 +39,9 @@ void* extend_addFrame(void* start, size_t* size){
 	head->next=NULL;
 	LIST->lastFrame=head;
 	//Update the size
-	*size=size-sizeof(struct frame);
+	*size=*size-sizeof(struct frame);
 	//Shift by one frame to get the free space
-	return head + 1;
+	return n+1;
 }
 
 /**
@@ -92,11 +100,17 @@ struct header* extend_extend(size_t requestedSize) {
 
 	// Request
 	void* allocated = extend_request(&extendedSize);
-
+#if USE_FRAME
 	if (extendedSize == 0){
-		linked_list_shift(allocated, &requestedSize);
+        linked_list_add(
+			allocated,
+			extendedSize
+			- sizeof(struct linkedList)
+		);
+		linked_list_shift(allocated, requestedSize);
 		return alloc_core(allocated, requestedSize);
 	}
+#endif
 	// If size is smaller than ATTOMIC use that instead
 	if (requestedSize < ATOMIC) requestedSize = ATOMIC;
 	// If the allocated space is the same as the ATOMIC size
@@ -122,10 +136,29 @@ struct header* extend_extend(size_t requestedSize) {
  * @return the header of the new mmaped space
  */
 struct header* extend_extendInit(size_t size) {
-	size_t s = util_roundUp(size + sizeof(struct linkedList), CHUNK);
+	size_t s = util_roundUp(
+		size+
+		sizeof(struct linkedList)
+#if USE_FRAME
+		+
+		sizeof(struct frame)
+#endif
+		,
+		CHUNK
+	);
 
 	// Request
-	struct linkedList* allocated = (struct linkedList*)extend_request(s);
+	struct linkedList* allocated = (struct linkedList*)extend_request(&s);
+
+#if USE_FRAME
+        linked_list_add(
+			allocated,
+			s - sizeof(struct frame) -
+			sizeof(struct linkedList)
+		);
+        linked_list_shift(allocated, size);
+        return alloc_core(allocated, size);
+#endif
 
 	if (allocated == NULL) error_noSpace();
 	init_list(allocated);

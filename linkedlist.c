@@ -11,10 +11,18 @@ struct linkedList* LIST;
  */
 bool linked_list_validate(struct node* start) {
 #if VALIDATE
-	if(start==NULL||start<LIST)return false;
+	struct frame* lf=LIST->lastFrame;
+	void* ptr=util_ptrAdd(lf, lf->size);
+  if(
+	  start==NULL
+	  ||
+	  start<LIST
+	  ||
+	  start > ptr
+  )return false;
 #if USE_END
 	struct nodeEnd* end=start->end;
-	if(end<LIST)return false;
+	if(end<LIST || end>ptr)return false;
 	return !(start==NULL || end==NULL || end->start != start);
 #else
 	if(
@@ -41,7 +49,12 @@ bool linked_list_validateEnd(struct nodeEnd* end) {
   if (end == NULL || end < LIST) return false;
 #if USE_END
   struct node* start = end->start;
-  if(start<LIST)return false;
+  struct frame* lf=LIST->lastFrame;
+  if(
+	  start<LIST
+	  ||
+	  start > util_ptrAdd(lf, lf->size)
+  )return false;
   return !(start == NULL || end == NULL || start->end != end);
 #endif
   return true;
@@ -76,13 +89,13 @@ void linked_list_readd(struct node* n){
  * @param size the size of the node
  * @return the node created
  */
-struct node* linked_list_add(void* start, size_t size){
-  if (size > MAX_SIZE) exit(E_NO_SPACE);
-  struct node* n = (struct node*)start;
+struct node* linked_list_add(struct node* n, size_t size) {
+	if (size > MAX_SIZE) exit(E_NO_SPACE);
 	n->size = size;
 #if USE_END
-	n->end=list_find_getNodeEnd(start);
-	n->end->start=n;
+	struct nodeEnd* end=list_find_getNodeEnd(n);
+	n->end=end;
+	end->start=n;
 #endif
 	linked_list_readd(n);
 	return n;
