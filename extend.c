@@ -36,7 +36,7 @@ void* extend_addFrame(struct frame* head, size_t* size){
 			*size=0;
 #if COALESCE && USE_END
 			//Coalesce free lists and return the prev node
-			return free_coalesce(n);
+			return linked_list_coalesce(n);
 #else
 			return;
 #endif

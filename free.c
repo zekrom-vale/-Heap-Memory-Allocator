@@ -23,7 +23,7 @@ int Mem_Free(void* ptr){
 	struct node* node=linked_list_add(head, head->size);
 	//If coalescing call it
 #if COALESCE
-	free_coalesce(node);
+	linked_list_coalesce(node);
 #endif
 	return 0;
 }
@@ -34,7 +34,7 @@ int Mem_Free(void* ptr){
  * It is not optimal when USE_END is false due to the posiblilty of non  coalesced free space
  * @param start the node to coalesce arround
  */
-struct node* free_coalesce(struct node* start) {
+struct node* linked_list_coalesce(struct node* start) {
   struct node* next = util_ptrAdd(list_find_getNodeEnd(start)+1,1);
 	if(linked_list_validate(next)){
 		start->size+=next->size;
