@@ -11,7 +11,12 @@
 #include "util.h"
 #include "free.h"
 
-#define USE_FRAME true
+#define USE_FRAME false
+#if USE_FRAME
+#define FRAME sizeof(struct frame)
+#else
+#define FRAME 0
+#endif
 
 /**
  * Fix MAP_ANONYMOUS not defined

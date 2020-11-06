@@ -40,6 +40,7 @@ struct node* free_coalesce(struct node* start) {
 		start->size+=next->size;
 		linked_list_remove(next);
 #if USE_END
+		start->end=NULL;
 		start->end=next->end;
 		start->end->start=start;
 #endif
@@ -48,9 +49,9 @@ struct node* free_coalesce(struct node* start) {
 	struct node* prev = list_find_getPrevNode(start);
 	if(prev!=NULL){
 		prev->size+=start->size;
-		linked_list_remove(start);
-		prev->end=next->end;
+		prev->end=start->end;
 		prev->end->start=prev;
+		linked_list_remove(start);
 		return prev;
 	}
 #endif

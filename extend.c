@@ -12,16 +12,25 @@ void* extend_addFrame(struct frame* head, size_t* size){
 	size_t newSize;
 	if(LIST == NULL){
 		//Shift the return by linkedList and frame
+#if USE_FRAME
 		ret=init_list(head+1)+1;
+#else
+		ret=init_list(head)+1;
+#endif
 		//Subtract 
-		newSize=*size-sizeof(struct linkedList) - sizeof(struct frame);
+		newSize=*size-sizeof(struct linkedList) - FRAME;
 	}
 	else{
 		//Shift the return by frame
+#if USE_FRAME
 		ret=head+1;
+#else
+		ret=head;
+#endif
 		//Subtract size by frame
-		newSize=*size-sizeof(struct frame);
+		newSize=*size-FRAME;
 	}
+#if USE_FRAME
 	if(LIST->firstFrame==NULL){
 		LIST->firstFrame=head;
 	}
@@ -49,6 +58,7 @@ void* extend_addFrame(struct frame* head, size_t* size){
 	//Update the frame next
 	LIST->lastFrame=head;
 	//Update the size
+#endif
 	*size=newSize;
 	//Shift by one frame to get the free space
 	return ret;
@@ -75,9 +85,7 @@ void* extend_request(size_t* size){
 	if (v == MAP_FAILED){
 		error_noSpace();
 	}
-#if USE_FRAME
 	v=extend_addFrame(v, size);
-#endif
 	return v;
 }
 
@@ -145,7 +153,7 @@ struct header* extend_extendInit(size_t size) {
 #if USE_FRAME
 		+ sizeof(struct frame)
 #endif
-        ,
+		,
 		CHUNK
 	);
 
@@ -153,7 +161,9 @@ struct header* extend_extendInit(size_t size) {
 	struct linkedList* allocated = extend_request(&s);
 
 	if (allocated == NULL) error_noSpace();
+#if !USE_FRAME
 	init_list(allocated);
-	linked_list_add(allocated + 1, s - sizeof(struct linkedList));
+#endif
+	linked_list_add(allocated, s);
 	return (struct header*)allocated;
 }
