@@ -77,7 +77,7 @@ void linked_list_readd(struct node* n){
  * @return the node created
  */
 struct node* linked_list_add(void* start, size_t size){
-  if (size > MAX_SIZE) error_noSpace();
+  if (size > MAX_SIZE) exit(E_NO_SPACE);
   struct node* n = (struct node*)start;
 	n->size = size;
 #if USE_END

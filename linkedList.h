@@ -12,7 +12,6 @@
 #include "mem.h"
 #include "util.h"
 #include "extend.h"
-#include "error.h"
 
 /**
  * Should we validdate the nodes?
@@ -47,10 +46,6 @@ struct node{
 struct nodeEnd{
 	struct node* start;
 };
-#endif
-
-#ifndef USE_FRAME
-#define USE_FRAME true
 #endif
 
 /** 

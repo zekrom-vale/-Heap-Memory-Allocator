@@ -1,5 +1,5 @@
 #ifndef EXTEND_H
-#define EXTEND_H
+#define ETTEND_H
 
 #include <stdlib.h>
 #include <sys/mman.h>
@@ -28,7 +28,7 @@ struct frame{
 	struct frame* next;
 };
 
-void* extend_request(size_t* size);
+void* extend_request(size_t size);
 struct header* extend_extend(size_t size);
 struct header* extend_extendInit(size_t size);
 
