@@ -41,7 +41,7 @@ bool linked_list_validateEnd(struct nodeEnd* end) {
   if (end == NULL || end < LIST) return false;
 #if USE_END
   struct node* start = end->start;
-  if(start<LIST||start>end)return false;
+  if(start<LIST)return false;
   return !(start == NULL || end == NULL || start->end != end);
 #endif
   return true;
@@ -239,8 +239,10 @@ void linked_list_printLinkedList(){
  */
 void linked_list_printNode(struct node* cur){
 	printf(
-			"struct node*=%p[size=%zu, end=%p, lin_next=%p]\n",
+			"struct node*=%p[next=%p, prev=%p, size=%zu, end=%p, lin_next=%p]\n",
 			cur,
+			cur->next,
+			cur->prev,
 			cur->size,
 #if USE_END
 			list_find_getNextNode(cur),

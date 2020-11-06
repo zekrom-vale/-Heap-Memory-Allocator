@@ -11,15 +11,12 @@ int main(){
 	Mem_Init(ALLOC_SIZE);
 	printf("Init\n");
 	Mem_Dump();
-	void* a;
-#if false
-	a = Mem_Alloc(ALLOC_SIZE);
+	void* a = Mem_Alloc(ALLOC_SIZE);
 
 #if MM_FREE
 	Mem_Free(a);
 	printf("Free a\n");
 	Mem_Dump();
-#endif
 #endif
 
 	void* a1=Mem_Alloc(100);
@@ -49,11 +46,6 @@ int main(){
 	
 	Mem_Free(a2);
 	printf("Free a2\n");
-	Mem_Dump();
-
-	
-	Mem_Free(a4);
-	printf("Free a4\n");
 	Mem_Dump();
 #endif
 	a1=Mem_Alloc(310);
