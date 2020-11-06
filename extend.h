@@ -9,9 +9,6 @@
 #include "linkedList.h"
 #include "mem.h"
 #include "util.h"
-#include "free.h"
-
-#define USE_FRAME true
 
 /**
  * Fix MAP_ANONYMOUS not defined
