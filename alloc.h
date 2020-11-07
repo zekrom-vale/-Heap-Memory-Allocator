@@ -5,7 +5,6 @@
 #include "listFind.h"
 #include "util.h"
 #include "mem.h"
-#include "error.h"
 #include <stdlib.h>
 #include <stddef.h>
 #include <stdbool.h>

@@ -6,7 +6,7 @@
  * @return a pointer to the allocated space, NULL if not found (Does not expand
  * memory)
  */
-void* list_find(size_t* s) {
+void* list_find_find(size_t* s) {
   switch (LIST->MODE) {
     case FIRSTFIT:
       return list_find_findFirstFit(s);
@@ -47,8 +47,7 @@ void* list_find_process(size_t* s, struct node* start) {
 void* list_find_findFirstFit(size_t* s) {
   struct node* cur = LIST->first;
   size_t size = *s;
-  while (cur != NULL){
-    error_freeSpace(cur);
+  while (cur != NULL) {
     // If the size is larger than requested
     if (cur->size >= size) {
       // If a perfect match

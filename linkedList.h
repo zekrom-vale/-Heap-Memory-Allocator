@@ -20,6 +20,11 @@
  * Should we create end nodes to allow for previous coalescing 
  */
 #define USE_END true
+/** 
+ * The max size to allow for
+ * There is no point to allow for memory that is phicicaly imposible
+ */
+#define MAX_SIZE 0.01 * 1.074e9L
 
 /** 
  * The free space node

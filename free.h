@@ -8,7 +8,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "mem.h"
-#include "error.h"
 
 /** 
  * If true coalesce the free space
