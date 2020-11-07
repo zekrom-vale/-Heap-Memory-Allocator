@@ -45,7 +45,6 @@
   <ItemGroup>
     <ClCompile Include="..\alloc.c" />
     <ClCompile Include="..\dump.c" />
-    <ClCompile Include="..\error.c" />
     <ClCompile Include="..\free.c" />
     <ClCompile Include="..\init.c" />
     <ClCompile Include="..\linkedlist.c" />
@@ -57,7 +56,6 @@
   <ItemGroup>
     <ClInclude Include="..\alloc.h" />
     <ClInclude Include="..\dump.h" />
-    <ClInclude Include="..\error.h" />
     <ClInclude Include="..\free.h" />
     <ClInclude Include="..\init.h" />
     <ClInclude Include="..\linkedList.h" />
@@ -66,7 +64,6 @@
     <ClInclude Include="..\util.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\.editorconfig" />
     <None Include="..\Makefile" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -142,16 +139,13 @@
       <WholeArchiveBegin>false</WholeArchiveBegin>
     </Link>
     <RemotePreBuildEvent>
-      <Command>
-      </Command>
+      <Command>ls</Command>
     </RemotePreBuildEvent>
     <RemotePreLinkEvent>
-      <Command>
-      </Command>
+      <Command>ls</Command>
     </RemotePreLinkEvent>
     <RemotePostBuildEvent>
-      <Command>
-      </Command>
+      <Command>ls</Command>
     </RemotePostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

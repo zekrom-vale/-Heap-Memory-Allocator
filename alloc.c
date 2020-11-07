@@ -46,7 +46,7 @@ void* Mem_Alloc(int size){
  */
 size_t alloc_calcSpace(size_t size){
   if (size < CHUNK / 0x40)
-	return CHUNK;
+    return CHUNK;
   if (size < CHUNK / 0x4)
 	  return util_roundUp(0x10 * size, CHUNK);
   return util_roundUp(0x4 * size, CHUNK);

@@ -1,9 +1,9 @@
 #ifndef ERROR_H
 #define ERROR_H
 
-#include "free.h"
 #include "mem.h"
 #include "stdlib.h"
+#include "free.h"
 
 /**
  * The max size to allow for

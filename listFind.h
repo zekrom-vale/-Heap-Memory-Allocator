@@ -2,10 +2,9 @@
 #define LIST_FIND_H
 
 #include <stdlib.h>
-
-#include "error.h"
-#include "linkedList.h"
 #include "mem.h"
+#include "linkedList.h"
+#include "error.h"
 
 void* list_find(size_t* s);
 void* list_find_findFirstFit(size_t* s);
