@@ -4,15 +4,30 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdlib.h>
+#include <sys/mman.h>
+#include <unistd.h>
 
 #include "error.h"
-#include "extend.h"
+#include "linkedList.h"
+#include "listFind.h"
 #include "mem.h"
+#include "util.h"
 
+/**
+ * Fix MAP_ANONYMOUS not defined
+ * Likely an issue with Visual Studio and
+ * WSL
+ */
+#ifndef MAP_ANONYMOUS
+#define MAP_ANONYMOUS 0x20
+#define MAP_ANON MAP_ANONYMOUS
+#endif
 /**
  * If true pass the page size to mmap, 0 otherwise
  */
 #define PAGE false
+
+void* alloc_request(size_t size);
 
 /**
  * The magic value to validate headers
@@ -47,5 +62,7 @@ struct header {
 
 void* alloc_getVoid(struct header* start);
 void* Mem_Alloc(int size);
-size_t extend_calcSpace(size_t size);
+struct header* alloc_extend(size_t size);
+struct header* alloc_extendInit(size_t size);
+size_t alloc_calcSpace(size_t size);
 #endif
