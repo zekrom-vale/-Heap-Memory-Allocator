@@ -4,9 +4,6 @@
 #include "free.h"
 #include "mem.h"
 #include "stdlib.h"
-#include "stdbool.h"
-
-#define DBG true
 
 /**
  * The max size to allow for

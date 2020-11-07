@@ -61,7 +61,7 @@ uintptr_t dump_loop(
 		strcpy(str,""); //Clear string
 	}
 
-	return now + (uintptr_t)*mod;
+	return now + *mod;
 }
 /** 
  * Dumps the current memory map to stdout
