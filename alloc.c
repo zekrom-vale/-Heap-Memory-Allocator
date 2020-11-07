@@ -19,8 +19,8 @@ void* alloc_getVoid(struct header* start){
  */
 void* Mem_Alloc(int size){
 	error_args(size);
-	size_t s = (size_t)util_roundUp(
-	  size + sizeof(struct header),
+	size_t s = (size_t)util_roundUp_t(
+	  (size_t)size + sizeof(struct header),
 	  ALIGN
 	);
 	void* start=list_find(&s);

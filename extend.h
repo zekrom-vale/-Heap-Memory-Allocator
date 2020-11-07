@@ -1,5 +1,5 @@
 #ifndef EXTEND_H
-#define ETTEND_H
+#define EXTEND_H
 
 #include <stdlib.h>
 #include <sys/mman.h>

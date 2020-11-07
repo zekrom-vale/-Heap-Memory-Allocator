@@ -11,10 +11,10 @@ struct linkedList* LIST;
  */
 bool linked_list_validate(struct node* start) {
 #if VALIDATE
-	if(start==NULL||start<LIST)return false;
+	if(start==NULL||(void*)start<(void*)LIST)return false;
 #if USE_END
 	struct nodeEnd* end=start->end;
-	if(end<LIST)return false;
+	if((void*)end<(void*)LIST)return false;
 	return !(start==NULL || end==NULL || end->start != start);
 #else
 	if(
@@ -38,10 +38,10 @@ bool linked_list_validate(struct node* start) {
  */
 bool linked_list_validateEnd(struct nodeEnd* end) {
 #if VALIDATE
-  if (end == NULL || end < LIST) return false;
+  if (end == NULL || (void*)end < (void*)LIST) return false;
 #if USE_END
   struct node* start = end->start;
-  if(start<LIST)return false;
+  if((void*)start<(void*)LIST)return false;
   return !(start == NULL || end == NULL || start->end != end);
 #endif
   return true;
@@ -77,7 +77,7 @@ void linked_list_readd(struct node* n){
  * @return the node created
  */
 struct node* linked_list_add(void* start, size_t size){
-  if (size > MAX_SIZE) exit(E_NO_SPACE);
+  if (size > MAX_SIZE)error_noSpace();
   struct node* n = (struct node*)start;
 	n->size = size;
 #if USE_END
