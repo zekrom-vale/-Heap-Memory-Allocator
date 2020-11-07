@@ -16,14 +16,6 @@ bool linked_list_validate(struct node* start){
 	struct nodeEnd* end=start->end;
 	if(end<LIST)return false;
 	return !(start==NULL || end==NULL || end->start != start);
-#else
-	if(
-        cur==NULL
-        ||
-        cur->next!=NULL && cur->next->prev!=cur
-        ||
-        cur->prev != NULL && cur->prev->next != cur
-    )return false;
 #endif
 	return true;
 #endif
