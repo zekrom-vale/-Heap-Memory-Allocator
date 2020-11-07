@@ -40,32 +40,6 @@ void* Mem_Alloc(int size){
 }
 
 /**
- * requests a new chunk of memory
- * @param size the size of the block
- * @return the pointer of the start of the mmap
- */
-void* alloc_request(size_t size){
-	void* v=mmap(
-		NULL,
-		size,
-		PROT_READ|PROT_WRITE,
-		MAP_PRIVATE|MAP_ANONYMOUS,
-		//Don't need file device (fd) with MAP_ANONYMOUS
-		0,
-		#if PAGE
-		sysconf(_SC_PAGE_SIZE)
-		#else
-		0
-		#endif
-	);
-	if(v == MAP_FAILED){
-		//perror("mmap");
-		return NULL;
-	}
-	return v;
-}
-
-/**
  * Calculates the extended space
  * @param size the size to modify
  * @return the modified size
@@ -89,7 +63,7 @@ struct header* alloc_extend(size_t size){
 	size_t s = alloc_calcSpace(size + BUFFER);
 	
 	//Request
-	void* allocated = alloc_request(s);
+	void* allocated = init_request(s);
 
 	if(allocated == NULL)error_noSpace();
 	//If size is smaller than ATTOMIC use that instead
@@ -125,7 +99,7 @@ struct header* alloc_extendInit(size_t size){
 	
 	// Request
 	struct linkedList* allocated =
-		(struct linkedList*)alloc_request(s);
+		(struct linkedList*)init_request(s);
 
 	if(allocated == NULL)error_noSpace();
 	init_list(allocated);
