@@ -10,8 +10,6 @@
 #include "mem.h"
 #include "util.h"
 #include "listFind.h"
-#include "extend.h"
-#include "error.h"
 
 /**
  * Should we validdate the nodes?
@@ -48,11 +46,6 @@ struct nodeEnd{
 };
 #endif
 
-//TODO Fix workaround
-#ifndef USE_FRAME
-#define USE_FRAME true
-#endif
-
 /** 
  * The base of the linked list and other information
  * @member first the first node of the linked list
@@ -64,11 +57,7 @@ struct linkedList{
 	struct node* first;
 	struct node* last;
 	int size;
-	int MODE;
-#if USE_FRAME
-	struct frame* firstFrame;
-	struct frame* lastFrame;
-#endif
+	int MODE : FIRSTFIT;
 };
 
 /** 
@@ -97,7 +86,7 @@ extern struct linkedList* LIST;
 
 bool linked_list_validate(struct node* start);
 bool linked_list_validateEnd(struct nodeEnd* end);
-struct node* linked_list_add(struct node*, size_t size);
+struct node* linked_list_add(void* start, size_t size);
 void linked_list_remove(struct node* n);
 void linked_list_shift(struct node* start,size_t size);
 void linked_list_sort();

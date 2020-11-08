@@ -1,13 +1,7 @@
 #include "error.h"
 
-#define DBG true
 error(int err){
     m_error=err;
-#if DBG
-	//GDB does not stop before exit()
-	//Force an error
-    ((struct node*)0)->next=NULL;
-#endif
     exit(err);
 }
 

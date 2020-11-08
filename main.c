@@ -11,7 +11,13 @@ int main(){
 	Mem_Init(ALLOC_SIZE);
 	printf("Init\n");
 	Mem_Dump();
-	void* a;
+	void* a = Mem_Alloc(ALLOC_SIZE);
+
+#if MM_FREE
+	Mem_Free(a);
+	printf("Free a\n");
+	Mem_Dump();
+#endif
 
 	void* a1=Mem_Alloc(100);
 	printf("Alloc 100 a1\n");

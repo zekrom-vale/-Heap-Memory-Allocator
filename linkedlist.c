@@ -2,12 +2,6 @@
 
 struct linkedList* LIST;
 
-bool linked_list_validatePtr(void* ptr) {
-  for (struct frame* cur = LIST->firstFrame; cur != NULL; cur = cur->next)
-    if (cur + 1 <= ptr && ptr <= util_ptrAdd(cur, cur->size)) return true;
-  return false;
-}
-
 /**
  * Validates the given node
  * @code{validate(node, node->end);}
@@ -17,11 +11,10 @@ bool linked_list_validatePtr(void* ptr) {
  */
 bool linked_list_validate(struct node* start){
 #if VALIDATE
-  if(
-	  start==NULL || !linked_list_validatePtr(start)
-  )return false;
+	if(start==NULL||start<LIST)return false;
 #if USE_END
 	struct nodeEnd* end=start->end;
+	if(end<LIST)return false;
 	return !(start==NULL || end==NULL || end->start != start);
 #else
 	if(
@@ -45,19 +38,15 @@ bool linked_list_validate(struct node* start){
  */
 bool linked_list_validateEnd(struct nodeEnd* end) {
 #if VALIDATE
-  if (
-	  end == NULL || 
-	  !linked_list_validatePtr(end) || 
-	  end->start == NULL ||
-      !linked_list_validatePtr(end->start)
-	)return false;
+  if (end == NULL || end < LIST) return false;
+#if USE_END
   struct node* start = end->start;
+  if(start<LIST)return false;
   return !(start == NULL || end == NULL || start->end != end);
 #endif
   return true;
+#endif
 }
-
-
 
 /**
  * Adds the given node back to the linked list
@@ -83,17 +72,18 @@ void linked_list_readd(struct node* n){
 /**
  * adds the given location with the given size
  * this DOES NOT coalesce
- * @param n the space to add
+ * @param start the space to add
  * @param size the size of the node
  * @return the node created
  */
-struct node* linked_list_add(struct node* n, size_t size) {
-	if (size > MAX_SIZE)error_noSpace();
+struct node* linked_list_add(void* start, size_t size){
+  if (size > MAX_SIZE) exit(E_NO_SPACE);
+  struct node* n = (struct node*)start;
 	n->size = size;
 #if USE_END
-	struct nodeEnd* end21=list_find_getNodeEnd(n);
-	end21->start=n;
-	n->end=end21;
+	struct nodeEnd* end=list_find_getNodeEnd(start);
+	end->start=n;
+	n->end=end;
 #endif
 	linked_list_readd(n);
 	return n;

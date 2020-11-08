@@ -9,12 +9,6 @@ void* alloc_getVoid(struct header* start){
 	return start + 1;
 }
 
-void* alloc_core(struct header* head, size_t s){
-  head->magic = MAGIC;
-  head->size = s;  // If atomic size is too small s is updated
-  return alloc_getVoid(head);
-}
-
 /**
  * Alocates new space to be used
  * @param size the minimum size to allocate
@@ -25,13 +19,16 @@ void* alloc_core(struct header* head, size_t s){
  */
 void* Mem_Alloc(int size){
 	error_args(size);
-	size_t s = util_roundUp_t(
+	size_t s = (size_t)util_roundUp(
 	  size + sizeof(struct header),
 	  ALIGN
 	);
 	void* start=list_find(&s);
 	if(start!=NULL){
-		return alloc_core(start, s);
+		struct header* head=(struct header*)start;
+		head->magic=MAGIC;
+		head->size=s; //If atomic size is too small s is updated
+		return alloc_getVoid(start);
 	}
 	else{
 		#if EXPAND
