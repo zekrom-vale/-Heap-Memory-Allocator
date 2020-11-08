@@ -136,7 +136,8 @@ struct node* list_find_offset(struct node* start, size_t size) {
  *@param start the node to get the end of
  */
 struct nodeEnd* list_find_getNodeEnd(struct node* start) {
-  return (struct nodeEnd*)util_ptrAdd(start, start->size - END);
+	assert(start->size>=ATOMIC);
+	return (struct nodeEnd*)util_ptrAdd(start, start->size - END);
   //|x|x|x|x|x|x|x|x|x| | | | | | | | | | | | |e|e|e|e| |
   // 0                 1                   2
   // 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5

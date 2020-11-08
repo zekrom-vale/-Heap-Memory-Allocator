@@ -73,8 +73,9 @@ struct node* linked_list_add(void* start, size_t size){
   struct node* n = (struct node*)start;
 	n->size = size;
 #if USE_END
-	n->end=list_find_getNodeEnd(start);
-	n->end->start=n;
+	struct nodeEnd* end=list_find_getNodeEnd(start);
+	end->start=n;
+	n->end=end;
 #endif
 	linked_list_readd(n);
 	return n;

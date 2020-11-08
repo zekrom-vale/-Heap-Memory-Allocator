@@ -7,6 +7,6 @@
     <DebuggerFlavor>LinuxDebugger</DebuggerFlavor>
     <RemoteDebuggerWorkingDirectory>~/projects/Heap-Memory-Allocator/Heap-Memory-Allocator/bin/x64/Debug/</RemoteDebuggerWorkingDirectory>
     <RemoteDebuggerCommand>~/projects/Heap-Memory-Allocator/Heap-Memory-Allocator/bin/x64/Debug/Heap-Memory-Allocator.out</RemoteDebuggerCommand>
-    <RemoteDebuggerCommandArguments> &gt; v</RemoteDebuggerCommandArguments>
+    <RemoteDebuggerCommandArguments> &gt; v; cat v</RemoteDebuggerCommandArguments>
   </PropertyGroup>
 </Project>

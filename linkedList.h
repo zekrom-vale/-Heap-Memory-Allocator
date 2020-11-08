@@ -78,7 +78,7 @@ extern struct linkedList* LIST;
  *It is posible to allocate if the size is the same as struct node, but that
  *requres more logic
  */
-#define RAW_ATOMIC sizeof(struct node) + END + 1
+#define RAW_ATOMIC sizeof(struct node) + END + 8
 #else
 #define RAW_ATOMIC 1 * sizeof(struct node)
 #endif

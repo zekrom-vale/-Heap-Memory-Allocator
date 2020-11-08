@@ -45,6 +45,7 @@
   <ItemGroup>
     <ClCompile Include="..\alloc.c" />
     <ClCompile Include="..\dump.c" />
+    <ClCompile Include="..\error.c" />
     <ClCompile Include="..\free.c" />
     <ClCompile Include="..\init.c" />
     <ClCompile Include="..\linkedlist.c" />
@@ -56,6 +57,7 @@
   <ItemGroup>
     <ClInclude Include="..\alloc.h" />
     <ClInclude Include="..\dump.h" />
+    <ClInclude Include="..\error.h" />
     <ClInclude Include="..\free.h" />
     <ClInclude Include="..\init.h" />
     <ClInclude Include="..\linkedList.h" />

@@ -27,7 +27,7 @@ int main(){
 	printf("Alloc 200 a2\n");
 	Mem_Dump();
 	
-	void* a3 = Mem_Alloc(10);
+	void* a3 = Mem_Alloc(100);
 	printf("Alloc 10 a3\n");
 	Mem_Dump();
 
@@ -47,6 +47,11 @@ int main(){
 	Mem_Free(a2);
 	printf("Free a2\n");
     Mem_Dump();
+
+	
+	Mem_Free(a4);
+    printf("Free a4\n");
+    Mem_Dump();
 #endif
 	a1=Mem_Alloc(310);
 	printf("Alloc 310 a1\n");
@@ -56,7 +61,7 @@ int main(){
     Mem_Dump();
 
 	//Force it to expand memory
-    a = Mem_Alloc(2 * ALLOC_SIZE);
+    void* b = Mem_Alloc(2 * ALLOC_SIZE);
     printf("Alloc 2ALLOC_SIZE a\n");
     Mem_Dump();
 
