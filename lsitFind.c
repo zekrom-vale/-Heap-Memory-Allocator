@@ -18,7 +18,7 @@ void* list_find(size_t* s) {
   return NULL;
 }
 
-void* list_find_process(size_t* s, struct node* start) {
+void* list_find_process(size_t* s, struct node* start){
   if (start->size < *s) {
     // Failure space is too small
     return NULL;
@@ -75,6 +75,7 @@ void* list_find_findWorstFit(size_t* s) {
   struct node* large = cur;
   size_t size = *s;
   while (cur != NULL) {
+    error_freeSpace(cur);
     // If the size is larger than requested
     if (cur->size >= size) {
       // If a perfect match
@@ -101,6 +102,7 @@ void* list_find_findBestFit(size_t* s) {
   struct node* small = cur;
   size_t size = *s;
   while (cur != NULL) {
+    error_freeSpace(cur);
     // If the size is larger than requested
     if (cur->size >= size) {
       // If a perfect match
@@ -108,7 +110,7 @@ void* list_find_findBestFit(size_t* s) {
         linked_list_remove(cur);
         return cur;
       }
-      // If cur is larger replace large
+      // If cur is larger replace small
       if (cur->size > size && cur->size < small->size) small = cur;
     }
     cur = cur->next;
@@ -117,12 +119,10 @@ void* list_find_findBestFit(size_t* s) {
 }
 
 
-
-
 /**
- *gets the next location of the node
- *@param start the original node
- *@param size the offset
+ * gets the next location of the node
+ * @param start the original node
+ * @param size the offset
  */
 struct node* list_find_offset(struct node* start, size_t size) {
   assert(size >= ATOMIC);
