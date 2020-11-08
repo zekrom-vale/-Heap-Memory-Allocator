@@ -48,4 +48,5 @@ struct header {
 void* alloc_getVoid(struct header* start);
 void* Mem_Alloc(int size);
 size_t extend_calcSpace(size_t size);
+void* alloc_core(struct header* head, size_t s);
 #endif
