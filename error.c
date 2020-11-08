@@ -12,7 +12,7 @@ void error_noSpace(){
 
 //#define E_CORRUPT_FREESPACE (2)
 void error_freeSpace(struct node* cur){
-    if(linked_list_validate(cur))error(E_CORRUPT_FREESPACE);
+    if(!linked_list_validate(cur))error(E_CORRUPT_FREESPACE);
 }
     //#define E_PADDING_OVERWRITTEN (3)
 void error_head(struct header* head){
