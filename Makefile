@@ -9,7 +9,7 @@ gcc=gcc -std=gnu++98 -std=gnu99
 err=-Wall -Werror
 
 #defines the files to use
-files=init free linkedList alloc dump mem util listFind error
+files=init free linkedList alloc dump mem util listFind error extend
 hfiles:=$(foreach file, $(files), $(file).h)
 cfiles:=$(foreach file, $(files), $(file).c)
 
