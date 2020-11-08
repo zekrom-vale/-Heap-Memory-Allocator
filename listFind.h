@@ -4,8 +4,9 @@
 #include <stdlib.h>
 #include "mem.h"
 #include "linkedList.h"
+#include "error.h"
 
-void* list_find_find(size_t* s);
+void* list_find(size_t* s);
 void* list_find_findFirstFit(size_t* s);
 void* list_find_findWorstFit(size_t* s);
 void* list_find_findBestFit(size_t* s);

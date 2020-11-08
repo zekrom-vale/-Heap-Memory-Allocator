@@ -18,12 +18,12 @@ void* alloc_getVoid(struct header* start){
  * @return The pointer to the starting space of the allocated space
  */
 void* Mem_Alloc(int size){
-	if(size <= 0)exit(E_BAD_ARGS);
+	error_args(size);
 	size_t s = (size_t)util_roundUp(
 	  size + sizeof(struct header),
 	  ALIGN
 	);
-	void* start=list_find_find(&s);
+	void* start=list_find(&s);
 	if(start!=NULL){
 		struct header* head=(struct header*)start;
 		head->magic=MAGIC;
@@ -34,7 +34,7 @@ void* Mem_Alloc(int size){
 		#if EXPAND
 		return alloc_getVoid(alloc_extend((size_t)size));
 		#else
-			exit(E_NO_SPACE);
+			error_noSpace();
 		#endif
 	}
 }
@@ -65,7 +65,7 @@ struct header* alloc_extend(size_t size){
 	//Request
 	void* allocated = init_request(s);
 
-	if(allocated == NULL)exit(E_NO_SPACE);
+	if(allocated == NULL)error_noSpace();
 	//If size is smaller than ATTOMIC use that instead
 	if(size < ATOMIC)size = ATOMIC;
 	//If the allocated space is the same as the ATOMIC size
@@ -101,7 +101,7 @@ struct header* alloc_extendInit(size_t size){
 	struct linkedList* allocated =
 		(struct linkedList*)init_request(s);
 
-	if(allocated == NULL)exit(E_NO_SPACE);
+	if(allocated == NULL)error_noSpace();
 	init_list(allocated);
 	linked_list_add(
 		allocated + 1,

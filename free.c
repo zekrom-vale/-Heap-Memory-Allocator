@@ -19,7 +19,7 @@ int Mem_Free(void* ptr){
 	struct header* head=free_getHead(ptr);
 
 	//validates the header
-	if(head->magic != MAGIC)exit(E_PADDING_OVERWRITTEN);
+	error_head(head);
 	struct node* node=linked_list_add(head, head->size);
 	//If coalescing call it
 #if COALESCE
