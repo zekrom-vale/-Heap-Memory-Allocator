@@ -27,7 +27,7 @@ int main(){
 	printf("Alloc 200 a2\n");
 	Mem_Dump();
 	
-	void* a3 = Mem_Alloc(100);
+	void* a3 = Mem_Alloc(10);
 	printf("Alloc 10 a3\n");
 	Mem_Dump();
 
@@ -48,7 +48,6 @@ int main(){
 	printf("Free a2\n");
     Mem_Dump();
 
-	
 	Mem_Free(a4);
     printf("Free a4\n");
     Mem_Dump();

@@ -76,13 +76,12 @@ extern struct linkedList* LIST;
 /**
  *The absolute minumum of the free space
  *It is posible to allocate if the size is the same as struct node, but that
- *requres more logic
+ * requres more logic
  */
-#define RAW_ATOMIC sizeof(struct node) + END + 8
+#define ATOMIC sizeof(struct node) + sizeof(struct nodeEnd) + 0x8
 #else
-#define RAW_ATOMIC 1 * sizeof(struct node)
+#define ATOMIC 1 * sizeof(struct node)
 #endif
-#define ATOMIC RAW_ATOMIC + ALIGN - RAW_ATOMIC % ALIGN
 
 
 bool linked_list_validate(struct node* start);
