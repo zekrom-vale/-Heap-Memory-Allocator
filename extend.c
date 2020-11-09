@@ -7,7 +7,11 @@
  */
 void* extend_request(size_t size) {
   void* v =
-      mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS,
+      mmap(
+		  NULL,
+		  size,
+		  PROT_READ | PROT_WRITE,
+		  MAP_PRIVATE | MAP_ANONYMOUS,
            // Don't need file device (fd) with MAP_ANONYMOUS
            0,
 #if PAGE

@@ -126,7 +126,7 @@ void* list_find_findBestFit(size_t* s) {
  */
 struct node* list_find_offset(struct node* start, size_t size) {
   assert(size >= ATOMIC);
-  struct node* next = (struct node*)util_ptrAdd(start, size + 1);
+  struct node* next = (struct node*)util_ptrAdd(start, size);
   return next;
 }
 
@@ -149,7 +149,7 @@ struct nodeEnd* list_find_getNodeEnd(struct node* start) {
  * @return the next node
  */
 struct node* list_find_getNextNode(struct node* cur) {
-  return util_ptrAdd(cur->end + 1, 1);
+  return cur->end + 1;
 }
 
 /**
@@ -158,7 +158,7 @@ struct node* list_find_getNextNode(struct node* cur) {
  * @return The previous node, NULL if invalid
  */
 struct node* list_find_getPrevNode(struct node* start) {
-  struct nodeEnd* end = util_ptrSub((struct nodeEnd*)start - 1, 1);
+  struct nodeEnd* end = (struct nodeEnd*)start - 1;
   if (linked_list_validateEnd(end)) return end->start;
   return NULL;
 }

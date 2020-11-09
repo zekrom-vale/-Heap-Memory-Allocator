@@ -35,7 +35,7 @@ int Mem_Free(void* ptr){
  * @param start the node to coalesce arround
  */
 void linked_list_coalesce(struct node* start){
-  struct node* next = util_ptrAdd(list_find_getNodeEnd(start)+1,1);
+  struct node* next = list_find_getNextNode(start);
 	if(linked_list_validate(next)){
 		start->size+=next->size;
 		linked_list_remove(next);

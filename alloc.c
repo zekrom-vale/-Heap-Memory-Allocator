@@ -19,20 +19,20 @@ void* alloc_getVoid(struct header* start){
  */
 void* Mem_Alloc(int size){
 	error_args(size);
-	size_t s = (size_t)util_roundUp(
-	  size + sizeof(struct header),
+	size_t s = util_roundUp_t(
+	  (size_t)size + sizeof(struct header),
 	  ALIGN
 	);
 	void* start=list_find(&s);
 	if(start!=NULL){
-		struct header* head=(struct header*)start;
+		struct header* head=start;
 		head->magic=MAGIC;
 		head->size=s; //If atomic size is too small s is updated
 		return alloc_getVoid(start);
 	}
 	else{
 		#if EXPAND
-		return alloc_getVoid(extend_extend((size_t)size));
+		return alloc_getVoid(extend_extend(s));
 		#else
 			error_noSpace();
 		#endif
