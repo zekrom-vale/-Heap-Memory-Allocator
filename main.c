@@ -3,6 +3,8 @@
 #include <stdbool.h>
 #include <stdio.h>
 
+#define NO_STDIO_REDIRECT
+
 #define ALLOC_SIZE 0x3900
 #define MM_FREE true
 #define BREAK false
