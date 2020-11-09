@@ -10,7 +10,7 @@ err=-Wall -Werror
 
 #defines the files to use
 files=init free linkedList alloc dump mem util listFind error extend
-hfiles:=$(foreach file, $(files), $(file).h)
+hfiles:=$(foreach file, $(files), $(file).h) config.h
 cfiles:=$(foreach file, $(files), $(file).c)
 
 all:

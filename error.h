@@ -7,13 +7,6 @@
 #include "free.h"
 #include <unistd.h>
 
-/**
- * The max size to allow for
- * There is no point to allow for memory that is phicicaly imposible
- */
-#define MAX_SIZE 0.01 * 1.074e9L
-#define WSL true
-
 void error_noSpace();
 
 void error_freeSpace(struct node* cur);

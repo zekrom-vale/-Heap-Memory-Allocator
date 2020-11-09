@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\alloc.h" />
+    <ClInclude Include="..\config.h" />
     <ClInclude Include="..\dump.h" />
     <ClInclude Include="..\error.h" />
     <ClInclude Include="..\extend.h" />

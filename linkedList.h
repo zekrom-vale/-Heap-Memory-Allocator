@@ -10,18 +10,9 @@
 #include "mem.h"
 #include "util.h"
 #include "listFind.h"
+#include "config.h"
 
 /**
- * Should we validdate the nodes?
- * Not using this will cause crashes!!
- */
-#define VALIDATE true
-/** 
- * Should we create end nodes to allow for previous coalescing 
- */
-#define USE_END true
-
-/** 
  * The free space node
  * @member next the next node in the list
  * @member prev the previous node in the list
@@ -38,7 +29,7 @@ struct node{
 };
 
 #if USE_END
-/** 
+/**
  * The end of the free space to point used to linararly get the previous node
  */
 struct nodeEnd{
@@ -46,7 +37,7 @@ struct nodeEnd{
 };
 #endif
 
-/** 
+/**
  * The base of the linked list and other information
  * @member first the first node of the linked list
  * @member last the last node of the linked list
@@ -60,28 +51,10 @@ struct linkedList{
 	int MODE : FIRSTFIT;
 };
 
-/** 
+/**
  * The sudo constant pointer to the linked list
  */
 extern struct linkedList* LIST;
-
-#define LIST_HEAD sizeof(struct linkedList)
-
-#if USE_END
-/**
- *The size of the end node
- */
-#define END sizeof(struct nodeEnd)
-
-/**
- *The absolute minumum of the free space
- *It is posible to allocate if the size is the same as struct node, but that
- * requres more logic
- */
-#define ATOMIC sizeof(struct node) + sizeof(struct nodeEnd)
-#else
-#define ATOMIC 1 * sizeof(struct node)
-#endif
 
 
 bool linked_list_validate(struct node* start);
