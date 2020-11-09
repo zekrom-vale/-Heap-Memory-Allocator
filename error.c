@@ -13,10 +13,11 @@ const char* errStr[]={
 	"Bad Pointer"
 };
 
+#define DBG true
 error(int err){
     m_error=err;
 	perror("Soemthing whent wrong ");
-	perror(errStr[err]);
+	perror(errStr[err-1]);
     exit(err);
 }
 
@@ -31,6 +32,8 @@ void error_freeSpace(struct node* cur){
 }
     //#define E_PADDING_OVERWRITTEN (3)
 void error_head(struct header* head){
+	error_ptr(head);
+	if(head->size<ATOMIC||head->size%ALIGN!=0)error(E_BAD_POINTER);
     if (head->magic != MAGIC){
         error(E_PADDING_OVERWRITTEN);
     }
@@ -51,5 +54,19 @@ void error_args_t(size_t size) {
 
 //#define E_BAD_POINTER (5)
 void error_ptr(void* ptr){
-	if(LIST!=NULL&&ptr<LIST||(uintptr_t)ptr%ALIGN!=0)error(E_BAD_POINTER);
+	if(
+		LIST!=NULL
+		&&
+		ptr<LIST
+		||
+		sbrk(0)>=ptr
+		//&ptr>ptr
+		||
+		(uintptr_t)ptr%ALIGN!=0
+	)error(E_BAD_POINTER);
+}
+
+void error_node(struct node* node){
+	error(node);
+	if(node->size<ATOMIC)error(E_BAD_POINTER);
 }
