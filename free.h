@@ -17,6 +17,6 @@
 
 int Mem_Free(void* ptr);
 struct header* free_getHead(void* start);
-void linked_list_coalesce(struct node* start);
+void free_coalesce(struct node* start);
 
 #endif
