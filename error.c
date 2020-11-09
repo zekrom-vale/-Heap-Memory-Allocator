@@ -6,7 +6,7 @@
 #include "error.h"
 
 const char* errStr[]={
-	"No Space Avalabel",
+	"No Space Available",
 	"Corrupt Free Space",
 	"Padding Overwirten",
 	"Bad Arguments",
@@ -16,7 +16,7 @@ const char* errStr[]={
 #define DBG true
 error(int err){
     m_error=err;
-	perror("Soemthing whent wrong ");
+	perror("Soemthing whent wrong: ");
 	perror(errStr[err-1]);
     exit(err);
 }
