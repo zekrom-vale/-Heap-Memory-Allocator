@@ -59,8 +59,11 @@ void error_ptr(void* ptr){
 		&&
 		ptr<LIST
 		||
-		sbrk(0)>=ptr
-		//&ptr>ptr
+#if WSL
+		&ptr<=ptr
+#else
+		sbrk(0)<ptr
+#endif
 		||
 		(uintptr_t)ptr%ALIGN!=0
 	)error(E_BAD_POINTER);
