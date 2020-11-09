@@ -5,7 +5,9 @@ objsuf=.o
 # Suffix for shared object files
 shasuf=.so
 
-gcc=gcc -std=gnu++98 -std=gnu99
+opt=
+
+gcc=gcc -std=gnu++98 -std=gnu99 $(opt)
 err=-Wall -Werror
 
 #defines the files to use
