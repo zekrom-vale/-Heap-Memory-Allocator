@@ -2,7 +2,8 @@
 #define ERROR_H
 
 #include "mem.h"
-#include "stdlib.h"
+#include <stdlib.h>
+#include <stdint.h>
 #include "free.h"
 
 /**

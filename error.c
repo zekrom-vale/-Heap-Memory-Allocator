@@ -5,8 +5,18 @@
 
 #include "error.h"
 
+const char* errStr[]={
+	"No Space Avalabel",
+	"Corrupt Free Space",
+	"Padding Overwirten",
+	"Bad Arguments",
+	"Bad Pointer"
+};
+
 error(int err){
     m_error=err;
+	perror("Soemthing whent wrong ");
+	perror(errStr[err]);
     exit(err);
 }
 
@@ -38,4 +48,8 @@ void error_args_t(size_t size) {
     error(E_BAD_ARGS);
   }
 }
+
 //#define E_BAD_POINTER (5)
+void error_ptr(void* ptr){
+	if(LIST!=NULL&&ptr<LIST||(uintptr_t)ptr%ALIGN!=0)error(E_BAD_POINTER);
+}
