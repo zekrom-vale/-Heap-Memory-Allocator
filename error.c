@@ -1,3 +1,8 @@
+/** 
+ * Manages errors for the entire program
+ * This will not always throw the error directly as some does common checking
+ */
+
 #include "error.h"
 
 error(int err){

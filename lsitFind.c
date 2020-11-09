@@ -1,3 +1,8 @@
+/** 
+ * Provides various methods to find a new space for allocation
+ * And getting next and previous nodes linearly without sorting
+ */
+
 #include "listFind.h"
 
 /**

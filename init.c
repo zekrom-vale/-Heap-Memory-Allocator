@@ -1,9 +1,15 @@
+/** 
+ * Initalizes the free space and main handelers
+ */
+
 #include "init.h"
 
 /**
  * Initalises the first chunk of mmaped memory
- * If this space runs out it will be automaticaly expaded relative to the size of the requested memory, but enough for multiple allocations
- * @param sizeOfRegion The size of the memory, this will be rounded to the nerest CHUNK
+ * If this space runs out it will be automaticaly expaded relative to the size of the requested memory
+ * but enough for multiple allocations
+ * @param sizeOfRegion The size of the memory
+ * this will be rounded to the nerest CHUNK
  * @return the pointer for the mmaped location
  * Cast this to struct linkedList* to use it
  */

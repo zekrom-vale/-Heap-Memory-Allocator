@@ -1,5 +1,9 @@
-#include "free.h"
+/** 
+ * Frees memory by removing the header and adding a free node
+ * Also, provides coalesce when COALESCE is true
+ */
 
+#include "free.h"
 
 /** 
  * Gets the header from the start space

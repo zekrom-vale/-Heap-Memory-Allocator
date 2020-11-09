@@ -1,3 +1,7 @@
+/** 
+ * Manages printing of free spaces, linked list/params, and more
+ */
+
 #include "dump.h"
 
 /**

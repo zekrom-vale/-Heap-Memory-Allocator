@@ -1,3 +1,8 @@
+/** 
+ * Defines the linkedList and nodes that are used for the free space
+ * Also provides utility methods to validate
+ */
+
 #include "linkedList.h"
 
 struct linkedList* LIST;

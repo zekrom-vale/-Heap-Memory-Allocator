@@ -1,3 +1,7 @@
+/** 
+ * This file alocates chunks of memory to the user
+ */
+
 #include "alloc.h"
 
 /**

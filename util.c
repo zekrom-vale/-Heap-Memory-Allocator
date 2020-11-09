@@ -1,3 +1,7 @@
+/** 
+ * Provides various utility functions
+ */
+
 #include "util.h"
 
 /**

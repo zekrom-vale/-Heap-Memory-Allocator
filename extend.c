@@ -1,3 +1,8 @@
+/** 
+ * Extends the program's memory space with mmap in defined chunks
+ * This will be automaticaly called if EXTEND is true and the allocation service runs out of space
+ */
+
 #include "extend.h"
 
 /**
