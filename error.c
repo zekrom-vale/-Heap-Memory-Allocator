@@ -14,74 +14,102 @@ const char* errStr[]={
 };
 
 #define DBG true
-error(int err){
+error(int err, char* fmt, ...){
     m_error=err;
-	fprintf(stderr, "Soemthing whent wrong: ");
-	fprintf(stderr, errStr[err-1]);
+	fprintf(stderr, "Soemthing whent wrong: %s", errStr[err-1]);
+	
+	va_list list;
+	va_start(list, fmt);
+	fprintf(stderr, fmt, list);
+	va_end(list);
+
     exit(err);
 }
 
 //#define E_NO_SPACE (1)
 void error_noSpace(){
-    error(E_NO_SPACE);
+    error(E_NO_SPACE, "");
 }
 
 //#define E_CORRUPT_FREESPACE (2)
 void error_freeSpace(struct node* cur){
-    if(!linked_list_validate(cur))error(E_CORRUPT_FREESPACE);
+    if(!linked_list_validate(cur))error(E_CORRUPT_FREESPACE, "");
 }
     //#define E_PADDING_OVERWRITTEN (3)
 void error_head(struct header* head){
 	error_ptr(head);
-	if(head->size<ATOMIC||head->size%ALIGN!=0)error(E_BAD_POINTER);
-    if (head->magic != MAGIC){
-        error(E_PADDING_OVERWRITTEN);
-    }
+	if(head->size<ATOMIC)
+		error(
+			E_BAD_POINTER,
+			"Not atomic: size %uz",
+			head->size
+		);
+	if(head->size%ALIGN!=0)
+		error(
+			E_BAD_POINTER,
+			"Does not match with ALIGN(%d): %uz",
+			ALIGN,
+			head->size
+		);
+    if (head->magic != MAGIC)
+		error(
+			E_PADDING_OVERWRITTEN,
+			"Invalid magic value, expected %d got %d",
+			MAGIC,
+			head->magic
+		);
 }
 //#define E_BAD_ARGS (4)
 
 void error_args(int size) {
-  if (size <= 0 || size > MAX_SIZE) {
-	fprintf(stderr, "%d ", size);
-    error(E_BAD_ARGS);
-  }
+  if (size <= 0 || size > MAX_SIZE)
+    error(E_BAD_ARGS, "Bad size: %d ", size);
 }
 
 void error_args_t(size_t size) {
-  if (size > MAX_SIZE) {
-	fprintf(stderr, "%zu ", size);
-    error(E_BAD_ARGS);
-  }
+  if (size > MAX_SIZE)
+    error(E_BAD_ARGS, "Bad size: %zu ", size);
 }
 
 //#define E_BAD_POINTER (5)
 void error_ptr(void* ptr){
-	if(
-		LIST!=NULL
-		&&
-		ptr<LIST
-		||
-#if WSL
-		&ptr<=ptr
-#else
+	if(LIST!=NULL && ptr<LIST)
+		error(
+			E_BAD_POINTER,
+			"Address is before the start loction(%p) %p ",
+			LIST,
+			ptr
+		);
 #if BRK
-		sbrk(0)<ptr
+	void* heap;
+#if WSL
+	heap=&ptr;
 #else
-		false
+	heap=sbrk(0);
 #endif
+	if(heap<=ptr)
+		error(
+			E_BAD_POINTER,
+			"Address is after the end of the heap(%p): %p ",
+			heap,
+			ptr
+		);
 #endif
-		||
-		(uintptr_t)ptr%ALIGN!=0
-	){
-		fprintf(stderr, "%p ", ptr);
-		error(E_BAD_POINTER);
-	}
+	if((uintptr_t)ptr%ALIGN!=0)
+		error(
+			E_BAD_POINTER,
+			"Address does not match with ALIGN(%d): %p",
+			ALIGN,
+			ptr
+		);
 }
 
 void error_node(struct node* node){
-	error(node);
-	if(node->size<ATOMIC){
-		fprintf(stderr, "%p ", node);
-		error(E_BAD_POINTER);
-	}
+	error_ptr(node);
+	if(node->size<ATOMIC)
+		error(
+			E_BAD_POINTER,
+			"Node is not at an atomic location %p ",
+			node
+		);
 }

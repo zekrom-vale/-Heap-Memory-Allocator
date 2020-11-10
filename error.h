@@ -6,6 +6,7 @@
 #include <stdint.h>
 #include "free.h"
 #include <unistd.h>
+#include <stdarg.h>
 
 void error_noSpace();
 
