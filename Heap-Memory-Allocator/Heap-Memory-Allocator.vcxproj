@@ -49,8 +49,8 @@
     <ClCompile Include="..\extend.c" />
     <ClCompile Include="..\free.c" />
     <ClCompile Include="..\init.c" />
-    <ClCompile Include="..\linkedlist.c" />
-    <ClCompile Include="..\lsitFind.c" />
+    <ClCompile Include="..\linkedList.c" />
+    <ClCompile Include="..\listFind.c" />
     <ClCompile Include="..\main.c" />
     <ClCompile Include="..\mem.c" />
     <ClCompile Include="..\util.c" />

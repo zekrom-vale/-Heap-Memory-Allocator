@@ -52,3 +52,4 @@ rundirect: memdirect
 
 clean: restorePath
 	rm mem$(objsuf)
+	rm *.o

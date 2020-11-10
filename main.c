@@ -10,31 +10,6 @@
 #define ALLOC_SIZE 0x3900
 #define MM_FREE true
 
-int main(int argc, char* argv[]){
-	Mem_Init(ALLOC_SIZE);
-	printf("Init\n");
-	Mem_Dump();
-	if(argc<=1){
-		main_default(1);
-		return 0;
-	}
-	int mult;
-	if(argc>=2)mult=argv[2];
-	else mult=1;
-	if(strcmp("default", argv[1]))main_default(mult);
-	else if(strcmp("small", argv[1]))main_small(mult);
-	else if(strcmp("break", argv[1]))main_break();
-	else if(strcmp("breakNeg", argv[1]))main_breakNeg();
-	else if(strcmp("breakZero", argv[1]))main_breakZero();
-	else if(strcmp("breakBad", argv[1]))main_breakBad();
-	else if(strcmp("breakNULL", argv[1]))main_breakNULL();
-	else if(strcmp("breakOffset", argv[1]))main_breakOffset();
-	else if(strcmp("breakFree2", argv[1]))main_breakFree2();
-	else main_small(mult);
-	return 0;
-}
-
-
 /**
  * Here we are allocating random sizes of memory
  * We start with the allocation max size and freeing that
@@ -286,3 +261,26 @@ void main_breakFree2(){
 	Mem_Free(a);
 }
  
+int main(int argc, char* argv[]){
+	Mem_Init(ALLOC_SIZE);
+	printf("Init\n");
+	Mem_Dump();
+	if(argc<=1){
+		main_default(1);
+		return 0;
+	}
+	int mult;
+	if(argc>=2)mult=argv[2];
+	else mult=1;
+	if(strcmp("default", argv[1]))main_default(mult);
+	else if(strcmp("small", argv[1]))main_small(mult);
+	else if(strcmp("break", argv[1]))main_break();
+	else if(strcmp("breakNeg", argv[1]))main_breakNeg();
+	else if(strcmp("breakZero", argv[1]))main_breakZero();
+	else if(strcmp("breakBad", argv[1]))main_breakBad();
+	else if(strcmp("breakNULL", argv[1]))main_breakNULL();
+	else if(strcmp("breakOffset", argv[1]))main_breakOffset();
+	else if(strcmp("breakFree2", argv[1]))main_breakFree2();
+	else main_small(mult);
+	return 0;
+}
