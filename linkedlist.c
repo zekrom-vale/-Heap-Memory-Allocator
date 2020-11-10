@@ -270,8 +270,6 @@ void linked_list_printNodeAlt(struct node* cur){
 #endif
 }
 
-#define BLOCK ALIGN
-#define PRINT_ALL false
 void linked_list_printNodeMore(struct node* cur){
 	linked_list_printNodeAlt(cur);
 	alloc_printSection(cur+1, "<-- Free space start");

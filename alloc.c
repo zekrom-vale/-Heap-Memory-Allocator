@@ -62,8 +62,6 @@ void alloc_printSection(void* ptr, char* txt){
 	printf("%p %s\n", ptr, txt);
 }
 
-#define BLOCK ALIGN
-#define PRINT_ALL false
 void alloc_printHeaderMore(struct header* head){
 	alloc_printHeaderAlt(head);
 	alloc_printSection(head+1, "<-- Allocated space start");

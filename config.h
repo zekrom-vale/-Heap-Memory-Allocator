@@ -14,6 +14,7 @@
 * Not using this will cause crashes!!
 */
 #define VALIDATE true
+
 /**
 * Should we create end nodes to allow for previous coalescing
 */
@@ -71,4 +72,20 @@
 * There is no point to allow for memory that is phicicaly imposible
 */
 #define MAX_SIZE 0.01 * 1.074e9L
+
+/** 
+ * Is this Windows Subsystem for Luinx?
+ * May be a dead flag
+ */
 #define WSL true
+
+/** 
+ * Is the Block to print different from align?
+ */
+#define BLOCK ALIGN
+
+/** 
+ * Should all the addresses in between be printed or just 8?
+ * WARNING: Truning this on will create a lot of output
+ */
+#define PRINT_ALL false
