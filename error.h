@@ -7,6 +7,7 @@
 #include "free.h"
 #include <unistd.h>
 #include <stdarg.h>
+#include <errno.h>
 
 void error_noSpace();
 

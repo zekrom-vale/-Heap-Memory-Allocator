@@ -6,11 +6,11 @@
 #include "error.h"
 
 const char* errStr[]={
-	"No Space Available",
+	ENOMEM,
 	"Corrupt Free Space",
 	"Padding Overwirten",
-	"Bad Arguments",
-	"Bad Pointer"
+	EINVAL,
+	EFAULT
 };
 
 #define DBG true
