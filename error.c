@@ -80,21 +80,13 @@ void error_ptr(void* ptr){
 			LIST,
 			ptr
 		);
-#if BRK
-	void* heap;
-#if WSL
-	heap=&ptr;
-#else
-	heap=sbrk(0);
-#endif
-	if(heap<=ptr)
+	if(ptr>=LIST->end)
 		error(
 			E_BAD_POINTER,
 			"Address is after the end of the heap(%p): %p ",
-			heap,
+			LIST->end,
 			ptr
 		);
-#endif
 	if((uintptr_t)ptr%ALIGN!=0)
 		error(
 			E_BAD_POINTER,

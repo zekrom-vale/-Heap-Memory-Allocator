@@ -72,5 +72,3 @@
 */
 #define MAX_SIZE 0.01 * 1.074e9L
 #define WSL true
-
-#define BRK false

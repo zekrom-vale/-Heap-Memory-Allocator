@@ -46,7 +46,7 @@ bool linked_list_validateEnd(struct nodeEnd* end) {
   if (end == NULL || end < LIST) return false;
 #if USE_END
   struct node* start = end->start;
-  if(start<LIST)return false;
+  if(start<LIST||start>=LIST->end)return false;
   return !(start == NULL || end == NULL || start->end != end);
 #endif
   return true;
