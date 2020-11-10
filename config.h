@@ -1,24 +1,13 @@
-#include <stdbool.h>
-
 /**
 * Holds configuration options
 */
+
+#include <stdbool.h>
 
 /**
 * If true coalesce the free space
 */
 #define COALESCE true
-
-/**
-* Should we validdate the nodes?
-* Not using this will cause crashes!!
-*/
-#define VALIDATE true
-/**
-* Should we create end nodes to allow for previous coalescing
-*/
-#define USE_END true
-
 
 /**
 * Should we validdate the nodes?
