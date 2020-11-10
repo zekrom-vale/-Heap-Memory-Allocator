@@ -18,8 +18,8 @@ cfiles=init.c free.c linkedList.c alloc.c dump.c mem.c util.c listFind.c error.c
 all: memory main
 
 memory: $(cfiles) $(hfiles)
-	$(gcc) $(def) $(err) -c -fpic $(cfiles)
-	$(gcc) -shared -o libmem$(shasuf) mem.o
+	$(gcc) $(def) -c $(err) -fpic $(cfiles)
+	$(gcc) -shared -o libmem.so mem.o
 
 memdirect: $(cfiles) $(hfiles) main.c
 	$(gcc) $(def) $(err) $(cfiles) $(hfiles) main.c -o memdir$(objsuf)
@@ -31,7 +31,7 @@ setPath:
 restorePath:
 	export LD_LIBRARY_PATH=$$OLD_LD_LIBRARY_PATH
 
-main: memory setPath
+main: memory setPath mem.h config.h
 	$(gcc) -L. -o main$(objsuf) main.c $(err) -lmem
 
 run: main

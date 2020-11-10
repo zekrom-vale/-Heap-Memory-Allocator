@@ -5,16 +5,15 @@
 
 #include "error.h"
 
-const char* errStr[]={
-	ENOMEM,
-	"Corrupt Free Space",
-	"Padding Overwirten",
-	EINVAL,
-	EFAULT
-};
-
 #define DBG true
-error(int err, char* fmt, ...){
+void error(int err, char* fmt, ...){
+	char* errStr[]={
+		strerror(ENOMEM),
+		"Corrupt Free Space",
+		"Padding Overwirten",
+		strerror(EINVAL),
+		strerror(EFAULT)
+	};
     m_error=err;
 	fprintf(stderr, "Soemthing whent wrong: %s", errStr[err-1]);
 	
@@ -73,14 +72,14 @@ void error_args_t(size_t size) {
 
 //#define E_BAD_POINTER (5)
 void error_ptr(void* ptr){
-	if(LIST!=NULL && ptr<LIST)
+	if(LIST!=NULL && (void*)ptr<(void*)LIST)
 		error(
 			E_BAD_POINTER,
 			"Address is before the start loction(%p) %p ",
 			LIST,
 			ptr
 		);
-	if(ptr>LIST->end)
+	if((void*)ptr>(void*)(LIST->end))
 		error(
 			E_BAD_POINTER,
 			"Address is after the end of the heap(%p): %p ",

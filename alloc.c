@@ -39,6 +39,7 @@ void* Mem_Alloc(int size){
 		return alloc_getVoid(extend_extend(s));
 		#else
 			error_noSpace();
+			return NULL;
 		#endif
 	}
 }
@@ -95,6 +96,6 @@ void alloc_printHeaderMore(struct header* head){
 }
 
 bool alloc_validate(struct header* head){
-	if(head==NULL||head<LIST||head>=LIST->end)return false;
+	if(head==NULL||(void*)head<(void*)LIST||(void*)head>=(void*)(LIST->end))return false;
 	return head->magic==MAGIC;
 }

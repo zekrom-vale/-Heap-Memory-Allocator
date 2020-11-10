@@ -16,10 +16,10 @@ struct linkedList* LIST;
  */
 bool linked_list_validate(struct node* start){
 #if VALIDATE
-	if(start==NULL||start<LIST||start>=LIST->end)return false;
+	if(start==NULL||(void*)start<(void*)LIST||(void*)start>=(void*)(LIST->end))return false;
 #if USE_END
 	struct nodeEnd* end=start->end;
-	if(end<LIST)return false;
+	if((void*)end<(void*)LIST)return false;
 	return !(start==NULL || end==NULL || end->start != start);
 #else
 	if(
@@ -43,10 +43,10 @@ bool linked_list_validate(struct node* start){
  */
 bool linked_list_validateEnd(struct nodeEnd* end) {
 #if VALIDATE
-  if (end == NULL || end < LIST) return false;
+  if (end == NULL || (void*)end < (void*)LIST) return false;
 #if USE_END
   struct node* start = end->start;
-  if(start<LIST||start>=LIST->end)return false;
+  if((void*)start<(void*)LIST||(void*)start>=(void*)(LIST->end))return false;
   return !(start == NULL || end == NULL || start->end != end);
 #endif
   return true;
@@ -270,12 +270,16 @@ void linked_list_printNodeAlt(struct node* cur){
 #endif
 }
 
+void linked_list_printSection(void* ptr, char* txt){
+	printf("%p %s\n", ptr, txt);
+}
+
 void linked_list_printNodeMore(struct node* cur){
 	linked_list_printNodeAlt(cur);
 	alloc_printSection(cur+1, "<-- Free space start");
 	if(PRINT_ALL||cur->size<=BLOCK*8){
 		for(size_t o=BLOCK; o<=cur->size-BLOCK; o+=BLOCK){
-			alloc_printSection(
+			linked_list_printSection(
 				util_ptrAdd(cur+1, o),
 				""
 			);
@@ -283,20 +287,20 @@ void linked_list_printNodeMore(struct node* cur){
 	}
 	else{
 		for(size_t o=BLOCK; o<=BLOCK*4; o+=BLOCK){
-			alloc_printSection(
+			linked_list_printSection(
 				util_ptrAdd(cur+1, o),
 				""
 			);
 		}
 		printf(".\n.\n.\n");
 		for(size_t o=cur->size-BLOCK*4; o<=cur->size-BLOCK; o+=BLOCK){
-			alloc_printSection(
+			linked_list_printSection(
 				util_ptrAdd(cur+1, o),
 				""
 			);
 		}
 	}
-	alloc_printSection(
+	linked_list_printSection(
 		util_ptrAdd(cur+1, cur->size),
 #if USE_END
 		"<-- Free space end and end node"

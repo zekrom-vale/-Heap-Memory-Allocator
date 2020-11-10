@@ -39,8 +39,8 @@ void* extend_request(size_t size) {
  */
 size_t extend_calcSpace(size_t size) {
   if (size < CHUNK / 0x40) return CHUNK;
-  if (size < CHUNK / 0x4) return util_roundUp(0x10 * size, CHUNK);
-  return util_roundUp(0x4 * size, CHUNK);
+  if (size < CHUNK / 0x4) return util_roundUp_t(0x10 * size, CHUNK);
+  return util_roundUp_t(0x4 * size, CHUNK);
 }
 
 #define BUFFER 0
@@ -82,7 +82,7 @@ struct header* extend_extend(size_t size) {
  * @return the header of the new mmaped space
  */
 struct header* extend_extendInit(size_t size) {
-  size_t s = util_roundUp(size + BUFFER + sizeof(struct linkedList), CHUNK);
+  size_t s = util_roundUp_t(size + BUFFER + sizeof(struct linkedList), CHUNK);
 
   // Request
   struct linkedList* allocated = (struct linkedList*)extend_request(s);

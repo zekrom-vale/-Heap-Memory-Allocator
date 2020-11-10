@@ -25,4 +25,5 @@ void* Mem_Alloc(int size);
 size_t extend_calcSpace(size_t size);
 void alloc_printHeader(struct header* head);
 bool alloc_validate(struct header* head);
+void alloc_printHeaderMore(struct header* head);
 #endif

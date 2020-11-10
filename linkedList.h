@@ -67,4 +67,5 @@ void linked_list_sort();
 void linked_list_print();
 void linked_list_printLinkedList();
 void linked_list_printNode(struct node* cur);
+void linked_list_printNodeMore(struct node* cur);
 #endif

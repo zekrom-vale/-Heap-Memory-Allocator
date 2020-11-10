@@ -20,7 +20,7 @@ void* Mem_Init(int sizeOfRegion){
 	}
 	//Pass 0 to default to CHUNK
 	size_t size = sizeOfRegion == 0 ?
-		CHUNK : sizeOfRegion;
+		(size_t)CHUNK : sizeOfRegion;
 	return extend_extendInit(size);
 	// |h|H|h|h|h| | | | | | |
 }

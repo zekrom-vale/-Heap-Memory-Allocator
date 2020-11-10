@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include <stdarg.h>
 #include <errno.h>
+#include <string.h>
 
 void error_noSpace();
 

@@ -197,7 +197,7 @@ void main_break(){
 	//Writing over the free list
 	*mangle = 678124523;
 	//This will certainly be an unexpected result
-	void* unknown = Mem_Alloc(20);
+	Mem_Alloc(20);
 	//Malloc does not prevent this and adding support to support bad practice is not a good idea
 }
 
@@ -206,7 +206,7 @@ void main_break(){
  * This will be rejected
  */
 void main_breakNeg(){
-	void* a=Mem_Alloc(-234);
+	Mem_Alloc(-234);
 }
 
 /** 
@@ -214,7 +214,7 @@ void main_breakNeg(){
 * This will be rejected
 */
 void main_breakZero(){
-	void* a=Mem_Alloc(0);
+	Mem_Alloc(0);
 }
 
 /** 
@@ -270,7 +270,7 @@ int main(int argc, char* argv[]){
 		return 0;
 	}
 	int mult;
-	if(argc>=2)mult=argv[2];
+	if(argc>=2)mult=atoi(argv[2]);
 	else mult=1;
 	if(strcmp("default", argv[1]))main_default(mult);
 	else if(strcmp("small", argv[1]))main_small(mult);
