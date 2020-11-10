@@ -35,5 +35,21 @@ restorePath:
 main: memory setPath
 	$(gcc) -L. -o main$(objsuf) main.c $(err) -lmem
 
+run: main
+	flags=(default small break breakNeg breakZero breakBad breakNULL)
+	for f in $${flags[@]}; do \
+		echo ./main$(objsuf) $${flags[$$f]} \
+		./main$(objsuf) $${flags[$$f]} \
+		echo \
+	done
+
+rundirect: memdirect
+	flags=(default small break breakNeg breakZero breakBad breakNULL)
+	for f in $${flags[@]}; do \
+		echo ./maindir$(objsuf) $${flags[$$f]} \
+		./maindir$(objsuf) $${flags[$$f]} \
+		echo \
+	done
+
 clean: restorePath
 	rm mem$(objsuf)
