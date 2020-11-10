@@ -27,9 +27,22 @@ int main(int argc, char* argv[]){
 	else if(strcmp("breakZero", argv[1]))main_breakZero();
 	else if(strcmp("breakBad", argv[1]))main_breakBad();
 	else if(strcmp("breakNULL", argv[1]))main_breakNULL();
+	else if(strcmp("breakOffset", argv[1]))main_breakOffset();
+	else if(strcmp("breakFree2", argv[1]))main_breakFree2();
 	else main_small(mult);
 }
 
+
+/**
+ * Here we are allocating random sizes of memory
+ * We start with the allocation max size and freeing that
+ * Next we allocate 100, 200, 10, and 2000 byte multiples of mult
+ * Freeing it in a a3 a1 a2 and a4, we test coalesce
+ * Next it allocates a few more spaces that should not fit without coalesce
+ * Then force it to expand memory by requesting 2x the size
+ * Finaly free a1 and allocate a smaller size that will fit into the freed space
+ * @param mult 
+ */
 void main_default(int mult){
 	void* a = Mem_Alloc(ALLOC_SIZE);
 
@@ -53,6 +66,7 @@ void main_default(int mult){
 
 	void* a4 = Mem_Alloc(2000*mult);
 	printf("Alloc 2000 a4\n");
+	printf("Should only be one node\n");
 	Mem_Dump();
 
 #if MM_FREE
@@ -83,8 +97,22 @@ void main_default(int mult){
 	void* b = Mem_Alloc(2 * ALLOC_SIZE*mult);
 	printf("Alloc 2ALLOC_SIZE a\n");
 	Mem_Dump();
+
+	printf("Free a1\n");
+	Mem_Free(a1);
+	Mem_Dump();
+
+	printf("Alloc a1 250");
+	a1 = Mem_Alloc(250);
+	Mem_Dump();
 }
 
+/**
+ * This is an extencive test for coalesce and reallocation
+ * It will allocate random sizes of memory and randomly free a few
+ * Next it allocates more that will not fit
+ * @param mult 
+ */
 void main_small(int mult){
 	void* a1=Mem_Alloc(12*mult);
 	printf("Alloc 12 a1\n");
@@ -179,6 +207,10 @@ void main_small(int mult){
 #endif
 }
 
+/** 
+ * This breaks the allocator by setting a value in the free list
+ * This should exit when trying to allocate more
+ */
 void main_break(){
 	//This will destroy the allocator
 	void* alc=Mem_Alloc(20);
@@ -190,19 +222,63 @@ void main_break(){
 	//Malloc does not prevent this and adding support to support bad practice is not a good idea
 }
 
+/** 
+ * Try to pass a negative value into Mem_Alloc
+ * This will be rejected
+ */
 void main_breakNeg(){
 	void* a=Mem_Alloc(-234);
 }
 
+/** 
+* Try to pass a 0 into Mem_Alloc
+* This will be rejected
+*/
 void main_breakZero(){
 	void* a=Mem_Alloc(0);
 }
 
+/** 
+* Try to free a pointer in the stack
+* This is invalid as it must be a pointer returned by free
+*/
 void main_breakBad(){
 	void* a=Mem_Alloc(2342);
 	Mem_Free(&a);
 }
 
+/** 
+ * Try to free a location ofset by 1 byte
+ * If using ALIGN it will detect this invalid offset if not it will detect an invalid header
+ */
+void main_breakOffset(){
+	void* a=Mem_Alloc(2342);
+	Mem_Free((char*)a+1);
+}
+
+/** 
+ * Try to free a NULL pointer
+ * Thiss will be detected as a bad pointer
+ */
 void main_breakNULL(){
 	Mem_Free(NULL);
 }
+
+/** 
+ * Allocates and frees a memory location
+ * Then frees the freed location
+ * This shuld be dedtected as an invalid header
+ */
+void main_breakFree2(){
+	void* a=Mem_Alloc(120);
+	printf("Allocate a 120");
+	Mem_Dump();
+
+	printf("free a");
+	Mem_Free(a);
+	Mem_Dump();
+
+	printf("Again!");
+	Mem_Free(a);
+}
+ 
