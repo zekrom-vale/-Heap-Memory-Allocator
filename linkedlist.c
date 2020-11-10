@@ -259,3 +259,37 @@ void linked_list_printNode(struct node* cur){
 #endif
 		);
 }
+
+#define BLOCK ALIGN
+#define PRINT_ALL false
+void linked_list_printNodeMore(struct node* cur){
+	linked_list_printNode(cur);
+	alloc_printSection(cur+1, "<-- Free space start");
+	if(PRINT_ALL||cur->size<=BLOCK*8){
+		for(size_t o=BLOCK; o<=cur->size-BLOCK; o+=BLOCK){
+			alloc_printSection(
+				util_ptrAdd(cur+1, o),
+				""
+			);
+		}
+	}
+	else{
+		for(size_t o=BLOCK; o<=BLOCK*4; o+=BLOCK){
+			alloc_printSection(
+				util_ptrAdd(cur+1, o),
+				""
+			);
+		}
+		printf(".\n.\n.\n");
+		for(size_t o=cur->size-BLOCK*4; o<=cur->size-BLOCK; o+=BLOCK){
+			alloc_printSection(
+				util_ptrAdd(cur+1, o),
+				""
+			);
+		}
+	}
+	alloc_printSection(
+		util_ptrAdd(cur+1, cur->size),
+		"<-- Free space end"
+	);
+}

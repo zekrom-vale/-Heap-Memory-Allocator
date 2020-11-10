@@ -52,6 +52,44 @@ void alloc_printHeader(struct header* head){
 	);
 }
 
+void alloc_printSection(void* ptr, char* txt){
+	printf("%p %s\n", ptr, txt);
+}
+
+#define BLOCK ALIGN
+#define PRINT_ALL false
+void alloc_printHeaderMore(struct header* head){
+	alloc_printHeader(head);
+	alloc_printSection(head+1, "<-- Allocated space start");
+	if(PRINT_ALL||head->size<=BLOCK*8){
+		for(size_t o=BLOCK; o<=head->size-BLOCK; o+=BLOCK){
+			alloc_printSection(
+				util_ptrAdd(head+1, o),
+				""
+			);
+		}
+	}
+	else{
+		for(size_t o=BLOCK; o<=BLOCK*4; o+=BLOCK){
+			alloc_printSection(
+				util_ptrAdd(head+1, o),
+				""
+			);
+		}
+		printf(".\n.\n.\n");
+		for(size_t o=head->size-BLOCK*4; o<=head->size-BLOCK; o+=BLOCK){
+			alloc_printSection(
+				util_ptrAdd(head+1, o),
+				""
+			);
+		}
+	}
+	alloc_printSection(
+		util_ptrAdd(head+1, head->size),
+		"<-- Allocated space end"
+	);
+}
+
 bool alloc_validate(struct header* head){
 	if(head==NULL||head<LIST||head>=LIST->end)return false;
 	return head->magic==MAGIC;
