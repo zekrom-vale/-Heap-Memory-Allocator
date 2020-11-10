@@ -260,10 +260,20 @@ void linked_list_printNode(struct node* cur){
 		);
 }
 
+void linked_list_printNodeAlt(struct node* cur){
+	printf("Free Space Node\n");
+	printf("%p <-- Next Node %p\n", &(cur->next), cur->next);
+	printf("%p <-- Prev Node %p\n", &(cur->prev), cur->prev);
+	printf("%p <-- Size %zu\n", &(cur->size), cur->size);
+#if USE_END
+	printf("%p <-- Size %p\n", &(cur->end), cur->end);
+#endif
+}
+
 #define BLOCK ALIGN
 #define PRINT_ALL false
 void linked_list_printNodeMore(struct node* cur){
-	linked_list_printNode(cur);
+	linked_list_printNodeAlt(cur);
 	alloc_printSection(cur+1, "<-- Free space start");
 	if(PRINT_ALL||cur->size<=BLOCK*8){
 		for(size_t o=BLOCK; o<=cur->size-BLOCK; o+=BLOCK){
@@ -290,6 +300,10 @@ void linked_list_printNodeMore(struct node* cur){
 	}
 	alloc_printSection(
 		util_ptrAdd(cur+1, cur->size),
+#if USE_END
+		"<-- Free space end and end node"
+#else
 		"<-- Free space end"
+#endif
 	);
 }

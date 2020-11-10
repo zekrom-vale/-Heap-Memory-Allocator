@@ -52,6 +52,12 @@ void alloc_printHeader(struct header* head){
 	);
 }
 
+void alloc_printHeaderAlt(struct header* head){
+	printf("Header\n");
+	printf("%p <-- Magic %d\n", &(head->magic), head->magic);
+	printf("%p <-- Size %zu\n", &(head->size), head->size);
+}
+
 void alloc_printSection(void* ptr, char* txt){
 	printf("%p %s\n", ptr, txt);
 }
@@ -59,7 +65,7 @@ void alloc_printSection(void* ptr, char* txt){
 #define BLOCK ALIGN
 #define PRINT_ALL false
 void alloc_printHeaderMore(struct header* head){
-	alloc_printHeader(head);
+	alloc_printHeaderAlt(head);
 	alloc_printSection(head+1, "<-- Allocated space start");
 	if(PRINT_ALL||head->size<=BLOCK*8){
 		for(size_t o=BLOCK; o<=head->size-BLOCK; o+=BLOCK){
