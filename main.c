@@ -2,17 +2,28 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <string.h>
 
 #define NO_STDIO_REDIRECT
 
 #define ALLOC_SIZE 0x3900
 #define MM_FREE true
-#define BREAK false
 
-int main(){
+int main(int argc, char* argv[]){
 	Mem_Init(ALLOC_SIZE);
 	printf("Init\n");
 	Mem_Dump();
+	if(argc<=1)main_default();
+	else if(strcmp("default", argv[1]))main_default();
+	else if(strcmp("break", argv[1]))main_break();
+	else if(strcmp("breakNeg", argv[1]))main_breakNeg();
+	else if(strcmp("breakZero", argv[1]))main_breakZero();
+	else if(strcmp("breakBad", argv[1]))main_breakBad();
+	else if(strcmp("breakNULL", argv[1]))main_breakNULL();
+}
+
+void main_default(){
+
 	void* a = Mem_Alloc(ALLOC_SIZE);
 
 #if MM_FREE
@@ -24,11 +35,11 @@ int main(){
 	void* a1=Mem_Alloc(100);
 	printf("Alloc 100 a1\n");
 	Mem_Dump();
-	
+
 	void* a2 = Mem_Alloc(200);
 	printf("Alloc 200 a2\n");
 	Mem_Dump();
-	
+
 	void* a3 = Mem_Alloc(10);
 	printf("Alloc 10 a3\n");
 	Mem_Dump();
@@ -40,33 +51,128 @@ int main(){
 #if MM_FREE
 	Mem_Free(a3);
 	printf("Free a3\n");
-    Mem_Dump();
+	Mem_Dump();
 
 	Mem_Free(a1);
-    printf("Free a1\n");
-    Mem_Dump();
-	
+	printf("Free a1\n");
+	Mem_Dump();
+
 	Mem_Free(a2);
 	printf("Free a2\n");
-    Mem_Dump();
+	Mem_Dump();
 
 	Mem_Free(a4);
-    printf("Free a4\n");
-    Mem_Dump();
+	printf("Free a4\n");
+	Mem_Dump();
 #endif
 	a1=Mem_Alloc(310);
 	printf("Alloc 310 a1\n");
-    Mem_Dump();
+	Mem_Dump();
 	printf("Alloc 1 a2\n");
 	a2 = Mem_Alloc(1);
-    Mem_Dump();
+	Mem_Dump();
 
 	//Force it to expand memory
-    void* b = Mem_Alloc(2 * ALLOC_SIZE);
-    printf("Alloc 2ALLOC_SIZE a\n");
-    Mem_Dump();
+	void* b = Mem_Alloc(2 * ALLOC_SIZE);
+	printf("Alloc 2ALLOC_SIZE a\n");
+	Mem_Dump();
+}
 
-#if BREAK
+void main_small(){
+	void* a1=Mem_Alloc(12);
+	printf("Alloc 12 a1\n");
+	Mem_Dump();
+
+	void* a2 = Mem_Alloc(22);
+	printf("Alloc 22 a2\n");
+	Mem_Dump();
+
+	void* a3 = Mem_Alloc(20);
+	printf("Alloc 20 a3\n");
+	Mem_Dump();
+
+	void* a4 = Mem_Alloc(123);
+	printf("Alloc 123 a4\n");
+	Mem_Dump();
+
+	void* a5=Mem_Alloc(100);
+	printf("Alloc 100 a1\n");
+	Mem_Dump();
+
+	void* a6 = Mem_Alloc(200);
+	printf("Alloc 200 a2\n");
+	Mem_Dump();
+
+	void* a7 = Mem_Alloc(120);
+	printf("Alloc 120 a3\n");
+	Mem_Dump();
+
+	void* a8 = Mem_Alloc(20);
+	printf("Alloc 20 a4\n");
+	Mem_Dump();
+
+#if MM_FREE
+	Mem_Free(a3);
+	printf("Free a3\n");
+	Mem_Dump();
+
+	Mem_Free(a2);
+	printf("Free a2\n");
+	Mem_Dump();
+
+	Mem_Free(a5);
+	printf("Free a5\n");
+	Mem_Dump();
+
+	Mem_Free(a7);
+	printf("Free a7\n");
+	Mem_Dump();
+#endif
+
+	a2 = Mem_Alloc(232);
+	printf("Alloc 232 a2\n");
+	Mem_Dump();
+
+	a3 = Mem_Alloc(30);
+	printf("Alloc 30 a3\n");
+	Mem_Dump();
+
+#if MM_FREE
+	Mem_Free(a3);
+	printf("Free a3\n");
+	Mem_Dump();
+
+	Mem_Free(a2);
+	printf("Free a2\n");
+	Mem_Dump();
+
+	Mem_Free(a1);
+	printf("Free a3\n");
+	Mem_Dump();
+
+	Mem_Free(a8);
+	printf("Free a2\n");
+	Mem_Dump();
+
+	Mem_Free(a6);
+	printf("Free a5\n");
+	Mem_Dump();
+
+	Mem_Free(a4);
+	printf("Free a7\n");
+	Mem_Dump();
+
+	Mem_Free(a5);
+	printf("Free a5\n");
+	Mem_Dump();
+
+	Mem_Free(a7);
+	printf("Free a7\n");
+	Mem_Dump();
+#endif
+}
+
+void main_break(){
 	//This will destroy the allocator
 	void* alc=Mem_Alloc(20);
 	int* mangle = (int*)(alc + 21);
@@ -75,5 +181,21 @@ int main(){
 	//This will certainly be an unexpected result
 	void* unknown = Mem_Alloc(20);
 	//Malloc does not prevent this and adding support to support bad practice is not a good idea
-#endif
+}
+
+void main_breakNeg(){
+	void* a=Mem_Alloc(-234);
+}
+
+void main_breakZero(){
+	void* a=Mem_Alloc(0);
+}
+
+void main_breakBad(){
+	void* a=Mem_Alloc(2342);
+	Mem_Free(&a);
+}
+
+void main_breakNULL(){
+	Mem_Free(NULL);
 }
