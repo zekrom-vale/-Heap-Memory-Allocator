@@ -15,15 +15,14 @@ err=-Wall -Werror
 hfiles=init.h free.h linkedList.h alloc.h dump.h mem.h util.h listFind.h error.h extend.h config.h
 cfiles=init.c free.c linkedList.c alloc.c dump.c mem.c util.c listFind.c error.c extend.c
 
-all:
-	memory main
+all: memory main
 
 memory: $(cfiles) $(hfiles)
-	$(gcc) $(def) -c -fpic $(cfiles) -o mem$(objsuf) $(err)
+	$(gcc) $(def) $(err) -c -fpic $(cfiles) -o mem$(objsuf)
 	$(gcc) -shared -o libmem$(shasuf) mem$(objsuf)
 
 memdirect: $(cfiles) $(hfiles) main.c
-	$(gcc) $(def) $(cfiles) $(hfiles) main.c -o memdir$(objsuf)
+	$(gcc) $(def) $(err) $(cfiles) $(hfiles) main.c -o memdir$(objsuf)
 
 setPath:
 	export OLD_LD_LIBRARY_PATH=$$LD_LIBRARY_PATH
