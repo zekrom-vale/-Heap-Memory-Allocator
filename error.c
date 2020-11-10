@@ -16,8 +16,8 @@ const char* errStr[]={
 #define DBG true
 error(int err){
     m_error=err;
-	perror("Soemthing whent wrong: ");
-	perror(errStr[err-1]);
+	fprintf(stderr, "Soemthing whent wrong: ");
+	fprintf(stderr, errStr[err-1]);
     exit(err);
 }
 
@@ -42,12 +42,14 @@ void error_head(struct header* head){
 
 void error_args(int size) {
   if (size <= 0 || size > MAX_SIZE) {
+	fprintf(stderr, "%d ", size);
     error(E_BAD_ARGS);
   }
 }
 
 void error_args_t(size_t size) {
   if (size > MAX_SIZE) {
+	fprintf(stderr, "%zu ", size);
     error(E_BAD_ARGS);
   }
 }
@@ -70,10 +72,16 @@ void error_ptr(void* ptr){
 #endif
 		||
 		(uintptr_t)ptr%ALIGN!=0
-	)error(E_BAD_POINTER);
+	){
+		fprintf(stderr, "%p ", ptr);
+		error(E_BAD_POINTER);
+	}
 }
 
 void error_node(struct node* node){
 	error(node);
-	if(node->size<ATOMIC)error(E_BAD_POINTER);
+	if(node->size<ATOMIC){
+		fprintf(stderr, "%p ", node);
+		error(E_BAD_POINTER);
+	}
 }
