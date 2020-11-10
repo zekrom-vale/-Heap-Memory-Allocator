@@ -15,11 +15,13 @@ int main(int argc, char* argv[]){
 	Mem_Dump();
 	if(argc<=1)main_default();
 	else if(strcmp("default", argv[1]))main_default();
+	else if(strcmp("small", argv[1]))main_small();
 	else if(strcmp("break", argv[1]))main_break();
 	else if(strcmp("breakNeg", argv[1]))main_breakNeg();
 	else if(strcmp("breakZero", argv[1]))main_breakZero();
 	else if(strcmp("breakBad", argv[1]))main_breakBad();
 	else if(strcmp("breakNULL", argv[1]))main_breakNULL();
+	else main_small();
 }
 
 void main_default(){
