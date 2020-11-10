@@ -11,6 +11,8 @@
 #include "error.h"
 #include "config.h"
 
+struct node;
+
 int Mem_Free(void* ptr);
 struct header* free_getHead(void* start);
 void free_coalesce(struct node* start);

@@ -155,7 +155,7 @@ struct nodeEnd* list_find_getNodeEnd(struct node* start) {
  */
 struct node* list_find_getNextNode(struct node* cur){
 #if USE_END
-	return cur->end + 1;
+	return (struct node*)cur->end + 1;
 #else
 	return util_ptrAdd(start, start->size);
 #endif

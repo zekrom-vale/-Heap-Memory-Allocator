@@ -276,7 +276,7 @@ void linked_list_printSection(void* ptr, char* txt){
 
 void linked_list_printNodeMore(struct node* cur){
 	linked_list_printNodeAlt(cur);
-	alloc_printSection(cur+1, "<-- Free space start");
+	linked_list_printSection(cur+1, "<-- Free space start");
 	if(PRINT_ALL||cur->size<=BLOCK*8){
 		for(size_t o=BLOCK; o<=cur->size-BLOCK; o+=BLOCK){
 			linked_list_printSection(

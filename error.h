@@ -10,6 +10,9 @@
 #include <errno.h>
 #include <string.h>
 
+struct node;
+struct header;
+
 void error_noSpace();
 
 void error_freeSpace(struct node* cur);
