@@ -62,7 +62,11 @@ void error_ptr(void* ptr){
 #if WSL
 		&ptr<=ptr
 #else
+#if BRK
 		sbrk(0)<ptr
+#else
+		false
+#endif
 #endif
 		||
 		(uintptr_t)ptr%ALIGN!=0
