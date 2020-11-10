@@ -42,3 +42,17 @@ void* Mem_Alloc(int size){
 		#endif
 	}
 }
+
+#include <stdio.h>
+void alloc_printHeader(struct header* head){
+	printf(
+		"struct header* %p=[size=%zu]\n",
+		head,
+		head->size
+	);
+}
+
+bool alloc_validate(struct header* head){
+	if(head==NULL||head<LIST||head>=LIST->end)return false;
+	return head->magic==MAGIC;
+}

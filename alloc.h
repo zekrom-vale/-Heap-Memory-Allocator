@@ -23,4 +23,6 @@ struct header {
 void* alloc_getVoid(struct header* start);
 void* Mem_Alloc(int size);
 size_t extend_calcSpace(size_t size);
+void alloc_printHeader(struct header* head);
+bool alloc_validate(struct header* head);
 #endif

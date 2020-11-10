@@ -142,7 +142,7 @@ struct node* list_find_offset(struct node* start, size_t size) {
  */
 struct nodeEnd* list_find_getNodeEnd(struct node* start) {
 	assert(start->size>=ATOMIC);
-	return (struct nodeEnd*)util_ptrAdd(start, start->size - END);
+	return util_ptrAdd(start, start->size - END);
   //|x|x|x|x|x|x|x|x|x| | | | | | | | | | | | |e|e|e|e| |
   // 0                 1                   2
   // 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5
@@ -153,8 +153,12 @@ struct nodeEnd* list_find_getNodeEnd(struct node* start) {
  * @param cur the current node
  * @return the next node
  */
-struct node* list_find_getNextNode(struct node* cur) {
-  return cur->end + 1;
+struct node* list_find_getNextNode(struct node* cur){
+#if USE_END
+	return cur->end + 1;
+#else
+	return util_ptrAdd(start, start->size);
+#endif
 }
 
 /**
