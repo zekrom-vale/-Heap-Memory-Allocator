@@ -80,7 +80,7 @@ void error_ptr(void* ptr){
 			LIST,
 			ptr
 		);
-	if(ptr>=LIST->end)
+	if(ptr>LIST->end)
 		error(
 			E_BAD_POINTER,
 			"Address is after the end of the heap(%p): %p ",

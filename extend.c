@@ -55,9 +55,11 @@ struct header* extend_extend(size_t size) {
 
   // Request
   void* allocated = extend_request(s);
-  LIST->end=util_ptrAdd(allocated, s);
 
   if (allocated == NULL) error_noSpace();
+
+  void* ptr=util_ptrAdd(allocated, s);
+  if(LIST->end<ptr)LIST->end=ptr;
   // If size is smaller than ATTOMIC use that instead
   if (size < ATOMIC) size = ATOMIC;
   // If the allocated space is the same as the ATOMIC size
@@ -67,7 +69,7 @@ struct header* extend_extend(size_t size) {
     linked_list_add(list_find_offset((struct node*)allocated, size), s - size);
   }
   // Init header
-  struct header* head = (struct header*)allocated;
+  struct header* head = allocated;
 
   head->magic = MAGIC;
   head->size = size;

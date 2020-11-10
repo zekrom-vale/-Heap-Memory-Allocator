@@ -1,4 +1,5 @@
 #include "mem.h"
+#include "config.h"
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -15,7 +16,7 @@ int main(int argc, char* argv[]){
 	Mem_Dump();
 	if(argc<=1){
 		main_default(1);
-		return;
+		return 0;
 	}
 	int mult;
 	if(argc>=2)mult=argv[2];
@@ -30,6 +31,7 @@ int main(int argc, char* argv[]){
 	else if(strcmp("breakOffset", argv[1]))main_breakOffset();
 	else if(strcmp("breakFree2", argv[1]))main_breakFree2();
 	else main_small(mult);
+	return 0;
 }
 
 
@@ -93,10 +95,12 @@ void main_default(int mult){
 	a2 = Mem_Alloc(1*mult);
 	Mem_Dump();
 
+#if EXPAND
 	//Force it to expand memory
 	void* b = Mem_Alloc(2 * ALLOC_SIZE*mult);
 	printf("Alloc 2ALLOC_SIZE a\n");
 	Mem_Dump();
+#endif
 
 	printf("Free a1\n");
 	Mem_Free(a1);

@@ -59,7 +59,7 @@
 /**
 * When true expand the mmaped space
 */
-#define EXPAND true
+#define EXPAND false
 /**
 * The amount to align allocated space by
 * Rounds up allocated space to this ammount
