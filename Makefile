@@ -7,9 +7,9 @@ shasuf=.so
 
 opt=
 
-gcc=gcc -std=gnu++98 -std=gnu99
+gcc=gcc -std=gnu99
 def=-DWSL=false -DMAX_SIZE=1.074e9L $(opt)
-err=-Wall -Werror
+err=-Wall
 
 #defines the files to use
 hfiles=init.h free.h linkedList.h alloc.h dump.h mem.h util.h listFind.h error.h extend.h config.h
