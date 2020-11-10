@@ -7,7 +7,8 @@ shasuf=.so
 
 opt=
 
-gcc=gcc -std=gnu++98 -std=gnu99 $(opt)
+gcc=gcc -std=gnu++98 -std=gnu99
+def=-DWSL=false -DMAX_SIZE=1.074e9L $(opt)
 err=-Wall -Werror
 
 #defines the files to use
@@ -18,11 +19,11 @@ all:
 	memory main
 
 memory: $(cfiles) $(hfiles)
-	$(gcc) -c -fpic $(cfiles) -o mem$(objsuf) $(err)
+	$(gcc) $(def) -c -fpic $(cfiles) -o mem$(objsuf) $(err)
 	$(gcc) -shared -o libmem$(shasuf) mem$(objsuf)
 
 memdirect: $(cfiles) $(hfiles) main.c
-	$(gcc) $(cfiles) $(hfiles) main.c -o memdir$(objsuf)
+	$(gcc) $(def) $(cfiles) $(hfiles) main.c -o memdir$(objsuf)
 
 setPath:
 	export OLD_LD_LIBRARY_PATH=$$LD_LIBRARY_PATH
