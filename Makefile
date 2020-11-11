@@ -14,12 +14,13 @@ err=-Wall
 #defines the files to use
 hfiles=init.h free.h linkedList.h alloc.h dump.h mem.h util.h listFind.h error.h extend.h config.h
 cfiles=init.c free.c linkedList.c alloc.c dump.c mem.c util.c listFind.c error.c extend.c
+ofiles=init$(objsuf) free$(objsuf) linkedList$(objsuf) alloc$(objsuf) dump$(objsuf) mem$(objsuf) util$(objsuf) listFind$(objsuf) error$(objsuf) extend$(objsuf)
 
 all: memory main
 
 memory: $(cfiles) $(hfiles)
 	$(gcc) $(def) -c $(err) -fpic $(cfiles)
-	$(gcc) -shared -o libmem.so mem.o
+	$(gcc) -shared -o libmem.so $(ofiles)
 
 memdirect: $(cfiles) $(hfiles) main.c
 	$(gcc) $(def) $(err) $(cfiles) $(hfiles) main.c -o memdir$(objsuf)
