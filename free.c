@@ -48,6 +48,7 @@ void free_coalesce(struct node* start){
 		start->end->start=start;
 #endif
 	}
+	else next=start;
 #if USE_END
 	struct node* prev = list_find_getPrevNode(start);
 	if(prev!=NULL){

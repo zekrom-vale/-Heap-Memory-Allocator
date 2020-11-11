@@ -230,7 +230,7 @@ void linked_list_print(){
  */
 void linked_list_printLinkedList(){
 	printf(
-		"struct linkedList*=%p[first=%p, last=%p, size=%zu, MODE=%d]\n",
+		"struct linkedList*=%p[first=%p, last=%p, size=%d, MODE=%d]\n",
 		LIST,
 		LIST->first,
 		LIST->last,
