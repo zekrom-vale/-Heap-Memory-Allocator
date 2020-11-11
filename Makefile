@@ -23,7 +23,7 @@ memory: $(cfiles) $(hfiles)
 	$(gcc) -shared -o libmem.so $(ofiles)
 
 memdirect: $(cfiles) $(hfiles) main.c
-	$(gcc) $(def) $(err) $(cfiles) $(hfiles) main.c -o memdir$(objsuf)
+	$(gcc) $(def) $(err) $(cfiles) $(hfiles) main.c -o maindir$(objsuf)
 
 setPath:
 	export LD_LIBRARY_PATH=$(CURDIR):$$LD_LIBRARY_PATH
@@ -34,17 +34,22 @@ restorePath:
 main: memory setPath mem.h config.h
 	$(gcc) -L. -o main$(objsuf) main.c $(err) -lmem
 
-flags=default small break breakNeg breakZero breakBad breakNULL
+flags=default small break breakNeg breakZero breakBad breakNULL breakOffset
+space= ================================================ 
 run: main
 	for f in $(flags) ; do \
+		echo $(space); \
 		echo ./main$(objsuf) $$f; \
+		echo $(space); \
 		./main$(objsuf) $$f; \
 		echo ; \
 	done
 
 rundirect: memdirect
 	for f in $(flags) ; do \
+		echo $(space); \
 		echo ./maindir$(objsuf) $$f; \
+		echo  $(space); \
 		./maindir$(objsuf) $$f; \
 		echo ; \
 	done

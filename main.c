@@ -270,7 +270,7 @@ int main(int argc, char* argv[]){
 		return 0;
 	}
 	int mult;
-	if(argc>=2)mult=atoi(argv[2]);
+	if(argc>2)mult=atoi(argv[2]);
 	else mult=1;
 	if(strcmp("default", argv[1]))main_default(mult);
 	else if(strcmp("small", argv[1]))main_small(mult);
