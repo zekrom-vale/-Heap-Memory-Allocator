@@ -20,6 +20,7 @@ struct header* free_getHead(void* start){
  * @return 0
  */
 int Mem_Free(void* ptr){
+	error_ptr(ptr);
 	struct header* head=free_getHead(ptr);
 
 	//validates the header

@@ -72,6 +72,11 @@ void error_args_t(size_t size) {
 
 //#define E_BAD_POINTER (5)
 void error_ptr(void* ptr){
+	if(ptr==NULL)
+		error(
+			E_BAD_POINTER,
+			"Pointer is NULL"
+		);
 	if(LIST!=NULL && (void*)ptr<(void*)LIST)
 		error(
 			E_BAD_POINTER,
