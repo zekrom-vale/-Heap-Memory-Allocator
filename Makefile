@@ -34,19 +34,18 @@ restorePath:
 main: memory setPath mem.h config.h
 	$(gcc) -L. -o main$(objsuf) main.c $(err) -lmem
 
+flags=default small break breakNeg breakZero breakBad breakNULL
 run: main
-	flags=(default small break breakNeg breakZero breakBad breakNULL)
-	for f in $${flags[@]}; do \
-		echo ./main$(objsuf) $${flags[$$f]} \
-		./main$(objsuf) $${flags[$$f]} \
+	for f in $(flags) ; do \
+		echo ./main$(objsuf) $$f \
+		./main$(objsuf) $$f \
 		echo \
 	done
 
 rundirect: memdirect
-	flags=(default small break breakNeg breakZero breakBad breakNULL)
-	for f in $${flags[@]}; do \
-		echo ./maindir$(objsuf) $${flags[$$f]} \
-		./maindir$(objsuf) $${flags[$$f]} \
+	for f in $(flags) ; do \
+		echo ./maindir$(objsuf) $$f \
+		./maindir$(objsuf) $$f \
 		echo \
 	done
 
