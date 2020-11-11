@@ -7,7 +7,15 @@ shasuf=.so
 
 opt=
 
-gcc=gcc -std=gnu99
+dbg=
+dbgf=
+
+ifdef gdb
+dbg=gdb
+dbgf=-d
+endif
+
+gcc=gcc $(dbgf) -std=gnu99
 def=-DWSL=false -DMAX_SIZE=1.074e9L $(opt)
 err=-Wall
 
@@ -41,7 +49,8 @@ run: main
 		echo $(space); \
 		echo ./main$(objsuf) $$f; \
 		echo $(space); \
-		./main$(objsuf) $$f; \
+		$(dbg) ./main$(objsuf) $$f; \
+		read -n 1 -s -r -p "Press any key to continue"; \
 		echo ; \
 	done
 
@@ -50,7 +59,8 @@ rundirect: memdirect
 		echo $(space); \
 		echo ./maindir$(objsuf) $$f; \
 		echo  $(space); \
-		./maindir$(objsuf) $$f; \
+		$(dbg) ./maindir$(objsuf) $$f; \
+		read -n 1 -s -r -p "Press any key to continue"; \
 		echo ; \
 	done
 

@@ -89,7 +89,6 @@ void main_default(int mult){
 /**
  * This is an extencive test for coalesce and reallocation
  * It will allocate random sizes of memory and randomly free a few
- * Next it allocates more that will not fit
  * @param mult 
  */
 void main_small(int mult){
