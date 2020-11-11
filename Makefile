@@ -26,11 +26,10 @@ memdirect: $(cfiles) $(hfiles) main.c
 	$(gcc) $(def) $(err) $(cfiles) $(hfiles) main.c -o memdir$(objsuf)
 
 setPath:
-	export OLD_LD_LIBRARY_PATH=$$LD_LIBRARY_PATH
 	export LD_LIBRARY_PATH=.:$$LD_LIBRARY_PATH
 
 restorePath:
-	export LD_LIBRARY_PATH=$$OLD_LD_LIBRARY_PATH
+	unset LD_LIBRARY_PATH
 
 main: memory setPath mem.h config.h
 	$(gcc) -L. -o main$(objsuf) main.c $(err) -lmem
