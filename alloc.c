@@ -22,6 +22,7 @@ void* alloc_getVoid(struct header* start){
  * @return The pointer to the starting space of the allocated space
  */
 void* Mem_Alloc(int size){
+	assert(LIST!=NULL);
 	error_args(size);
 	size_t s = util_roundUp_t(
 	  (size_t)size + sizeof(struct header),

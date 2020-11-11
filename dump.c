@@ -44,6 +44,7 @@ void dump_raw(){
 }
 
 void Mem_Dump(){
+	assert(LIST!=NULL);
   dump_map();
   printf("\n\n");
 }
