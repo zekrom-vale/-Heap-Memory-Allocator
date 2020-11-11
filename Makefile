@@ -25,7 +25,7 @@ memory: $(cfiles) $(hfiles)
 memdirect: $(cfiles) $(hfiles) main.c
 	$(gcc) $(def) $(err) $(cfiles) $(hfiles) main.c -o memdir$(objsuf)
 
-main: memory setPath mem.h config.h
+main: memory mem.h config.h
 	$(gcc) -L. -o main$(objsuf) main.c $(err) -lmem
 
 run: main
