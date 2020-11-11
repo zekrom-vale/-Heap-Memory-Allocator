@@ -37,16 +37,16 @@ main: memory setPath mem.h config.h
 flags=default small break breakNeg breakZero breakBad breakNULL
 run: main
 	for f in $(flags) ; do \
-		echo ./main$(objsuf) $$f \
-		./main$(objsuf) $$f \
-		echo \
+		echo ./main$(objsuf) $$f; \
+		./main$(objsuf) $$f; \
+		echo ; \
 	done
 
 rundirect: memdirect
 	for f in $(flags) ; do \
-		echo ./maindir$(objsuf) $$f \
-		./maindir$(objsuf) $$f \
-		echo \
+		echo ./maindir$(objsuf) $$f; \
+		./maindir$(objsuf) $$f; \
+		echo ; \
 	done
 
 clean: restorePath
