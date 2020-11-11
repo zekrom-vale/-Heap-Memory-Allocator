@@ -5,24 +5,27 @@ objsuf=.o
 # Suffix for shared object files
 shasuf=.so
 
+#Pass other command line arguments
 opt=
 
 dbg=
 dbgf=
 
+#Pass gdb=<any value> to debug instead of running
 ifdef gdb
 dbg=gdb
 dbgf=-d
 endif
 
 gcc=gcc $(dbgf) -std=gnu99
-def=-DWSL=false -DMAX_SIZE=1.074e9L $(opt)
+def=$(opt) -DWSL=false -DMAX_SIZE=1.074e9L
 err=-Wall
 
 #defines the files to use
 hfiles=init.h free.h linkedList.h alloc.h dump.h mem.h util.h listFind.h error.h extend.h config.h
 cfiles=init.c free.c linkedList.c alloc.c dump.c mem.c util.c listFind.c error.c extend.c
-ofiles=init$(objsuf) free$(objsuf) linkedList$(objsuf) alloc$(objsuf) dump$(objsuf) mem$(objsuf) util$(objsuf) listFind$(objsuf) error$(objsuf) extend$(objsuf)
+#gcc forces the creation of all objects with this format, -c cannot be used to specify -o with multiple files
+ofiles=init.o free.o linkedList.o alloc.o dump.o mem.o util.o listFind.o error.o extend.o
 
 all: memory main
 
