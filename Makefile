@@ -26,7 +26,7 @@ memdirect: $(cfiles) $(hfiles) main.c
 	$(gcc) $(def) $(err) $(cfiles) $(hfiles) main.c -o memdir$(objsuf)
 
 setPath:
-	export LD_LIBRARY_PATH=.:$$LD_LIBRARY_PATH
+	export LD_LIBRARY_PATH=$(CURDIR):$$LD_LIBRARY_PATH
 
 restorePath:
 	unset LD_LIBRARY_PATH
@@ -51,5 +51,4 @@ rundirect: memdirect
 	done
 
 clean: restorePath
-	rm mem$(objsuf)
-	rm *.o
+	rm *.so *.o *.gch
